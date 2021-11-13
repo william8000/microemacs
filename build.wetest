@@ -1,0 +1,8 @@
+:
+# build.wetest -- build a version of emacs using the wemacs.a library
+
+set -x
+
+cd $TOOL_OBJ_ROOT/emacs
+
+make -f $TOOL_ROOT/emacs/wmakefile wemacs

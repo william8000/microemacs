@@ -1,0 +1,365 @@
+Additions to micro-emacs 3.9
+
+William Bader
+williambader@hotmail.com
+http://williambader.com/
+
+```
+
+For VT100 style terminals, the arrow keys and keypad keys can be
+bound to commands.  The arrow keys are initially bound to single character
+movement commands.  The keypad keys are initially bound to EDT-like commands.
+The only exceptions are:
+	HELP - bound to describe-key. This command waits for a key
+to be pressed and tells what the key does.
+	GOLD HELP - bound to apropos. This command prompts for a string
+and displays a list of all commands related to the string in a new window.
+To delete the window, use ^X 0
+	REPLACE - prompts for pattern and replacement and replaces
+all matching strings in buffer.
+	DELETE CHARACTER - does not save the character unless there is a
+repeat count.
+	UNDELETE CHAR/WORD/LINE - there is only one kill buffer, so the
+all the undelete commands are just bound to the yank command.
+	SELECT - the selected region is not highlighted.
+
+Changes from standard emacs:
+	Since arrow keys and function keys generate escape sequences,
+an extra character is read after an escape is typed.
+This means prompts that read a string until <META> will not return
+until another character is types.  As a fix, any function key
+(i.e. an arrow key or a keypad key) can be used to terminate the string.
+For example when entering a search string, terminate the string with
+a keypad key (like in EDT) instead of ESCAPE.
+Also, the GOLD key is bound normally to the meta-prefix command.
+This means that to enter a <META> prefixed key to commands that ask
+for keys (like bind-to-key or describe-key), you must use ESCAPE.
+For example, describe-key GOLD would immediately come back with
+meta-prefix, while describe-key ESCAPE would wait for another key
+to be pressed.
+
+
+	Other new commands:
+
+ESC ^B	Find matching fence	(same as ESC ^F)
+
+ESC J	Fill paragraph		(same as ESC Q)
+
+^X ^D	Describe key		(same as ^X ?)
+
+^@	Set mark		(same as ESC space)
+
+^X 4	Find file into another window
+	If there is another window, go to it, otherwise split the current
+	window.  Find a file in the new window.
+
+char-to-octal-insert (unbound)
+	Insert a C format octal escape sequence for the next key pressed.
+
+string-length (unbound)
+	If the cursor is inside a quoted string, print its length.
+
+auto-mode (bound to ESC ^X FN R)
+	Enters CMODE for .a, .c, .h, .p and .f extensions.
+
+Autosave mode saves the file with a .asv extension instead of
+	its original extension.
+
+recover-file (unbound)
+	Replaces the current file with its autosaved version.
+
+auto-save-file (unbound)
+	Makes a backup the file in the current buffer using the
+	autosave mode .asv extension.
+
+scroll-forward / scroll-backward (unbound)
+	Scrolls the screen horizontally and moves the cursor.
+
+suspend-emacs (ESC S)
+	Attaches to a parent of the current process if possible.
+
+revert-file (unbound)
+	Replaces the current file with the last version written to disk.
+
+previous-buffer (unbound)
+	Displays the previous buffer. (inverse of next-buffer)
+
+yank-character (bound to GOLD ,)
+	Restores the last deleted character.
+
+cut-region (bound to keypad 6)
+	Like kill-region, but also clears the mark.
+
+$advance (environment variable)
+	EDT advance/backup flag
+
+$vt100key (environment variable)
+	When set, the next character after an escape is always read.
+	Default is true on xenix vt200, false otherwise.
+	On xenix, the value may be set by the environment variable vt100key.
+
+smooth-next-page (unbound)
+smooth-previous-page (unbound)
+	Like next-page and previous-page, but only scoll about 2/3 of the
+	window and update after each line on vt100's.
+
+narrow-buffer-to-region (bound to ^X <)
+	Hides all text in the buffer except for the region.
+	Commands that usually operate on the entire buffer will only
+	touch the narrowed region.
+
+widen-buffer (bound to ^X >)
+	Restores the hidden areas of a narrowed buffer.
+
+describe-variables
+describe-functions
+	Displays a list of variables or functions.
+
+display
+	Prompts for a variable and displays its value.
+
+execute-buffer, select-buffer, kill-buffer
+	Now perform command completion on the buffer name.
+
+(mode line)
+	Now shows if a buffer was truncated (#) or narrowed (<>).
+	On machines without virtual memory, buffers are truncated if there
+	is not enough memory to hold the entire file.
+
+$hardtab
+$softtab
+	Hard tab is the size that a TAB character should move.
+	Soft tab is the size that the insert-tab command uses.
+
+In MAGIC mode, & in replace strings are replaced by the matched text.
+
+$hscroll
+$hjump
+	When $hscroll is set, the whole screen will scroll horizontally
+	instead of just the current line.
+	$hjump is the number of spaces to move.
+
+-t (command line option)
+	On Xenix and VMS, keeps flow control to the terminal enabled.
+
+-i<variable name> <initial value> (command line option)
+	Sets an initial value for a variable.
+
+-c (command line option)
+	Clears view mode flag (enabled by a previous -v).
+
+$cbflags
+	The flags for the current buffer.
+	(Bits = invisible, changed, truncated, narrowed)
+
+&gtc, &ban, &bor, &bxo, &bno
+	Functions for getting a command, binary and, binary or,
+	binary xor and binary not.
+
+BINARY mode
+	On MSDOS, opens files in binary mode.
+
+command completion on variable names and file names
+	microEmacs now performs completions on variable names and file names.
+
+Using microEmacs as a callable editor under VAX/VMS
+	Link with linkshr.com to produce sys$library:meshr.exe, then
+	$ define mail$edit callable_me
+
+&exi
+	Boolean function for test if a file exists.
+
+-2 (command line option)
+	Does an initial split window, next buffer, then previous window.
+	-g may be repeated to specify a line in the second file.
+
+$time
+	Returns the current time as a 26 character string with the same
+	format as the 'date' command.
+
+$ndate
+	Returns the current date as a number in YYYYMMDD format.
+
+^X 5	View file into another window
+	If there is another window, go to it, otherwise split the current
+	window.  View a file in the new window.
+
+$curwind
+	Returns the number of the current window
+
+$numwind
+	Returns the number of windows
+
+$disphigh
+	Display characters with their high bit set as '^' + '!' + char.
+	Off (FALSE) by default.
+
+$wchars
+	Defines the characters that make words for next-word, prev-word, etc.
+	The default value ($wchars empty) uses the same test as before.
+
+$yankpnt
+	Boolean that determine the location of the point after a yank.
+	The default value (FALSE) places the point after the yanked text.
+
+$popflag
+	Boolean that enables pop up windows for commands that create lists.
+	The default value (FALSE) places lists in normal buffers.
+
+$cpopflag
+	Boolean that enables pop up windows when a '?' is typed when
+	command completion is available.  On (TRUE) by default.
+
+&isn
+	Boolean function with a string argument that tells whether the
+	string is a valid number.
+
+append-file (bound to ^X^A), append-region (unbound)
+	Append the current buffer or region to a file.
+	
+^X 6	find-buffer-into-other-window
+	Places a buffer into another window
+
+pop-buffer (unbound)
+	Temporarily display a buffer on the screen.
+
+quick-save (unbound)
+	Saves all modified buffers (the same routine used by ESC-Z/quick-exit).
+
+show-files (unbound)
+	Shows a directory in a window.
+
++ and ? in MAGIC mode searches
+	+ and ? work like *, except + must match 1 or more times,
+	? must match 0 or 1 times.
+		ab*c	ab+c	ab?c
+	ac	yes	no	yes
+	abc	yes	yes	yes
+	abbc	yes	yes	no
+
+wildcards on command line
+	Under VMS and MSDOS, you may use wildcards in filenames.
+
+BINARY mode under VMS
+	Under VMS, microemacs reads files using RMS.
+	Set BINARY mode to read files using the VAX C runtime library.
+	Under RMS, file access is several times faster.
+
+CGA40, VGA12, VGA132, VGA44, VGA43, etc. screen resolutions under MSDOS
+	Change screen modes by setting $sres.  Here are all the current modes:
+	CGA is 80 wide by 25 high (CGA or higher)
+	MONO is 80 wide by 25 high (MDA)
+	EGA is 80 wide by 43 high (EGA or higher)
+	VGA is 80 wide by 50 high (VGA)
+	CGA40 is 40 wide by 25 high (CGA or higher)
+	VGA12 is 80 wide by 12 high (VGA)
+	VGA132 is 132 wide by 25 high (ATI or Tseng)
+	VGA44 is 132 wide by 44 high (ATI)
+	TLVGA44 is 132 wide by 44 high (Tseng)
+	VGA43 is 132 wide by 43 high (nonstandard)
+	TVGA132 is 132 wide by 25 high (Trident)
+	TVGA44 is 132 wide by 44 high (Trident)
+	TVGA60 is 132 wide by 60 high (Trident)
+	V7VGA132 is 132 wide by 25 high (Video 7)
+	V7VGA43 is 132 wide by 43 high (Video 7)
+	GVGA132 is 132 wide by 25 high (Genoa)
+	GVGA44 is 132 wide by 44 high (Genoa)
+	GVGA60 is 132 wide by 60 (Genoa)
+	PVGA132 is 132 wide by 25 high (Paradise)
+	PVGA43 is 132 wide by 43 (Paradise)
+	CVGA132 is 132 wide by 25 (Chips and Technologies)
+	CVGA50 is 132 wide by 50 (Chips and Technologies)
+	VGA modes (except for VGA) may not work on all VGA cards and monitors.
+
+-t{fsrcn} (command line option)
+	-t alone is like -tf
+	f: On Xenix and VMS, keeps flow control to the terminal enabled.
+	s: Disables use of scrolling regions on vt100 terminals.
+	r: Disables use of reverse video.
+	c: Disables use of color.
+	n: On Xenix, sends nulls requested by termcap entries.
+
+$gfcolor, $gbcolor, $cfcolor, $cbcolor
+$bfcolor, $bbcolor, $sfcolor, $sbcolor
+	Change the global/current/border/shadow foreground/background color.
+	Use the color name (WHITE/white/CYAN/cyan/etc.), case does not matter.
+
+$wintitle
+	String with the window title.
+
+$numcols, $numrows
+	Integers with the current number of columns or rows on the screen.
+
+$cindtype
+	Integer that defines c indent action when inserting braces.
+	After copying the indent from the previous line, 0 keeps the indent
+	as is, 1 detabs the indent, and 2 entabs the indent.
+
+show-modes (unbound)
+	Shows the list of modes in a window.
+
+$pid
+	Integer with the process id.
+
+filter-new-buffer (bound to ^X %)
+	Filters a buffer through a command and places the results in a new
+	buffer.  Differs from filter-buffer, which overwrites the current
+	buffer with the results, and from pipe-command, which places the
+	results of a command into a new buffer.
+
+text input
+	^S and ^R add the search pattern to the input line.
+	^Y adds the contents of the kill buffer to the input line.
+
+$dispseven
+	When TRUE, displays iso accented characters using the seven bit
+	sequence: open brace, letter, accent, close brace.
+	For example, an e-acute displays as {e'}
+	Defaults to TRUE when TERM is vt100, FALSE otherwise.
+
+compose-character (bound to ESC-+)
+	Reads the next two input characters and composes an accented character.
+	One character should be the letter and the other should be the accent.
+	For example, to insert an e-acute, use ESC + e '
+
+compose-acute (bound to ESC-')
+compose-bar (bound to ESC-_)
+compose-cedilla (bound to ESC-,)
+compose-circ (bound to ESC-^)
+compose-grave (bound to ESC-`)
+compose-slash (bound to ESC-/)
+compose-tilde (bound to ESC-~)
+compose-umlaut (bound to ESC-")
+compose-ring (bound to ESC-*)
+	Adds an accent to the character to the left of the cursor.
+	For example, to insert an e-acute, use e ESC '
+
+auto-save-all (unbound)
+	Makes backups of all of the current buffers using the
+	autosave mode .asv extension.
+
+unix signals
+	On the signals SIGUSR1 and SIGUSR2, emacs calls auto-save-all.
+	On the signals SIGHUP, SIGQUIT, SIGILL, SIGABRT, SIGEMT, SIGBUS,
+	SIGSEGV and SIGTERM, emacs calls auto-save-all,
+	restores the terminal modes, and then exits.
+
+unquote-printable (bound to ESC-=)
+	Converts a MIME quoted-printable =XX sequence to the actual character.
+	The cursor should be over the equals character.
+	It also removes =<NL> sequences.
+	If it does not change anything, it moves forward one character so
+	it can process a buffer with a repeat count.
+
+unprefix (bound to ESC-;)
+	Converts a two byte sequence xC3 plus a byte to the byte with its
+	high bit set.
+	The cursor should be over the xC3.
+	If it does not change anything, it moves forward one character so
+	it can process a buffer with a repeat count.
+
+$dosync
+	When TRUE, sync the file system after writing a file.
+	Defaults to FALSE.
+
+```

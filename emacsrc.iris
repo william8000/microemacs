@@ -1,0 +1,7 @@
+set $discmd FALSE
+bind-to-key search-forward FN^I
+bind-to-key search-reverse FN^J
+bind-to-key hunt-forward FN^K
+bind-to-key hunt-backward FN^L
+set $discmd TRUE
+set $vt100key 1

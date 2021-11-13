@@ -1,0 +1,15 @@
+*-
+*+
+*.err
+*.o
+*.a
+*.lib
+*.obj
+*.xen
+emacs
+emacs-*
+*.exe
+*.exe.*
+*.tar
+*.tar.*
+*.tgz

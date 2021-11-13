@@ -1,0 +1,23 @@
+A lot of lines.
+
+this is a test sd.as dfd f df dsf ds f dsfdsasdf d fd f df d f df df d f df df d
+f df dsf ds f df sdf this is a test sd.as dfd f df dsf ds f dsfdsasdf d fd f df
+d f df df d f df df d f df dsf ds f df sdf this is a test sd.as dfd f df dsf ds
+f dsfdsasdf d fd f df d f df df d f df df d f df dsf ds f df sdf.
+
+f.  should end line
+
+this is a.  test sd.as dfd.  xf df dsf ds.  f dsfdsasdf d.  fd f df d f df df f.
+dfg df d f df dsf ds f df sdf.
+
+d after f.  should end line
+
+this is a.  test sd.as dfd.  f df dsf ds.  f dsfdsasdf d.  fd f df d f df ff.  d
+df d f df dsf ds f df sdf.
+
+xxx 123. number does not end
+
+xxx ABC. abbr does not end ... dots do not end . . . . more dots do not end
+
+xxx ecl!  does end and qm?  does end Dr. Mr. do not end
+

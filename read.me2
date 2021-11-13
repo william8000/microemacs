@@ -1,0 +1,134 @@
+Internal changes to MicroEmacs
+
+William Bader
+williambader@hotmail.com
+http://williambader.com/
+
+```
+	Filled in routines in spawn.c for VMS.
+	Added ADM3A support into vmsvt.c for unknown terminals.
+	Added bindings for vt100 keypads similar to EDT.
+	Added support for 80/132 column mode on VT100 terminals under
+		VMS and TERMCAP.
+	Redid search scanner so no subroutines calls are made until
+		the first character of the pattern is matched.
+	Redid parts of display.c to eliminate processes that require
+		one subroutine call per character.
+	Added fastputc macro that does the equivalent of ttputc
+		under VMS and USG.
+	Changed VMS part of termio not to abort on input data overruns.
+	Added a fast key lookup area so normal keys, the special 'C'
+		function done after every command, and the last command
+		executed can be found directly without looping through all
+		the key bindings.
+	Created a callable interface that allows other programs to
+		link to emacs and call it like a subroutine.
+	Can correctly read, display, and write out files with any ascii
+		character from 0 to 255.
+	Changed routines in fileio.c to use macro versions of fgetc and fputc.
+	Added partial support for vt100 style scrolling regions.
+	Added smooth scroll functions that work like edt.
+	Added functions to scroll the screen left and right.
+	Added support for vt200 style escape sequences.
+		esc [ digits ~ becomes SPEC | c where c is what would be
+		generated if you hit the key with the ascii value of 'digits'.
+	Changed splitwindow to save a pointer to the new window so things
+		that call it have the option of setting curwp to it.
+	For DECEDT, binding meta-prefix or ctlx-prefix does not undo old keys.
+	In macro files, FN# represents esc [ # ~.
+	Next-line and previous-line do not reset goal at buffer boundaries.
+	Added support for ansi color in tcap.c.
+	Added BINARY mode for MSDOS.
+	Made automatic indent smarter.
+	Added support for 8-bit escape sequences.
+	Made function name matching case independent.
+	Fixed entab on lines with mixed tabs and spaces.
+	Added file and variable name completion.
+	Added vga 50 line support.
+	Added support for use as a vms callable editor.
+	Added $symbol expansion on unix file names.
+	Trim, Detab and Entab no longer set buffer changed flag if no changes.
+	Added sync() after closing files on UNIX.
+	Added more vga 132 column support.
+	The buffer-position command now uses real numbers to calculate the percentage to 2 places.
+	Increase the keyboard macro buffer from 256 to 2048 keystrokes.
+	Interix converts ESC F char to SPEC|CTRL|char when char is a digit or upper case letter.
+	Added support for second -g with -2.
+	Implemented a repeat count in fill-paragraph.
+
+	Fixed random bugs due to mismatched arguments on subroutine calls.
+	Fixed inspound loop in read-only buffers.
+	Fixed tcap vt100 optimization for terminals with over 99 lines.
+	Fixed getting window size in Linux.
+	Fixed listbuffers on buffers with a size of more than 6 digits.
+
+	Suggested xterm command line: xterm -geometry 177x52+0+0 -font 10x20 +sb +sm -ls +u8 -fg white -bg black -xrm *VT100*colorBD: cyan -xrm *VT100*colorUL: yellow
+
+Instructions for compiling
+	Select an option in the Machine/OS section at the top of estruct.h
+		BSD 4.x Unix systems should select BSD
+		BSD 2.x Unix systems should select BSD and BSD29
+		Version 7 Unix systems should select V7 (V7 is a subset of BSD)
+		System V Unix systems should select USG
+		MSDOS systems should select MSDOS
+		VAX/VMS systems should select VMS
+
+	Compiler definition section in estruct.h
+		MSDOS systems should select the compiler
+		USG systems may select MSC for Xenix style typeahead detection
+		VMS and other Unix systems do not need to select anything
+
+	Terminal output section in estruct.h
+		Unix systems should select TERMCAP
+		MSDOS systems should select IBMPC for direct memory writes or
+			ANSI for ansi.sys style writes
+		VMS systems should select VMSVT
+
+	Other issues
+		For file name completion, check the defines in fileio.c
+		For var args compile warnings, check HASVA in display.c
+
+	Building
+		On unix-like systems, run "./build.emacs"
+			See build.emacs and mymakefile for notes
+		On VMS, run "@vmsmake"
+		On other systems, compile all C files and link them together
+
+Compilation attempts
+	Compiled and ran successfully on
+		Vax11c under VMS 4.1 on a VAX-11/750
+		Microsoft C 5.0 under MSDOS 3.20
+			(compiler crashes or generates incorrect code
+			when full optimization enabled)
+		Turbo C 1.5 under MSDOS 3.20
+		CI86 2.30J under MSDOS 3.20
+		Borland C++ 3.1 under MSDOS
+		Zortech C++ 3.0, 3.1 under MSDOS
+		Symantec C++ 6.1 under MSDOS
+		Microsoft C under SCO XENIX 386 2.3, 2.3, SCO UNIX 3.2
+		cc under SunOS 3.5? on a Sun 3/360C
+		cc under SunOS 4.0 on a Sun 386i
+		cc under SunOS 4.0 on a Sun 4
+		cc under Solaris 2.1 on a Sun Sparcstation
+		cc under HP-UX 11i v3 on a PA-RISC rp3410
+		cc under OpenVMS V8.3 on an IA64
+		cc under UMIPS 4.3 on a MIPS RC3240
+		cc under AIX 3.2 on an RS/6000 340
+		cc under A/UX 3.0.1 on a Mac
+		cc under BSD2.9 on a PDP-11/70
+			(used separate I/D space)
+		gcc under FreeBSD-2.2.6
+		egcs-1.0.3 under Linux-2.0.34
+		gcc-2.95.2 under FreeBSD 4.3
+		gcc-2.96 under RedHat Linux 7.1
+		gcc-2.95.2 under MacOS X Darwin 5.4
+		gcc-3.2.2 under RedHat Linux 9
+		gcc-3.4.4 under RedHat FedoraCore 3
+		gcc-3.4.6 under FreeBSD 6.2 on Intel
+		gcc-3.3 under Windows 7 Interix
+		gcc-4.4.0 under Android 4.3 with Terminal IDE
+	Compiled but did not run on
+		decusc under RSX11M on a PDP-11/73
+			(would not link because decusc can not generate
+			I/D tasks)
+```

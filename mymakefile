@@ -1,0 +1,48 @@
+CFLAGS=		$(MEEXTRAFLAGS)
+
+OFILES=		main.o ansi.o basic.o bind.o buffer.o display.o \
+		file.o fileio.o meline.o random.o region.o \
+		search.o mespawn.o tcap.o termio.o window.o word.o \
+		meexec.o eval.o isearch.o input.o crypt.o memenu.o
+
+CFILES=		main.c ansi.c basic.c bind.c buffer.c display.c \
+		file.c fileio.c meline.c random.c region.c \
+		search.c mespawn.c tcap.c termio.c window.c word.c \
+		meexec.c eval.c isearch.c input.c crypt.c memenu.c
+
+HFILES=		estruct.h edef.h efunc.h epath.h evar.h
+
+VMSFILES=	vmscc.com vmslink.com vmslinkshr.com vmsmake.com spawnemacs.com emacsprocess.com
+
+MISCFILES=	build.emacs mymakefile read.me read.me2 emacs.key emacsrc.* $(VMSFILES)
+
+emacs:		$(OFILES)
+		$(CC) $(CFLAGS) $(OFILES) -o emacs $(MEEXTRALIB)
+
+main.o:		ebind.h
+
+$(OFILES):	$(HFILES)
+
+distclean:	clean
+		rm -f emacs emacs.tgz emacs.tar.bz2 emacs.zip
+
+clean:
+		rm -f *.o core
+
+tar:		emacs.tar.bz2
+
+emacs.tar:	$(MISCFILES) $(HFILES) $(CFILES)
+		rm -f emacs.tar
+		tar cvf - $(MISCFILES) *.h *.c > emacs.tar
+
+emacs.tgz:	$(MISCFILES) $(HFILES) $(CFILES)
+		rm -f emacs.tgz
+		tar cvf - $(MISCFILES) *.h *.c | gzip -v9 > emacs.tgz
+
+emacs.tar.bz2:	$(MISCFILES) $(HFILES) $(CFILES)
+		rm -f emacs.tar.bz2
+		tar cvf - $(MISCFILES) *.h *.c | bzip2 -v9 > emacs.tar.bz2
+
+emacs.zip:	$(MISCFILES) $(HFILES) $(CFILES)
+		rm -f emacs.zip
+		zip -9 emacs.zip $(MISCFILES) *.h *.c

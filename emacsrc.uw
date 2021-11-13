@@ -1,0 +1,8 @@
+set $discmd FALSE
+bind-to-key previous-page FNV
+bind-to-key next-page FNU
+bind-to-key search-forward FNX
+bind-to-key search-reverse FNY
+bind-to-key hunt-forward FNZ
+set $discmd TRUE
+set $vt100key 1

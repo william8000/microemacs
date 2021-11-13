@@ -1,0 +1,16 @@
+set $discmd FALSE
+
+bind-to-key search-forward FN^T
+bind-to-key search-reverse FN^U
+bind-to-key hunt-forward FN^W
+bind-to-key hunt-backward FN^X
+
+bind-to-key delete-next-line FNm
+bind-to-key delete-next-word FNk
+bind-to-key delete-next-character FNM
+
+bind-to-key yank M-FNk
+bind-to-key yank-character M-FNM
+
+set $vt100key 1
+set $discmd TRUE

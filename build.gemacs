@@ -1,0 +1,22 @@
+:
+# build.gemacs -- make a stand-alone emacs binary using gcc
+
+set -x
+
+MEEXTRAFLAGS="-I$SPICE_INC"
+
+if [ -f /lib/libc_s.a ]
+then MECSLIB="-lc_s"
+else MSCSLIB=""
+fi
+
+export MEEXTRAFLAGS MECSLIB
+
+rm *.o
+
+make -f mygccmakefile
+
+if [ -f /usr/bin/mcs ]
+then
+	mcs -d gccemacs
+fi

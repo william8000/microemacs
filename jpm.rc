@@ -1,0 +1,447 @@
+set $discmd FALSE
+set $disinp FALSE
+
+;----------------------------------------------------------------------------
+
+store-procedure standard-keys
+
+    bind-to-key   abort-command             ^C
+    bind-to-key   execute-macro-4           ^U
+    bind-to-key   exit-emacs                ^Z
+    bind-to-key   clear-and-redraw          ^W
+    bind-to-key   quote-character           ^V
+    bind-to-key   begin-macro               M-(
+    bind-to-key   end-macro                 M-)
+    bind-to-key   smooth-previous-line      ^P
+    bind-to-key   smooth-next-line          ^N
+    bind-to-key   beginning-of-file         M-^P
+    bind-to-key   end-of-file               M-^N
+    bind-to-key   end-of-line               M-^F
+    bind-to-key   beginning-of-line         M-^B
+    bind-to-key   execute-macro-9           M-^XFNR
+    bind-to-key   execute-macro-37          M-S         ; Spell check buffer
+!endm
+
+
+store-procedure vt220-keys
+
+    bind-to-key   meta-prefix               FN007
+
+    bind-to-key   next-word                 FN44
+    bind-to-key   previous-word             FN45
+    bind-to-key   beginning-of-file         M-FN065
+    bind-to-key   end-of-file               M-FN066
+    bind-to-key   end-of-line               M-FN067
+    bind-to-key   beginning-of-line         M-FN068
+    bind-to-key   execute-macro-1           FN43
+    bind-to-key   execute-macro-2           FN42
+
+    bind-to-key   execute-macro-5           FN001
+    bind-to-key   previous-buffer           FN002
+    bind-to-key   next-buffer               FN003
+    bind-to-key   next-window               FN004
+    bind-to-key   execute-macro-8           ^XFN004
+    bind-to-key   execute-macro-3           FN016
+    bind-to-key   execute-macro-3           ^@
+
+    bind-to-key   save-file                 FN026
+    bind-to-key   i-shell                   FN034
+    bind-to-key   execute-named-command     FN^]
+
+    bind-to-key   nop                       FN119
+    bind-to-key   nop                       FN120
+    bind-to-key   nop                       FN121
+
+    bind-to-key   execute-macro             FN121
+
+    bind-to-key   goto-matching-fence       FN017
+!endm
+
+
+store-procedure ansi-keys
+
+    bind-to-key   next-word                 M-FN067
+    bind-to-key   previous-word             M-FN068
+    bind-to-key   beginning-of-file         M-FN065
+    bind-to-key   end-of-file               M-FN066
+    bind-to-key   execute-macro-1           ^XFN067
+    bind-to-key   previous-paragraph        ^XFN068
+
+    bind-to-key   execute-macro-5           FN082
+    bind-to-key   previous-buffer           FN083
+    bind-to-key   next-buffer               FN084
+    bind-to-key   next-window               FN081
+    bind-to-key   execute-macro-8           FN085
+    bind-to-key   execute-macro-3           FN080
+
+    bind-to-key   save-file                 FN088
+    bind-to-key   i-shell                   FN079
+    bind-to-key   execute-named-command     FN078
+
+    bind-to-key   execute-macro             FN113
+
+    bind-to-key   ctlx-prefix               FN077
+    bind-to-key   meta-prefix               ^[
+!endm
+
+;----------------------------------------------------------------------------
+
+store-procedure toggle-mode
+
+    set %t1 &div $cmode %modemask
+    set %t2 &tim &div %t1 2 2
+    !if &equ %t1 %t2
+	set $cmode &add $cmode %modemask
+    !else
+	set $cmode &sub $cmode %modemask
+    !endif
+!endm
+
+;----------------------------------------------------------------------------
+
+store-procedure get-buf-type
+
+    set %typelen &sub &length $cbufname &sindex $cbufname "."
+    !if &greater %typelen 4
+        set %buf-ext ""
+    !else
+        set %buf-ext &right $cbufname %typelen
+    !endif
+
+    set %typeinfo ",c:c,m:c,s:c,t:c,i:h,h:h,d:h,awk:c,pas:p,:,"
+    set %loc &sindex %typeinfo &cat &cat "," %buf-ext ":"
+    set %loc &add &add %loc 2 &length %buf-ext
+    set %temp &mid %typeinfo %loc 10
+    set %buf-type &mid %temp 1 &sub &sindex %temp "," 1
+!endm
+
+;----------------------------------------------------------------------------
+
+;  Backup to beginning of a C header, from the opening '{'
+
+store-procedure begin_c_header
+
+    !force search-reverse ")"
+    !force goto-matching-fence
+    !force search-reverse &cat &cat "[ 	a-zA-Z0-9_*" &chr 10 "]*"
+    !force search-forward &cat &cat "[^ 	" &chr 10 "]"
+    beginning-of-line
+!endm
+
+;  Find the next C procedure
+
+store-procedure next-procedure
+
+    set %SaveMagic &mod &div $cmode 64 2
+    set %SaveSea $search
+    add-mode magic
+    set $discmd false
+
+    set %StartLine $curline
+    
+    !force search-forward "^{"
+    execute-procedure begin_c_header
+
+    !if &not &gre $curline %StartLine
+        !force search-forward "^{"
+        !force search-forward "^{"
+        !if $status
+            execute-procedure begin_c_header
+        !else
+            end-of-file
+        !endif
+    !endif
+
+    !if &not %SaveMagic
+        delete-mode magic
+    !endif
+    set $search %SaveSea
+    set $discmd true
+!endm
+
+;  Find the previous C procedure
+
+store-procedure prev-procedure
+
+    set %SaveMagic &mod &div $cmode 64 2
+    set %SaveSea $search
+    add-mode magic
+    set $discmd false
+
+    set %StartLine $curline
+    
+    !force search-reverse "^{"
+    !if $status
+        execute-procedure begin_c_header
+    !else
+        beginning-of-file
+    !endif
+
+    !if &not %SaveMagic
+        delete-mode magic
+    !endif
+    set $search %SaveSea
+    set $discmd true
+!endm
+
+;----------------------------------------------------------------------------
+
+1   store-macro		        ; Move to the beginning of the next paragraph
+
+    set %t1 &div $cmode 2       ; check CMODE first rather than buf-type
+    set %t2 &tim &div %t1 2 2
+
+    !if &not &equ %t1 %t2       ; CMODE
+        execute-procedure next-procedure
+    !else                       ; not CMODE
+        run get-buf-type
+        !if &sequal %buf-type "p"
+            set %savesrch $search
+            end-of-line
+            !force search-forward "procedure "
+            !if &not $status
+                end-of-file
+            !else
+                beginning-of-line
+            !endif
+            set $search %savesrch
+        !else
+            next-paragraph
+            next-word
+        !endif
+    !endif
+!endm
+
+
+2   store-macro         ; Back up one C procedure
+
+    set %t1 &div $cmode 2
+    set %t2 &tim &div %t1 2 2
+
+    !if &not &equ %t1 %t2       ; CMODE
+        execute-procedure prev-procedure
+    !else                       ; not CMODE
+        run get-buf-type
+        !if &sequal %buf-type "p"
+            set %savesrch $search
+            !force search-reverse "procedure "
+            !if &not $status
+                beginning-of-file
+            !else
+                beginning-of-line
+            !endif
+            set $search %savesrch
+        !else
+            previous-paragraph
+        !endif
+    !endif
+!endm
+
+
+3   store-macro		                ; Kill the current buffer.
+
+    set %erase "FALSE"
+    set %bufname $cbufname
+
+    !force next-buffer
+    !if &not $status			; Killing the only buffer
+	select-buffer "MAIN"
+	!if &sequal %bufname "MAIN"	; If killing MAIN, just erase it
+	    set %erase "TRUE"
+	!endif
+    !endif
+
+    select-buffer %bufname
+    !if &not %erase
+	name-buffer "%%% KILL"
+    !endif
+
+    save-window
+    set %counter 0
+    !while &les %counter 12		; This should cover them all
+	set %counter &add %counter 1
+	!if &sequal $cbufname "%%% KILL"
+	    next-buffer
+	!endif
+	next-window
+    !endwhile
+    restore-window
+
+    !if %erase
+	select-buffer %bufname
+	beginning-of-file
+	set $discmd FALSE
+	set-mark
+	set $discmd TRUE
+	end-of-file
+	kill-region
+	unmark-buffer
+        write-message &cat &cat "Buffer " %bufname " erased."
+    !else
+	!force delete-buffer "%%% KILL"
+        !if $status
+            write-message &cat &cat "Buffer " %bufname " killed."
+        !else
+            select-buffer "%%% KILL"
+            name-buffer %bufname
+            write-message &cat &cat "Buffer " %bufname " not killed."
+        !endif
+    !endif
+!endm
+
+
+4   store-macro		        ; Delete to beginning of line
+
+    set $discmd false
+    set-mark
+    beginning-of-line
+    kill-region
+    set $discmd true
+!endm
+
+
+5   store-macro                 ; List buffers (Toggles on / off)
+
+    save-window
+
+    set %found FALSE
+    set %count 0
+
+    !while &les %count 12
+	!if &seq $cbufname "[List]"
+	    set %found TRUE
+	    delete-window
+	!else
+	    next-window
+	!endif
+	set %count &add %count 1
+    !endwhile
+
+    !if %found
+        set %windows 1
+    !else
+	list-buffers
+        set %windows 2
+    !endif
+!endm
+
+
+7   store-macro			! Get numeric value for key
+
+    write-message "Show key value:"
+
+    set %s1 "'"
+    set %s2 "'"
+    set %s3 "Character "
+    set %key &gtk
+    set %val &asc %key
+
+    !if &equ %val 0
+	set %s1 "FN"
+	set %s2 ""
+ 	set %s3 "Function "
+	set %key &gtk
+	set %val &asc %key
+    !endif
+
+    !if &les %val 0
+	set %val &add %val 256
+    !endif
+
+    write-message &cat &cat &cat &cat &cat %s1 %key %s2 " = " %s3 %val
+!endm
+
+
+8   store-macro		; one window <--> two windows
+
+    !if &equal %windows 1
+	split-current-window
+	set %windows 2
+    !else
+	delete-other-windows
+	set %windows 1
+    !endif
+!endm
+
+
+9   store-macro         ; set options after file is read in
+    run get-buf-type
+    !if &sequal %buf-type "c"
+        add-mode CMODE
+    !endif
+;    write-message &cat &cat "buf-type = '" %buf-type "'"
+!endm
+
+
+11  store-macro		; Toggle WRAP mode
+    set %modemask 1
+    run toggle-mode
+!endm
+
+12  store-macro		; Toggle CMODE
+    set %modemask 2
+    run toggle-mode
+!endm
+
+13  store-macro		; Toggle SPELL mode
+    set %modemask 4
+    run toggle-mode
+!endm
+
+14  store-macro		; Toggle EXACT mode
+    set %modemask 8
+    run toggle-mode
+!endm
+
+15  store-macro		; Toggle VIEW mode
+    set %modemask 16
+    run toggle-mode
+!endm
+
+16  store-macro		; Toggle OVER mode
+    set %modemask 32
+    run toggle-mode
+!endm
+
+17  store-macro		; Toggle MAGIC mode
+    set %modemask 64
+    run toggle-mode
+!endm
+
+18  store-macro		; Toggle CRYPT mode
+    set %modemask 128
+    run toggle-mode
+!endm
+
+19  store-macro		; Toggle ASAVE mode
+    set %modemask 256
+    run toggle-mode
+!endm
+
+;----------------------------------------------------------------------------
+
+!if &exi "/usr/local/memacs/moved.emacs"
+    execute-file "/usr/local/memacs/moved.emacs"
+!endif
+
+!if &exi "/usr/local/lib/memacs/define.emacs"
+    execute-file "/usr/local/lib/memacs/define.emacs"
+!endif
+
+set %windows 1
+4   handle-tab
+
+set %term &env "TERM"
+
+run standard-keys
+
+!if &sequal %term "vt220"
+    run vt220-keys
+!else
+    !if &sequal %term "ansi"
+        run ansi-keys
+    !endif
+!endif
+
+set $discmd TRUE
+set $disinp TRUE

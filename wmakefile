@@ -1,0 +1,31 @@
+CFLAGS= -O -DUSEWINMOD $(DEF_INC) $(FULL_OPT)
+
+#CFLAGS= -Otacl -CSON -DUSEWINMOD $(DEF_INC)
+#CFLAGS= -g -DUSEWINMOD $(DEF_INC)
+
+OFILES=		wmod.o main.o basic.o bind.o buffer.o display.o \
+		file.o fileio.o meline.o random.o region.o \
+		search.o mespawn.o tcap.o termio.o window.o word.o \
+		meexec.o eval.o isearch.o input.o crypt.o memenu.o
+
+CFILES=		wmod.c main.c basic.c bind.c buffer.c display.c \
+		file.c fileio.c meline.c random.c region.c \
+		search.c mespawn.c tcap.c termio.c window.c word.c \
+		meexec.c eval.c isearch.c input.c crypt.c memenu.c
+
+HFILES=		estruct.h edef.h efunc.h epath.h ebind.h evar.h
+
+wemacs.a:	$(OFILES)
+		-rm wemacs.a
+		ar qv wemacs.a $(OFILES)
+		if [ ! -z "$(RANLIB)" ]; then $(RANLIB) wemacs.a; fi
+
+wemacs:		$(OFILES) emacs.o
+		$(CC) $(CFLAGS) emacs.o $(OFILES) \
+			$(DEF_OBJ) \
+			$(SPICE_LIBS) $(DEF_LIB) $(X_LIB) -o wemacs
+
+$(OFILES):	$(HFILES)
+
+clean:		
+		rm wemacs *.o *.a

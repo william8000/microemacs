@@ -1,0 +1,37 @@
+:
+# build.wemacs -- build the wemacs.a library
+
+# set -x
+
+if [ -z "$MAKE" ]
+then
+	if [ -x "/usr/local/bin/gmake" ]
+	then MAKE="/usr/local/bin/gmake"
+	else MAKE=make
+	fi
+fi
+
+cd $TOOL_ROOT/emacs
+
+if [ ! -z "$DEF_CC" ]
+then
+	CC="$DEF_CC"
+	export CC
+fi
+
+cc2 -c $FULL_OPT wedum.c
+
+#if [ ! -z "$TOOL_OBJ_LN" -a ! -f $TOOL_OBJ_ROOT/emacs/estruct.h ]
+#then
+	echo "Linking from $TOOL_ROOT to $TOOL_OBJ_ROOT"
+	for name in *.[hc]
+	do
+		$TOOL_OBJ_LN $TOOL_ROOT/emacs/$name $TOOL_OBJ_ROOT/emacs/$name
+	done
+#fi
+
+cd $TOOL_OBJ_ROOT/emacs
+
+$MAKE -f $TOOL_ROOT/emacs/wmakefile wemacs.a
+
+if [ ! -z "$RANLIB" ]; then $RANLIB wemacs.a; fi

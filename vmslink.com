@@ -1,0 +1,23 @@
+$! vmslink.com -- link microemacs
+$
+$ opt = "''p2'"
+$ if p1 .eqs. "" then opt = "/NOMAP"
+$ if f$locate("O",p1) .lt. f$length(p1) then -	
+	opt = "/NOMAP/NODEBUG/NOTRACE"
+$
+$ if f$getsyi("VERSION") .lts. "V8" then goto USEVAXCRTL
+$ link'opt'/exe=[]emacs-
+	BASIC,BIND,BUFFER,CRYPT,DISPLAY,[]EMACS,EVAL,MEEXEC,FILE,-
+	FILEIO,INPUT,ISEARCH,MELINE,MAIN,MEMENU,RANDOM,-
+	REGION,SEARCH,MESPAWN,TERMIO,VMSVT,WINDOW,WORD
+$ goto DONE
+$ USEVAXCRTL:
+$ link'opt'/exe=[]emacs-
+	BASIC,BIND,BUFFER,CRYPT,DISPLAY,[]EMACS,EVAL,MEEXEC,FILE,-
+	FILEIO,INPUT,ISEARCH,MELINE,MAIN,MEMENU,RANDOM,-
+	REGION,SEARCH,MESPAWN,TERMIO,VMSVT,WINDOW,WORD,-
+	sys$input:/options
+    SYS$LIBRARY:LBRSHR/SHARE
+    SYS$SHARE:VAXCRTL/SHARE
+$
+$ DONE:
