@@ -1,6 +1,6 @@
 MicroEMACS 3.9
 written by Dave G. Conroy.
-substatially modified by Daniel M. Lawrence
+substantially modified by Daniel M. Lawrence
 
 (C)opyright 1987 by Daniel M. Lawrence
 MicroEMACS 3.9 can be copied and distributed freely for any
