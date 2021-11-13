@@ -12,3 +12,5 @@ Modified by William Bader for Linux, MSDOS, and VMS, including new features, EDT
 [Enhancements](read.me)
 
 [Internal changes](read.me2)
+
+Build with `build.emacs` on Linux and `vmsmake.com` on VMS.
