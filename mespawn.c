@@ -6,6 +6,13 @@
 #include	"estruct.h"
 #include        "edef.h"
 
+#if VMS | BSD | USG | (MSDOS & (MSC | TURBO | GNUC | ZORTECH))
+#define	HAS_TIME	1
+#include <time.h>
+#else
+#define	HAS_TIME	0
+#endif
+
 /*
 **  The following variable is set true while we spawn a sub-process.
 **  It is used by the SCS window routine interface to distinguish
@@ -138,6 +145,13 @@ int f, n;
         sgarbf = TRUE;
 #if defined(__MINGW32__)
         /* sleep not present */
+#elif HAS_TIME && (_POSIX_C_SOURCE >= 199309L)
+	{
+		struct timespec request, remaining;
+		request.tv_sec = 0;
+		request.tv_nsec = 250000000; /* 1/4 sec */
+		nanosleep(&request, &remaining);
+	}
 #else
         sleep(2);
 #endif
