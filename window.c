@@ -22,7 +22,7 @@ int f, n;
     {
     if (f == FALSE)	/* default to 0 to center screen */
 	n = 0;
-    curwp->w_force = (shrt) n;
+    curwp->w_force = n;
     curwp->w_flag |= WFFORCE;
     return (TRUE);
     }
@@ -232,7 +232,7 @@ int f, n;
         while (i-- > 0 && lback(lp) != curbp->b_linep)
                 lp = lback(lp);
         curwp->w_toprow = 0;
-	curwp->w_ntrows = (shrt) (term.t_nrow - 1 - menuflag);
+	curwp->w_ntrows = term.t_nrow - 1 - menuflag;
         curwp->w_linep  = lp;
         curwp->w_flag  |= WFMODE|WFHARD;
         return (TRUE);
@@ -275,7 +275,7 @@ int f, n;	/* arguments are ignored for this command */
 		/* find the next window down */
 		target = curwp->w_ntrows + 1;
 		while (wp != NULL) {
-			if (target == (int) wp->w_toprow)
+			if (target == wp->w_toprow)
 				break;
 			wp = wp->w_wndp;
 		}
@@ -294,7 +294,7 @@ int f, n;	/* arguments are ignored for this command */
 		/* find the next window up */
 		target = curwp->w_toprow - 1;
 		while (wp != NULL) {
-			if (target == (int) wp->w_toprow + wp->w_ntrows)
+			if (target == wp->w_toprow + wp->w_ntrows)
 				break;
 			wp = wp->w_wndp;
 		}
@@ -381,11 +381,11 @@ int f, n;	/* default flag and numeric argument */
                 /* Old is upper window. */
                 if (ntrd == ntru)               /* Hit mode line.       */
                         lp = lforw(lp);
-		curwp->w_ntrows = (shrt) ntru;
+		curwp->w_ntrows = ntru;
                 wp->w_wndp = curwp->w_wndp;
                 curwp->w_wndp = wp;
-		wp->w_toprow = (shrt) (curwp->w_toprow + ntru + 1);
-		wp->w_ntrows = (shrt) ntrl;
+		wp->w_toprow = curwp->w_toprow + ntru + 1;
+		wp->w_ntrows = ntrl;
         } else {                                /* Old is lower window  */
                 wp1 = NULL;
                 wp2 = wheadp;
@@ -399,10 +399,10 @@ int f, n;	/* default flag and numeric argument */
                         wp1->w_wndp = wp;
                 wp->w_wndp   = curwp;
                 wp->w_toprow = curwp->w_toprow;
-		wp->w_ntrows = (shrt) ntru;
+		wp->w_ntrows = ntru;
                 ++ntru;                         /* Mode line.           */
 		curwp->w_toprow += ntru;
-		curwp->w_ntrows  = (shrt) ntrl;
+		curwp->w_ntrows  = ntrl;
                 while (ntru--)
                         lp = lforw(lp);
         }
@@ -437,7 +437,7 @@ int f, n;
                 while (adjwp->w_wndp != curwp)
                         adjwp = adjwp->w_wndp;
         }
-	if (((int) adjwp->w_ntrows) <= n) {
+	if (adjwp->w_ntrows <= n) {
                 mlwrite("Impossible change");
                 return (FALSE);
         }
@@ -484,7 +484,7 @@ int f, n;
                 while (adjwp->w_wndp != curwp)
                         adjwp = adjwp->w_wndp;
         }
-	if (((int) curwp->w_ntrows) <= n) {
+	if (curwp->w_ntrows <= n) {
                 mlwrite("Impossible change");
                 return (FALSE);
         }
@@ -669,7 +669,7 @@ int n;	/* numeric argument */
 			wp = wp->w_wndp;
 
 		/* and enlarge it as needed */
-		wp->w_ntrows = (shrt) (n - wp->w_toprow - 2 - menuflag);
+		wp->w_ntrows = n - wp->w_toprow - 2 - menuflag;
 		wp->w_flag |= WFHARD|WFMODE;
 
 	} else {
@@ -683,7 +683,7 @@ int n;	/* numeric argument */
 			nextwp = wp->w_wndp;
 	
 			/* get rid of it if it is too low */
-			if (((int) wp->w_toprow) > n - 2 - menuflag) {
+			if (wp->w_toprow > n - 2 - menuflag) {
 
 				/* save the point/mark if needed */
 				if (--wp->w_bufp->b_nwnd == 0) {
@@ -709,9 +709,7 @@ int n;	/* numeric argument */
 				/* need to change this window size? */
 				lastline = wp->w_toprow + wp->w_ntrows - 1;
 				if (lastline >= n - 2 - menuflag) {
-					wp->w_ntrows = (shrt)
-						(n - wp->w_toprow - 2 -
-							menuflag);
+					wp->w_ntrows = n - wp->w_toprow - 2 - menuflag;
 					wp->w_flag |= WFHARD|WFMODE;
 				}
 			}
@@ -887,7 +885,7 @@ int f, n;
 
     if (scroll) {
 	curwp->w_flag |= WFFORCE;
-	curwp->w_force = (shrt) row;
+	curwp->w_force = row;
     }
     if (lp != curwp->w_dotp) {
 	/* if the last command was not a line move,

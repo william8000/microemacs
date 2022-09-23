@@ -1363,7 +1363,7 @@ CONSTA char *bname;
 	wp->w_bcolor = (shrt) gbcolor;
 #endif
 	wp->w_fcol = 0;
-	wp->w_ntrows = (shrt) (term.t_nrow - 1 - menuflag); /* -1 for mode line. */
+	wp->w_ntrows = term.t_nrow - 1 - menuflag; /* -1 for mode line. */
         wp->w_force = 0;
         wp->w_flag  = WFMODE|WFHARD;            /* Full.                */
 }

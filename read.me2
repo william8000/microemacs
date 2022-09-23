@@ -61,8 +61,10 @@ http://williambader.com/
 	Fixed tcap vt100 optimization for terminals with over 99 lines.
 	Fixed getting window size in Linux.
 	Fixed listbuffers on buffers with a size of more than 6 digits.
+	Fixed calculations on displays with more than 127 rows.
 
 	Suggested xterm command line: xterm -geometry 177x52+0+0 -font 10x20 +sb +sm -ls +u8 -fg white -bg black -xrm *VT100*colorBD: cyan -xrm *VT100*colorUL: yellow
+	On HiDPI display: xterm -geometry 177x52+0+0 -fa 'DejaVu Sans Mono' -fs 11 +sb +sm -ls -fg white -bg black -xrm *VT100*colorBD: cyan -xrm *VT100*colorUL: yellow
 
 Instructions for compiling
 	Select an option in the Machine/OS section at the top of estruct.h

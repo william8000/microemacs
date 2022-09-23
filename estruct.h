@@ -668,9 +668,9 @@ typedef struct  WINDOWTAG {
         int     w_doto;                 /* Byte offset for "."          */
         struct  LINETAG *w_markp;	/* Line containing "mark"       */
         int     w_marko;                /* Byte offset for "mark"       */
-        shrt    w_toprow;               /* Origin 0 top row of window   */
-        shrt    w_ntrows;               /* # of rows of text in window  */
-        shrt    w_force;                /* If NZ, forcing row.          */
+        int     w_toprow;               /* Origin 0 top row of window   */
+        int     w_ntrows;               /* # of rows of text in window  */
+        int     w_force;                /* If NZ, forcing row.          */
         shrt    w_flag;                 /* Flags.                       */
 #if	COLOR
 	shrt	w_fcolor;		/* current forground color	*/
