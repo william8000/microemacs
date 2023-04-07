@@ -823,7 +823,7 @@ static int getpindent()	/* get indent of line with matching parens */
 	curwp->w_doto = llength(curwp->w_dotp);
 
 	count = 0;
-	i = 20;		/* max number of lines to scan */
+	i = 50;		/* max number of lines to scan */
 
 	while (backchar(FALSE, 1) != FALSE) {
 		if (curwp->w_doto == llength(curwp->w_dotp)) {
