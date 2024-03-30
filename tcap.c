@@ -233,6 +233,11 @@ static tcapopen()
 	if (isvt100 && term.t_mcol < 132) term.t_mcol = 132;
 	oldwidth = term.t_ncol;
 
+	/* xterm 384 has a bug with scrolling in big windows */
+	if (isvt100 && term.t_mrow > 70 && strncmp(tv_stype, "xterm-", 6) == 0) {
+		termflag |= 2;
+	}
+
         p = tcapbuf;
         t = mytgetstr("pc", &p);
         if(t)
