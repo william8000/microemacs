@@ -978,103 +978,102 @@ int bufnum;	/* number of buffer to execute */
 	return(TRUE);
 }
 
-int cbuf1(f, n) { return(cbuf(f, n, 1)); }
-int cbuf2(f, n) { return(cbuf(f, n, 2)); }
-int cbuf3(f, n) { return(cbuf(f, n, 3)); }
-int cbuf4(f, n) { return(cbuf(f, n, 4)); }
-int cbuf5(f, n) { return(cbuf(f, n, 5)); }
-int cbuf6(f, n) { return(cbuf(f, n, 6)); }
-int cbuf7(f, n) { return(cbuf(f, n, 7)); }
-int cbuf8(f, n) { return(cbuf(f, n, 8)); }
-int cbuf9(f, n) { return(cbuf(f, n, 9)); }
-int cbuf10(f, n) { return(cbuf(f, n, 10)); }
-int cbuf11(f, n) { return(cbuf(f, n, 11)); }
-int cbuf12(f, n) { return(cbuf(f, n, 12)); }
-int cbuf13(f, n) { return(cbuf(f, n, 13)); }
-int cbuf14(f, n) { return(cbuf(f, n, 14)); }
-int cbuf15(f, n) { return(cbuf(f, n, 15)); }
-int cbuf16(f, n) { return(cbuf(f, n, 16)); }
-int cbuf17(f, n) { return(cbuf(f, n, 17)); }
-int cbuf18(f, n) { return(cbuf(f, n, 18)); }
-int cbuf19(f, n) { return(cbuf(f, n, 19)); }
-int cbuf20(f, n) { return(cbuf(f, n, 20)); }
-int cbuf21(f, n) { return(cbuf(f, n, 21)); }
-int cbuf22(f, n) { return(cbuf(f, n, 22)); }
-int cbuf23(f, n) { return(cbuf(f, n, 23)); }
-int cbuf24(f, n) { return(cbuf(f, n, 24)); }
-int cbuf25(f, n) { return(cbuf(f, n, 25)); }
-int cbuf26(f, n) { return(cbuf(f, n, 26)); }
-int cbuf27(f, n) { return(cbuf(f, n, 27)); }
-int cbuf28(f, n) { return(cbuf(f, n, 28)); }
-int cbuf29(f, n) { return(cbuf(f, n, 29)); }
-int cbuf30(f, n) { return(cbuf(f, n, 30)); }
-int cbuf31(f, n) { return(cbuf(f, n, 31)); }
-int cbuf32(f, n) { return(cbuf(f, n, 32)); }
-int cbuf33(f, n) { return(cbuf(f, n, 33)); }
-int cbuf34(f, n) { return(cbuf(f, n, 34)); }
-int cbuf35(f, n) { return(cbuf(f, n, 35)); }
-int cbuf36(f, n) { return(cbuf(f, n, 36)); }
-int cbuf37(f, n) { return(cbuf(f, n, 37)); }
-int cbuf38(f, n) { return(cbuf(f, n, 38)); }
-int cbuf39(f, n) { return(cbuf(f, n, 39)); }
-int cbuf40(f, n) { return(cbuf(f, n, 40)); }
-int cbuf41(f, n) { return(cbuf(f, n, 41)); }
-int cbuf42(f, n) { return(cbuf(f, n, 42)); }
-int cbuf43(f, n) { return(cbuf(f, n, 43)); }
-int cbuf44(f, n) { return(cbuf(f, n, 44)); }
-int cbuf45(f, n) { return(cbuf(f, n, 45)); }
-int cbuf46(f, n) { return(cbuf(f, n, 46)); }
-int cbuf47(f, n) { return(cbuf(f, n, 47)); }
-int cbuf48(f, n) { return(cbuf(f, n, 48)); }
-int cbuf49(f, n) { return(cbuf(f, n, 49)); }
-int cbuf50(f, n) { return(cbuf(f, n, 50)); }
-int cbuf51(f, n) { return(cbuf(f, n, 51)); }
-int cbuf52(f, n) { return(cbuf(f, n, 52)); }
-int cbuf53(f, n) { return(cbuf(f, n, 53)); }
-int cbuf54(f, n) { return(cbuf(f, n, 54)); }
-int cbuf55(f, n) { return(cbuf(f, n, 55)); }
-int cbuf56(f, n) { return(cbuf(f, n, 56)); }
-int cbuf57(f, n) { return(cbuf(f, n, 57)); }
-int cbuf58(f, n) { return(cbuf(f, n, 58)); }
-int cbuf59(f, n) { return(cbuf(f, n, 59)); }
-int cbuf60(f, n) { return(cbuf(f, n, 60)); }
-int cbuf61(f, n) { return(cbuf(f, n, 61)); }
-int cbuf62(f, n) { return(cbuf(f, n, 62)); }
-int cbuf63(f, n) { return(cbuf(f, n, 63)); }
-int cbuf64(f, n) { return(cbuf(f, n, 64)); }
-int cbuf65(f, n) { return(cbuf(f, n, 65)); }
-int cbuf66(f, n) { return(cbuf(f, n, 66)); }
-int cbuf67(f, n) { return(cbuf(f, n, 67)); }
-int cbuf68(f, n) { return(cbuf(f, n, 68)); }
-int cbuf69(f, n) { return(cbuf(f, n, 69)); }
-int cbuf70(f, n) { return(cbuf(f, n, 70)); }
-int cbuf71(f, n) { return(cbuf(f, n, 71)); }
-int cbuf72(f, n) { return(cbuf(f, n, 72)); }
-int cbuf73(f, n) { return(cbuf(f, n, 73)); }
-int cbuf74(f, n) { return(cbuf(f, n, 74)); }
-int cbuf75(f, n) { return(cbuf(f, n, 75)); }
-int cbuf76(f, n) { return(cbuf(f, n, 76)); }
-int cbuf77(f, n) { return(cbuf(f, n, 77)); }
-int cbuf78(f, n) { return(cbuf(f, n, 78)); }
-int cbuf79(f, n) { return(cbuf(f, n, 79)); }
-int cbuf80(f, n) { return(cbuf(f, n, 80)); }
-int cbuf81(f, n) { return(cbuf(f, n, 81)); }
-int cbuf82(f, n) { return(cbuf(f, n, 82)); }
-int cbuf83(f, n) { return(cbuf(f, n, 83)); }
-int cbuf84(f, n) { return(cbuf(f, n, 84)); }
-int cbuf85(f, n) { return(cbuf(f, n, 85)); }
-int cbuf86(f, n) { return(cbuf(f, n, 86)); }
-int cbuf87(f, n) { return(cbuf(f, n, 87)); }
-int cbuf88(f, n) { return(cbuf(f, n, 88)); }
-int cbuf89(f, n) { return(cbuf(f, n, 89)); }
-int cbuf90(f, n) { return(cbuf(f, n, 90)); }
-int cbuf91(f, n) { return(cbuf(f, n, 91)); }
-int cbuf92(f, n) { return(cbuf(f, n, 92)); }
-int cbuf93(f, n) { return(cbuf(f, n, 93)); }
-int cbuf94(f, n) { return(cbuf(f, n, 94)); }
-int cbuf95(f, n) { return(cbuf(f, n, 95)); }
-int cbuf96(f, n) { return(cbuf(f, n, 96)); }
-int cbuf97(f, n) { return(cbuf(f, n, 97)); }
-int cbuf98(f, n) { return(cbuf(f, n, 98)); }
-int cbuf99(f, n) { return(cbuf(f, n, 99)); }
-
+int cbuf1(f, n) int f, n; { return(cbuf(f, n, 1)); }
+int cbuf2(f, n) int f, n; { return(cbuf(f, n, 2)); }
+int cbuf3(f, n) int f, n; { return(cbuf(f, n, 3)); }
+int cbuf4(f, n) int f, n; { return(cbuf(f, n, 4)); }
+int cbuf5(f, n) int f, n; { return(cbuf(f, n, 5)); }
+int cbuf6(f, n) int f, n; { return(cbuf(f, n, 6)); }
+int cbuf7(f, n) int f, n; { return(cbuf(f, n, 7)); }
+int cbuf8(f, n) int f, n; { return(cbuf(f, n, 8)); }
+int cbuf9(f, n) int f, n; { return(cbuf(f, n, 9)); }
+int cbuf10(f, n) int f, n; { return(cbuf(f, n, 10)); }
+int cbuf11(f, n) int f, n; { return(cbuf(f, n, 11)); }
+int cbuf12(f, n) int f, n; { return(cbuf(f, n, 12)); }
+int cbuf13(f, n) int f, n; { return(cbuf(f, n, 13)); }
+int cbuf14(f, n) int f, n; { return(cbuf(f, n, 14)); }
+int cbuf15(f, n) int f, n; { return(cbuf(f, n, 15)); }
+int cbuf16(f, n) int f, n; { return(cbuf(f, n, 16)); }
+int cbuf17(f, n) int f, n; { return(cbuf(f, n, 17)); }
+int cbuf18(f, n) int f, n; { return(cbuf(f, n, 18)); }
+int cbuf19(f, n) int f, n; { return(cbuf(f, n, 19)); }
+int cbuf20(f, n) int f, n; { return(cbuf(f, n, 20)); }
+int cbuf21(f, n) int f, n; { return(cbuf(f, n, 21)); }
+int cbuf22(f, n) int f, n; { return(cbuf(f, n, 22)); }
+int cbuf23(f, n) int f, n; { return(cbuf(f, n, 23)); }
+int cbuf24(f, n) int f, n; { return(cbuf(f, n, 24)); }
+int cbuf25(f, n) int f, n; { return(cbuf(f, n, 25)); }
+int cbuf26(f, n) int f, n; { return(cbuf(f, n, 26)); }
+int cbuf27(f, n) int f, n; { return(cbuf(f, n, 27)); }
+int cbuf28(f, n) int f, n; { return(cbuf(f, n, 28)); }
+int cbuf29(f, n) int f, n; { return(cbuf(f, n, 29)); }
+int cbuf30(f, n) int f, n; { return(cbuf(f, n, 30)); }
+int cbuf31(f, n) int f, n; { return(cbuf(f, n, 31)); }
+int cbuf32(f, n) int f, n; { return(cbuf(f, n, 32)); }
+int cbuf33(f, n) int f, n; { return(cbuf(f, n, 33)); }
+int cbuf34(f, n) int f, n; { return(cbuf(f, n, 34)); }
+int cbuf35(f, n) int f, n; { return(cbuf(f, n, 35)); }
+int cbuf36(f, n) int f, n; { return(cbuf(f, n, 36)); }
+int cbuf37(f, n) int f, n; { return(cbuf(f, n, 37)); }
+int cbuf38(f, n) int f, n; { return(cbuf(f, n, 38)); }
+int cbuf39(f, n) int f, n; { return(cbuf(f, n, 39)); }
+int cbuf40(f, n) int f, n; { return(cbuf(f, n, 40)); }
+int cbuf41(f, n) int f, n; { return(cbuf(f, n, 41)); }
+int cbuf42(f, n) int f, n; { return(cbuf(f, n, 42)); }
+int cbuf43(f, n) int f, n; { return(cbuf(f, n, 43)); }
+int cbuf44(f, n) int f, n; { return(cbuf(f, n, 44)); }
+int cbuf45(f, n) int f, n; { return(cbuf(f, n, 45)); }
+int cbuf46(f, n) int f, n; { return(cbuf(f, n, 46)); }
+int cbuf47(f, n) int f, n; { return(cbuf(f, n, 47)); }
+int cbuf48(f, n) int f, n; { return(cbuf(f, n, 48)); }
+int cbuf49(f, n) int f, n; { return(cbuf(f, n, 49)); }
+int cbuf50(f, n) int f, n; { return(cbuf(f, n, 50)); }
+int cbuf51(f, n) int f, n; { return(cbuf(f, n, 51)); }
+int cbuf52(f, n) int f, n; { return(cbuf(f, n, 52)); }
+int cbuf53(f, n) int f, n; { return(cbuf(f, n, 53)); }
+int cbuf54(f, n) int f, n; { return(cbuf(f, n, 54)); }
+int cbuf55(f, n) int f, n; { return(cbuf(f, n, 55)); }
+int cbuf56(f, n) int f, n; { return(cbuf(f, n, 56)); }
+int cbuf57(f, n) int f, n; { return(cbuf(f, n, 57)); }
+int cbuf58(f, n) int f, n; { return(cbuf(f, n, 58)); }
+int cbuf59(f, n) int f, n; { return(cbuf(f, n, 59)); }
+int cbuf60(f, n) int f, n; { return(cbuf(f, n, 60)); }
+int cbuf61(f, n) int f, n; { return(cbuf(f, n, 61)); }
+int cbuf62(f, n) int f, n; { return(cbuf(f, n, 62)); }
+int cbuf63(f, n) int f, n; { return(cbuf(f, n, 63)); }
+int cbuf64(f, n) int f, n; { return(cbuf(f, n, 64)); }
+int cbuf65(f, n) int f, n; { return(cbuf(f, n, 65)); }
+int cbuf66(f, n) int f, n; { return(cbuf(f, n, 66)); }
+int cbuf67(f, n) int f, n; { return(cbuf(f, n, 67)); }
+int cbuf68(f, n) int f, n; { return(cbuf(f, n, 68)); }
+int cbuf69(f, n) int f, n; { return(cbuf(f, n, 69)); }
+int cbuf70(f, n) int f, n; { return(cbuf(f, n, 70)); }
+int cbuf71(f, n) int f, n; { return(cbuf(f, n, 71)); }
+int cbuf72(f, n) int f, n; { return(cbuf(f, n, 72)); }
+int cbuf73(f, n) int f, n; { return(cbuf(f, n, 73)); }
+int cbuf74(f, n) int f, n; { return(cbuf(f, n, 74)); }
+int cbuf75(f, n) int f, n; { return(cbuf(f, n, 75)); }
+int cbuf76(f, n) int f, n; { return(cbuf(f, n, 76)); }
+int cbuf77(f, n) int f, n; { return(cbuf(f, n, 77)); }
+int cbuf78(f, n) int f, n; { return(cbuf(f, n, 78)); }
+int cbuf79(f, n) int f, n; { return(cbuf(f, n, 79)); }
+int cbuf80(f, n) int f, n; { return(cbuf(f, n, 80)); }
+int cbuf81(f, n) int f, n; { return(cbuf(f, n, 81)); }
+int cbuf82(f, n) int f, n; { return(cbuf(f, n, 82)); }
+int cbuf83(f, n) int f, n; { return(cbuf(f, n, 83)); }
+int cbuf84(f, n) int f, n; { return(cbuf(f, n, 84)); }
+int cbuf85(f, n) int f, n; { return(cbuf(f, n, 85)); }
+int cbuf86(f, n) int f, n; { return(cbuf(f, n, 86)); }
+int cbuf87(f, n) int f, n; { return(cbuf(f, n, 87)); }
+int cbuf88(f, n) int f, n; { return(cbuf(f, n, 88)); }
+int cbuf89(f, n) int f, n; { return(cbuf(f, n, 89)); }
+int cbuf90(f, n) int f, n; { return(cbuf(f, n, 90)); }
+int cbuf91(f, n) int f, n; { return(cbuf(f, n, 91)); }
+int cbuf92(f, n) int f, n; { return(cbuf(f, n, 92)); }
+int cbuf93(f, n) int f, n; { return(cbuf(f, n, 93)); }
+int cbuf94(f, n) int f, n; { return(cbuf(f, n, 94)); }
+int cbuf95(f, n) int f, n; { return(cbuf(f, n, 95)); }
+int cbuf96(f, n) int f, n; { return(cbuf(f, n, 96)); }
+int cbuf97(f, n) int f, n; { return(cbuf(f, n, 97)); }
+int cbuf98(f, n) int f, n; { return(cbuf(f, n, 98)); }
+int cbuf99(f, n) int f, n; { return(cbuf(f, n, 99)); }

@@ -281,7 +281,7 @@ bktoshell()		/* no suspend, just make a new shell */
  * On VMS, it translates TT until it finds the terminal, then assigns
  * a channel to it and sets it raw. On CPM it is a no-op.
  */
-ttopen()
+int ttopen()
 {
 #if     AMIGA
 	char oline[NSTRING];
@@ -513,7 +513,7 @@ ttopen()
  * interpreter. On VMS it puts the terminal back in a reasonable state.
  * Another no-operation on CPM.
  */
-ttclose()
+int ttclose()
 {
 #if     AMIGA
 #if	LATTICE
@@ -588,7 +588,7 @@ ttclose()
  * On CPM terminal I/O unbuffered, so we just write the byte out. Ditto on
  * MS-DOS (use the very very raw console output routine).
  */
-ttputc(c)
+int ttputc(c)
 #if     AMIGA | (ST520 & MEGAMAX)
         char c;
 #else
@@ -649,7 +649,7 @@ amg_flush()
  * Flush terminal buffer. Does real work where the terminal output is buffered
  * up. A no-operation on systems where byte at a time terminal I/O is done.
  */
-ttflush()
+int ttflush()
 {
 #if     AMIGA
         amg_flush();

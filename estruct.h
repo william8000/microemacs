@@ -268,6 +268,9 @@
 #define	CONSTA	const
 #define	VOID	void
 #define	NOSHARE
+#ifndef UNUSED_ARG
+#define UNUSED_ARG(a) ((void)a)
+#endif
 #ifndef PP
 #ifndef M_LINT
 #define PP(x)	x		/* function prototype */
@@ -279,6 +282,10 @@
 #define	VOID	char
 #define NOSHARE
 #endif
+#endif
+
+#ifndef UNUSED_ARG
+#define UNUSED_ARG(a)
 #endif
 
 #ifndef PP

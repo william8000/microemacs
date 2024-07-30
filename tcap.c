@@ -10,6 +10,16 @@
 
 #if TERMCAP
 
+/* temporarily redefine curses identifiers that conflict with microemacs */
+#define WINDOW CURSES_WINDOW
+#define meta CURSES_meta
+
+#include <curses.h>
+#include <term.h>
+
+#undef WINDOW
+#undef meta
+
 #define	MARGIN	8
 #define	SCRSIZ	64
 #define	NPAUSE	10			/* # times thru update to pause */
@@ -139,7 +149,7 @@ char *code, **space;
 	return(v);
 }
 
-static tcapopen()
+static int tcapopen()
 
 {
         char *getenv();
@@ -301,7 +311,7 @@ static tcapopen()
 #endif
 }
 
-static tcapclose()
+static int tcapclose()
 {
 	if (isvt100)	{
 		ttsetwid(oldwidth);
@@ -315,18 +325,18 @@ static tcapclose()
 	ttclose();
 }
 
-static tcapkopen()
+static int tcapkopen()
 
 {
 	strcpy(sres, "NORMAL");
 }
 
-static tcapkclose()
+static int tcapkclose()
 
 {
 }
 
-static tcapmove(row, col)
+static int tcapmove(row, col)
 register int row, col;
 {
 	if (isvt100 && col == 0)
@@ -351,7 +361,7 @@ register int row, col;
 	phrow = row;
 }
 
-static tcapeol()
+static int tcapeol()
 {
 #if	COLOR
 	tcapfcol(gfcolor);
@@ -360,7 +370,7 @@ static tcapeol()
         putpad(CE);
 }
 
-static tcapeop()
+static int tcapeop()
 {
 #if	COLOR
 	tcapfcol(gfcolor);
@@ -370,7 +380,7 @@ static tcapeop()
 	phrow = 1000;
 }
 
-static tcaprev(state)	/* change reverse video status */
+static int tcaprev(state)	/* change reverse video status */
 
 int state;		/* FALSE = normal video, TRUE = reverse video */
 
@@ -381,11 +391,11 @@ int state;		/* FALSE = normal video, TRUE = reverse video */
 
 #if	COLOR
 	/* forground and background already set */
-	if (usedcolor) return;
+	if (usedcolor) return 0;
 #endif
-	if (state == tcaprv)	return;
+	if (state == tcaprv)	return 0;
 	tcaprv = state;
-	if (!revexist)	return;
+	if (!revexist)	return 0;
 	if (state) {
 		if (SO != NULL)
 			putpad(SO);
@@ -405,14 +415,14 @@ int state;		/* FALSE = normal video, TRUE = reverse video */
 	}
 }
 
-static tcapcres(res)	/* change screen resolution */
+static int tcapcres(res)	/* change screen resolution */
 char *res;
 
 {
 	return(TRUE);
 }
 
-spal(dummy)	/* change palette string */
+int spal(dummy)	/* change palette string */
 char *dummy;
 {
 	/* Does nothing here */
@@ -433,10 +443,10 @@ int n;
 	fastputc('0' + n%10);
 }
 
-static tcapfcol(color)	/* set the current output color */
+static int tcapfcol(color)	/* set the current output color */
 int color;
 {
-	if (!usedcolor || color == cfcolor)	return;
+	if (!usedcolor || color == cfcolor)	return 0;
 	fastputc(ESC);
 	fastputc('[');
 	tcapparm(color + 30);
@@ -444,10 +454,10 @@ int color;
 	cfcolor = color;
 }
 
-static tcapbcol(color)	/* set the current background color */
+static int tcapbcol(color)	/* set the current background color */
 int color;
 {
-	if (!usedcolor || color == cbcolor)	return;
+	if (!usedcolor || color == cbcolor)	return 0;
 	fastputc(ESC);
 	fastputc('[');
 	tcapparm(color + 40);
@@ -456,7 +466,7 @@ int color;
 }
 #endif
 
-static tcapbeep()
+static int tcapbeep()
 {
 	fastputc(BEL);
 }

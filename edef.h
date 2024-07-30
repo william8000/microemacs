@@ -25,7 +25,7 @@
 #define	CMP_VARIABLE	4
 #define	CMP_MODE	5
 
-/* some global fuction declarations */
+/* some global function declarations */
 
 #ifdef NO_PROTOTYPEx
 
@@ -137,6 +137,7 @@ extern int gettyp PP((char *tok));
 extern CONSTA char *getval PP((char *tok, char buf[NSTRING]));
 extern int stol PP((CONSTA char *val));
 extern char *mklower PP((char *str));
+extern int spal PP((char *pal));
 #if DEBUGM
 extern int dispvar PP((int f, int n));
 extern int desvars PP((int f, int n));
@@ -351,6 +352,11 @@ extern int getcmd PP((void));
 extern int getstring PP((CONSTA char *prompt, char *buf, int nbuf, int eolchar));
 extern VOID outstring PP((CONSTA char *s));
 
+	/* from isearch.c */
+
+extern int fisearch PP((int f, int n));
+extern int risearch PP((int f, int n));
+
 	/* from meline.c */
 
 extern LINE *lalloc PP((int used));
@@ -422,6 +428,11 @@ extern int backhunt PP((int f, int n));
 extern int me_eq PP((int bc, int pc));
 
 	/* from termio.c */
+
+extern int ttopen PP((void));
+extern int ttgetc PP((void));
+extern int ttflush PP((void));
+extern int ttclose PP((void));
 
 #if	VMSVT | TERMCAP
 extern VOID ttsetwid PP((int n));

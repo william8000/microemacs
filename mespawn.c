@@ -13,6 +13,10 @@
 #define	HAS_TIME	0
 #endif
 
+#if USG
+#include <unistd.h>
+#endif
+
 /*
 **  The following variable is set true while we spawn a sub-process.
 **  It is used by the SCS window routine interface to distinguish

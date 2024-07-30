@@ -69,6 +69,7 @@ static	int	cmd_reexecute = -1;	/* > 0 if re-executing command */
  */
  
 int risearch(f, n)
+int f, n;
 {
     LINE *curline;			/* Current line on entry	      */
     int  curoff;			/* Current offset on entry	      */
@@ -98,6 +99,7 @@ int risearch(f, n)
 /* Again, but for the forward direction */
 
 int fisearch(f, n)
+int f, n;
 {
     LINE *curline;			/* Current line on entry	      */
     int  curoff;			/* Current offset on entry	      */

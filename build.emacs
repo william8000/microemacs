@@ -363,6 +363,7 @@ export MEEXTRAFLAGS MEEXTRALIB
 if [ "$do_quiet" != yes ]
 then
 	echo "Building emacs with $MAKE $make_opts"
+	echo "Compiler: $CC"
 	echo "Compile flags: $MEEXTRAFLAGS"
 	echo "Link flags: $MEEXTRALIB"
 fi

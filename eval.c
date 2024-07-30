@@ -1275,6 +1275,7 @@ int n;		/* numeric arg (can overide prompted value) */
 */
 
 int desvars(f, n)
+int f, n;
 {
 	return(varlist(""));
 }

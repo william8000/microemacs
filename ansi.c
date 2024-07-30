@@ -288,7 +288,7 @@ int f,n;	/* default flag, numeric argument [unused] */
 }
 #endif
 #else
-ansihello()
+VOID ansihello PP((void))
 {
 }
 #endif
