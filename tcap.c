@@ -41,7 +41,7 @@ static VOID	tcapeol PP((void));
 static VOID	tcapeop PP((void));
 static VOID	tcapbeep PP((void));
 static VOID	tcaprev PP((int state));
-static int	tcapcres PP((char *res));
+static int	tcapcres PP((CONSTA char *res));
 static int	tcapopen PP((void));
 #if	COLOR
 static	VOID	tcapfcol PP((int color));
@@ -415,7 +415,7 @@ int state;		/* FALSE = normal video, TRUE = reverse video */
 }
 
 static int tcapcres(res)	/* change screen resolution */
-char *res;
+CONSTA char *res;
 
 {
 	UNUSED_ARG(res);

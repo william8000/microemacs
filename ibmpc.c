@@ -314,7 +314,7 @@ int state;	/* TRUE = reverse, FALSE = normal */
 
 ibmcres(res)	/* change screen resolution */
 
-char *res;	/* resolution to change to */
+CONSTA char *res;	/* resolution to change to */
 
 {
 	int i;		/* index */

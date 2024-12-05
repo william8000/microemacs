@@ -839,7 +839,7 @@ typedef struct  {
 	VOID	(*t_eeop) PP((void));	/* Erase to end of page.	*/
 	VOID	(*t_beep) PP((void));	/* Beep.			*/
 	VOID	(*t_rev) PP((int state));/* set reverse video state	*/
-	int	(*t_rez) PP((char *res)); /* change screen resolution	*/
+	int	(*t_rez) PP((CONSTA char *res)); /* change screen resolution	*/
 #if	COLOR
 	VOID	(*t_setfor) PP((int color));	/* set forground color	*/
 	VOID	(*t_setback) PP((int color));	/* set background color	*/

@@ -28,4 +28,4 @@ wemacs:		$(OFILES) emacs.o
 $(OFILES):	$(HFILES)
 
 clean:		
-		rm wemacs *.o *.a
+		rm -f wemacs *.o *.a

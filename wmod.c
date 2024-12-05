@@ -28,7 +28,7 @@ int module_emacs = 0;		/* help linking */
 extern int spawning;
 
 
-static int wmodopen(void), wmodclose(void), wmodkopen(void), wmodkclose(void), wmodgetc(void), wmodputc(int c), wmodflush(void), wmodcres(char *res);
+static int wmodopen(void), wmodclose(void), wmodkopen(void), wmodkclose(void), wmodgetc(void), wmodputc(int c), wmodflush(void), wmodcres(CONSTA char *res);
 static VOID wmodmove(int row, int col), wmodeol(void), wmodeop(void), wmodbeep(void), wmodrev(int state);
 #if	COLOR
 static VOID wmodfcol(int color), wmodbcol(int color);
@@ -393,7 +393,7 @@ int state;		/* FALSE = normal video, TRUE = reverse video */
 	win_set_color(w, cur_color);
 }
 
-static int wmodcres(char *res)	/* change screen resolution */
+static int wmodcres(CONSTA char *res)	/* change screen resolution */
 {
 	UNUSED_ARG(res);
 	return(TRUE);

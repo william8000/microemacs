@@ -19,12 +19,7 @@
 #define BEL     0x07                    /* BEL character.               */
 #define ESC     30                      /* DG10 ESC character.          */
 
-extern  int     ttopen();               /* Forward references.          */
-extern  int     ttgetc();
-extern  VOID    ttputc();
-extern  int     ttflush();
-extern  int     ttclose();
-extern	int	dg10kopen();
+extern	int	dg10kopen();               /* Forward references.          */
 extern	int	dg10kclose();
 extern  VOID    dg10move();
 extern  VOID    dg10eeol();
