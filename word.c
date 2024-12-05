@@ -24,6 +24,8 @@ int n;		/* numeric argument */
 	register int cnt;	/* size of word wrapped to next line */
 	register int c;		/* temporary character */
 
+	UNUSED_ARGS_FN;
+
 	/* backup from the <NL> 1 char */
 	if (!backchar(FALSE, 1))
 		return(FALSE);
@@ -117,6 +119,8 @@ int f, n;
 {
 	register int	c;
 
+	UNUSED_ARG(f);
+
 	if (curbp->b_mode&MDVIEW)	/* don't allow this command if	*/
 		return(rdonly());	/* we are in read only mode	*/
 	if (n < 0)
@@ -149,6 +153,8 @@ int lowerword(f, n)
 int f, n;
 {
 	register int	c;
+
+	UNUSED_ARG(f);
 
 	if (curbp->b_mode&MDVIEW)	/* don't allow this command if	*/
 		return(rdonly());	/* we are in read only mode	*/
@@ -183,6 +189,8 @@ int capword(f, n)
 int f, n;
 {
 	register int	c;
+
+	UNUSED_ARG(f);
 
 	if (curbp->b_mode&MDVIEW)	/* don't allow this command if	*/
 		return(rdonly());	/* we are in read only mode	*/
@@ -231,6 +239,8 @@ int f, n;
 	register int	doto;	/*	and row */
 	register int c;		/* temp char */
 	long size;		/* # of chars to delete */
+
+	UNUSED_ARG(f);
 
 	/* don't allow this command if we are in read only mode */
 	if (curbp->b_mode&MDVIEW)
@@ -322,6 +332,8 @@ int f, n;
 {
 	long size;
 
+	UNUSED_ARG(f);
+
 	/* don't allow this command if we are in read only mode */
 	if (curbp->b_mode&MDVIEW)
 		return(rdonly());
@@ -408,6 +420,8 @@ int f, n;	/* deFault flag and Numeric argument */
 	register LINE *eopline;		/* pointer to line just past EOP */
 	register int dotflag;		/* was the last char a period?	*/
 	char wbuf[NSTRING];		/* buffer for current word	*/
+
+	UNUSED_ARG(f);
 
 	if (curbp->b_mode&MDVIEW)	/* don't allow this command if	*/
 		return(rdonly());	/* we are in read only mode	*/
@@ -519,6 +533,8 @@ int n;	/* # of paras to delete */
 {
 	register int status;	/* returned status of functions */
 
+	UNUSED_ARG(f);
+
 	while (n--) {		/* for each paragraph to delete */
 
 		/* mark out the end and beginning of the para to delete */
@@ -564,6 +580,8 @@ int f, n;	/* ignored numeric arguments */
 	int avgch;		/* average number of chars/word */
 	int status;		/* status return code */
 	REGION region;		/* region to look at */
+
+	UNUSED_ARGS_FN;
 
 	/* make sure we have a region to count */
 	if ((status = getregion(&region)) != TRUE)

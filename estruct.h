@@ -288,6 +288,8 @@
 #define UNUSED_ARG(a)
 #endif
 
+#define UNUSED_ARGS_FN		UNUSED_ARG(f); UNUSED_ARG(n)
+
 #ifndef PP
 #define PP(x)	()		/* function prototype */
 #ifndef NO_PROTOTYPE
@@ -297,6 +299,8 @@
 
 #if defined(__STDC__) || defined(__ZTC__) || defined(__BORLANDC__) || defined(vax11c) || defined(m88k) || defined(_WIN32) || defined(__linux__)
 #include <stdlib.h>
+#else
+char *getenv();
 #endif
 
 #if defined(_MSC_VER) && (defined(_WINDOWS) || defined(_WIN32))
@@ -830,15 +834,15 @@ typedef struct  {
 	int	(*t_getchar) PP((void));/* Get character from keyboard. */
 	int	(*t_putchar) PP((int c));/* Put character to display.	*/
 	int	(*t_flush) PP((void));	/* Flush output buffers.	*/
-	int	(*t_move) PP((int row, int col)); /* Move the cursor, origin 0. */
-	int	(*t_eeol) PP((void));	/* Erase to end of line.	*/
-	int	(*t_eeop) PP((void));	/* Erase to end of page.	*/
-	int	(*t_beep) PP((void));	/* Beep.			*/
-	int	(*t_rev) PP((int state));/* set reverse video state	*/
+	VOID	(*t_move) PP((int row, int col)); /* Move the cursor, origin 0. */
+	VOID	(*t_eeol) PP((void));	/* Erase to end of line.	*/
+	VOID	(*t_eeop) PP((void));	/* Erase to end of page.	*/
+	VOID	(*t_beep) PP((void));	/* Beep.			*/
+	VOID	(*t_rev) PP((int state));/* set reverse video state	*/
 	int	(*t_rez) PP((char *res)); /* change screen resolution	*/
 #if	COLOR
-	int	(*t_setfor) PP((int color));	/* set forground color	*/
-	int	(*t_setback) PP((int color));	/* set background color	*/
+	VOID	(*t_setfor) PP((int color));	/* set forground color	*/
+	VOID	(*t_setback) PP((int color));	/* set background color	*/
 #endif
 }	TERM;
 

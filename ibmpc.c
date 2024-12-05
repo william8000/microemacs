@@ -106,17 +106,12 @@ static int egaexist = FALSE;		/* is an EGA card available?	*/
 static int vgaexist = FALSE;		/* is video graphics array available? */
 extern union REGS rg;			/* cpu register for use of DOS calls */
 
-extern  int     ttopen();               /* Forward references.          */
-extern  int     ttgetc();
-extern  int     ttputc();
-extern  int     ttflush();
-extern  int     ttclose();
-extern  int     ibmmove();
-extern  int     ibmeeol();
-extern  int     ibmeeop();
-extern  int     ibmbeep();
+extern  VOID    ibmmove();               /* Forward references.          */
+extern  VOID    ibmeeol();
+extern  VOID    ibmeeop();
+extern  VOID    ibmbeep();
 extern  int     ibmopen();
-extern	int	ibmrev();
+extern	VOID	ibmrev();
 extern	int	ibmcres();
 extern	int	ibmclose();
 extern	int	ibmputc();
@@ -124,8 +119,8 @@ extern	int	ibmkopen();
 extern	int	ibmkclose();
 
 #if	COLOR
-extern	int	ibmfcol();
-extern	int	ibmbcol();
+extern	VOID	ibmfcol();
+extern	VOID	ibmbcol();
 
 static int	cfcolor = -1;	/* current forground color */
 static int	cbcolor = -1;	/* current background color */
@@ -166,7 +161,7 @@ TERM FAR term = {
 };
 
 #if	COLOR
-ibmfcol(color)		/* set the current output color */
+VOID ibmfcol(color)		/* set the current output color */
 
 int color;	/* color to set */
 
@@ -174,7 +169,7 @@ int color;	/* color to set */
 	cfcolor = ctrans[color];
 }
 
-ibmbcol(color)		/* set the current background color */
+VOID ibmbcol(color)		/* set the current background color */
 
 int color;	/* color to set */
 
@@ -183,7 +178,7 @@ int color;	/* color to set */
 }
 #endif
 
-ibmmove(row, col)
+VOID ibmmove(row, col)
 {
 #if ZORDIS
 	disp_move(row, col);
@@ -197,7 +192,7 @@ ibmmove(row, col)
 #endif
 }
 
-ibmeeol()	/* erase to the end of the line */
+VOID ibmeeol()	/* erase to the end of the line */
 
 {
 #if ZORDIS
@@ -284,7 +279,7 @@ int ch;
 #endif
 }
 
-ibmeeop()
+VOID ibmeeop()
 {
 #if ZORDIS
 	disp_eeop();
@@ -309,7 +304,7 @@ ibmeeop()
 #endif
 }
 
-ibmrev(state)		/* change reverse video state */
+VOID ibmrev(state)		/* change reverse video state */
 
 int state;	/* TRUE = reverse, FALSE = normal */
 
@@ -339,7 +334,7 @@ char *dummy;
 	/* nothing here now..... */
 }
 
-ibmbeep()
+VOID ibmbeep()
 {
 #if	MWC86
 	putcnb(BEL);
@@ -873,7 +868,7 @@ int f,n;	/* default flag, numeric argument [unused] */
 }
 #endif
 #else
-ibmhello()
+VOID ibmhello()
 {
 }
 #endif

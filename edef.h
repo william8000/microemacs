@@ -25,7 +25,7 @@
 #define	CMP_VARIABLE	4
 #define	CMP_MODE	5
 
-/* some global function declarations */
+/*	External function declarations		*/
 
 #ifdef NO_PROTOTYPEx
 
@@ -51,29 +51,64 @@ extern LINE	*lalloc();	/* Allocate a line		*/
 
 	/* from basic.c */
 
-extern int backchar PP((int f, int n));
-extern int forwchar PP((int f, int n));
-extern int goeol PP((int f, int n));
-extern int backline PP((int f, int n));
-extern int forwline PP((int f, int n));
+extern int backchar PP((int f, int n));	/* Move backward by characters  */
+extern int forwchar PP((int f, int n));	/* Move forward by characters   */
+extern int gobol PP((int f, int n));	/* Move to start of line        */
+extern int goeol PP((int f, int n));	/* Move to end of line          */
+extern int backline PP((int f, int n));	/* Move backward by lines       */
+extern int forwline PP((int f, int n));	/* Move forward by lines        */
 extern int getgoal PP((LINE *dlp));
-extern int backpage PP((int f, int n));
-extern int forwpage PP((int f, int n));
-extern int gotoline PP((int f, int n));
+extern int backpage PP((int f, int n));	/* Move backward by pages       */
+extern int forwpage PP((int f, int n));	/* Move forward by pages        */
+extern int setmark PP((int f, int n));	/* Set mark                     */
+extern int remmark PP((int f, int n));	/* clear mark                   */
+extern int swapmark PP((int f, int n));	/* Swap "." and mark            */
+extern int gotoline PP((int f, int n));	/* go to a numbered line	*/
+extern int gobob PP((int f, int n));	/* Move to start of buffer      */
+extern int goeob PP((int f, int n));	/* Move to end of buffer        */
 #if	WORDPRO
-extern int gobop PP((int f, int n));
-extern int goeop PP((int f, int n));
+extern int gobop PP((int f, int n));	/* go to beginning/paragraph	*/
+extern int goeop PP((int f, int n));	/* go to end/paragraph		*/
+#endif
+#if	DECEDT
+extern int advbot PP((int f, int n));		/* goto top or bottom of buffer */
+extern int advchar PP((int f, int n));		/* advance character */
+extern int advhunt PP((int f, int n));		/* hunt */
+extern int advline PP((int f, int n));		/* advance line */
+extern int adveol PP((int f, int n));		/* advance end of line */
+extern int advpage PP((int f, int n));		/* advance page */
+extern int advsearch PP((int f, int n));	/* search */
+extern int advword PP((int f, int n));		/* advance word */
+extern int advadv PP((int f, int n));		/* set advance to go forward */
+extern int advback PP((int f, int n));		/* set advance to go backward */
+extern int nullcmd PP((int f, int n));		/* null enter command */
+extern int specins PP((int f, int n));		/* special insertion */
+extern int yankchar PP((int f, int n));		/* Undelete last deleted char */
+extern int caseregion PP((int f, int n));	/* change case */
+extern int regionwrite PP((int f, int n));	/* write a region to a file */
+extern int regionappend PP((int f, int n));	/* append a region to a file */
+extern int cutregion PP((int f, int n));	/* Kill region, remove mark */
+extern int apkillregion PP((int f, int n));	/* Kill region, add to kill buffer */
+extern int apcopyregion PP((int f, int n));	/* Append region to kill buffer */
+extern int octalins PP((int f, int n));		/* Octal insertion */
+extern int showslen PP((int f, int n));		/* Show string length */
+extern int delfline PP((int f, int n));		/* Delete forward line */
+extern int setovrwrt PP((int f, int n));	/* toggle overwrite mode */
+extern int scdnwind PP((int f, int n));		/* smooth scroll cursor down */
+extern int scupwind PP((int f, int n));		/* smooth scroll cursor up */
+extern int scnxpage PP((int f, int n));		/* smooth scroll next page */
+extern int scprpage PP((int f, int n));		/* smooth scroll previous page */
 #endif
 
 	/* from bind.c */
 
-extern int me_help PP((int f, int n));
-extern int deskey PP((int f, int n));
-extern int bindtokey PP((int f, int n));
-extern int unbindkey PP((int f, int n));
-extern int desbind PP((int f, int n));
+extern int me_help PP((int f, int n));		/* get the help file here	*/
+extern int deskey PP((int f, int n));		/* describe a key's binding	*/
+extern int bindtokey PP((int f, int n));	/* bind a function to a key	*/
+extern int unbindkey PP((int f, int n));	/* unbind a key's function	*/
+extern int desbind PP((int f, int n));		/* describe bindings		*/
 #if APROP
-extern int apro PP((int f, int n));
+extern int apro PP((int f, int n));		/* apropos fuction		*/
 extern int buildlist PP((int type, CONSTA char *mstring));
 #endif
 extern int startup PP((CONSTA char *sfname));
@@ -94,21 +129,22 @@ extern int strcompare PP((CONSTA char *a, CONSTA char *b, int len));
 	/* from buffer.c */
 
 extern BUFFER *getdefb PP((void));
-extern int usebuffer PP((int f, int n));
-extern int nextbuffer PP((int f, int n));
-extern int prevbuffer PP((int f, int n));
+extern int usebuffer PP((int f, int n));	/* Switch a window to a buffer  */
+extern int nextbuffer PP((int f, int n));	/* switch to the next buffer	*/
+extern int prevbuffer PP((int f, int n));	/* switch to the prev bufffer	*/
 extern int swbuffer PP((BUFFER *bp));
-extern int killbuffer PP((int f, int n));
-extern int PASCAL NEAR popbuffer PP((int f, int n));
+extern int killbuffer PP((int f, int n));	/* Make a buffer go away.       */
+extern int PASCAL NEAR popbuffer PP((int f, int n)); /* pop-up a buffer		*/
 extern int zotbuf PP((BUFFER *bp));
-extern int namebuffer PP((int f, int n));
-extern int listbuffers PP((int f, int n));
+extern int namebuffer PP((int f, int n));	/* rename the current buffer	*/
+extern int listbuffers PP((int f, int n));	/* Display list of buffers     */
+extern int reposition PP((int f, int n));	/* Reposition window            */
 extern int makelist PP((CONSTA char *name, int iflag));
 extern int addline PP((BUFFER *bp, CONSTA char *text));
 extern int anycb PP((void));
 extern BUFFER *bfind PP((CONSTA char *bname, int cflag, int bflag));
 extern int bclear PP((BUFFER *bp));
-extern int unmark PP((int f, int n));
+extern int unmark PP((int f, int n));		/* unmark current buffer	*/
 #if	BCOMPL
 extern int comp_test PP((char *name, int namelen, int *cpos, int *matchlen,
 		CONSTA char *testname, int exact));
@@ -117,7 +153,7 @@ extern int comp_test PP((char *name, int namelen, int *cpos, int *matchlen,
 	/* from crypt.c */
 
 #if CRYPT
-extern int me_setkey PP((int f, int n));
+extern int me_setkey PP((int f, int n));	/* set encryption key		*/
 extern VOID me_crypt PP((register char *bptr, register unsigned len));
 #endif
 
@@ -128,7 +164,7 @@ extern VOID varinit PP((void));
 extern VOID comp_variable PP((char *name, int *cpos, int *matchlen));
 #endif
 extern char *getkill PP((void));
-extern int setvar PP((int f, int n));
+extern int setvar PP((int f, int n));		/* set a variables value */
 extern VOID findvar PP((char *var, VDESC *vd, int size));
 extern int svar PP((VDESC *var, CONSTA char *value));
 extern int asc_int PP((CONSTA char *st));
@@ -139,27 +175,29 @@ extern int stol PP((CONSTA char *val));
 extern char *mklower PP((char *str));
 extern int spal PP((char *pal));
 #if DEBUGM
-extern int dispvar PP((int f, int n));
-extern int desvars PP((int f, int n));
+extern int dispvar PP((int f, int n));		/* display a variable */
+extern int desvars PP((int f, int n));		/* describe variables */
 extern int varlist PP((CONSTA char *mstring));
-extern int desfunc PP((int f, int n));
+extern int desfunc PP((int f, int n));		/* describe functions */
 #endif
 
 	/* from exec.c */
 
-extern int namedcmd PP((int f, int n));
-extern int execcmd PP((int f, int n));
+extern int namedcmd PP((int f, int n));		/* execute named command	*/
+extern int execcmd PP((int f, int n));		/* execute a command line	*/
 extern char *token PP((char *src, char *tok, int size));
 extern int macarg PP((char *tok));
 extern int nextarg PP((CONSTA char *prompt, char *buffer, int size, int terminator));
-extern int storemac PP((int f, int n));
-extern int storeproc PP((int f, int n));
-extern int execproc PP((int f, int n));
-extern int execbuf PP((int f, int n));
+#if	PROC
+extern int storemac PP((int f, int n));		/* store text for macro		*/
+extern int storeproc PP((int f, int n));	/* store names procedure */
+#endif
+extern int execproc PP((int f, int n));		/* execute procedure */
+extern int execbuf PP((int f, int n));		/* exec commands from a buffer	*/
 extern VOID makelit PP((char *s, int len));
-extern int execfile PP((int f, int n));
+extern int execfile PP((int f, int n));		/* exec commands from a file	*/
 extern int dofile PP((CONSTA char *name));
-extern int cbuf1 PP((int f, int n));
+extern int cbuf1 PP((int f, int n));		/* execute numbered comd buffer */
 extern int cbuf2 PP((int f, int n));
 extern int cbuf3 PP((int f, int n));
 extern int cbuf4 PP((int f, int n));
@@ -263,7 +301,7 @@ extern int cbuf99 PP((int f, int n));
 
 extern VOID vtinit PP((void));
 extern VOID vttidy PP((void));
-extern int upscreen PP((int f, int n));
+extern int upscreen PP((int f, int n));		/* force screen update		*/
 extern int update PP((int force));
 extern int PASCAL NEAR pop PP((BUFFER *popbufp));
 extern VOID upmode PP((void));
@@ -280,37 +318,36 @@ extern VOID mlputs PP((CONSTA char *s));
 
 	/* from file.c */
 
-extern int fileread PP((int f, int n));
-extern int insfile PP((int f, int n));
-extern int filefind PP((int f, int n));
+extern int fileread PP((int f, int n));	/* Get a file, read only        */
+extern int insfile PP((int f, int n));	/* insert a file		*/
+extern int filefind PP((int f, int n));	/* Get a file, read write       */
 #if DECEDT
-extern int filewfind PP((int f, int n));
-extern int filevfind PP((int f, int n));
-extern int bufffind PP((int f, int n));
-extern int filerevert PP((int f, int n));
+extern int filewfind PP((int f, int n));	/* Find file into other window */
+extern int filevfind PP((int f, int n));	/* View file into other window */
+extern int bufffind PP((int f, int n));		/* FInd buffer into other window */
+extern int filerevert PP((int f, int n));	/* Restore last saved version	*/
 #endif
-extern int viewfile PP((int f, int n));
+extern int viewfile PP((int f, int n));	/* find a file in view mode	*/
 #if CRYPT
 extern int resetkey PP((void));
 #endif
-extern int getfile PP((char *fname, int lockfl));
+extern int getfile PP((CONSTA char *fname, int lockfl));
 extern int readin PP((CONSTA char *fname, int lockfl, int recover));
 extern VOID makename PP((char *bname, CONSTA char *fname));
 extern VOID unqname PP((char *name));
-extern int filewrite PP((int f, int n));
-extern int PASCAL NEAR fileapp PP((int f, int n));
+extern int filewrite PP((int f, int n));	/* Write a file                 */
+extern int PASCAL NEAR fileapp PP((int f, int n));	/* Append a file		*/
 extern int filelist PP((char *mstring));
-extern int PASCAL NEAR showfiles PP((int f, int n));
-extern int filesave PP((int f, int n));
+extern int filesave PP((int f, int n));		/* Save current file            */
 extern int writeout PP((CONSTA char *fn, CONSTA char *mode));
-extern int filename PP((int f, int n));
+extern int filename PP((int f, int n));		/* Adjust file name             */
 #if ACMODE
-extern int acmode PP((int f, int n));
+extern int acmode PP((int f, int n));		/* set into C mode for .c and .h */
 #endif
 extern VOID makeasvname PP((char *tempname, char *fname));
-extern int filercover PP((int f, int n));
-extern int fileback PP((int f, int n));
-extern int filebkall PP((int f, int n));
+extern int filercover PP((int f, int n));	/* Get a saved file		*/
+extern int fileback PP((int f, int n));		/* Autosaves the file	*/
+extern int filebkall PP((int f, int n));	/* Autosave all files	*/
 
 	/* from fileio.c */
 
@@ -354,15 +391,17 @@ extern VOID outstring PP((CONSTA char *s));
 
 	/* from isearch.c */
 
-extern int fisearch PP((int f, int n));
-extern int risearch PP((int f, int n));
+#if	ISRCH
+extern int fisearch PP((int f, int n));		/* forward incremental search	*/
+extern int risearch PP((int f, int n));		/* reverse incremental search	*/
+#endif
 
 	/* from meline.c */
 
 extern LINE *lalloc PP((int used));
 extern VOID lfree PP((LINE *lp));
 extern VOID lchange PP((int flag));
-extern int insspace PP((int f, int n));
+extern int insspace PP((int f, int n));	/* insert a space forword	*/
 extern int linstr PP((char *instr));
 extern int linsert PP((int n, int c));
 extern int lnewline PP((void));
@@ -371,61 +410,121 @@ extern char *getctext PP((char *line, int maxlen));
 extern int putctext PP((CONSTA char *iline));
 extern VOID kdelete PP((void));
 extern int kinsert PP((int c));
-extern int yank PP((int f, int n));
+extern int yank PP((int f, int n));		/* Yank back from killbuffer.   */
 
 	/* from main.c */
 
-extern int meta PP((int f, int n));
-extern int cex PP((int f, int n));
+extern int meta PP((int f, int n));		/* meta prefix dummy function	*/
+extern int cex PP((int f, int n));		/* ^X prefix dummy function	*/
 #if DECEDT
-extern int special PP((int f, int n));
+extern int special PP((int f, int n));		/* special prefix dummy function */
 #endif
-extern int unarg PP((int f, int n));
+extern int unarg PP((int f, int n));		/* ^U repeat arg dummy function	*/
 extern int execute PP((int c, int f, int n));
-extern int quicksave PP((int f, int n));
-extern int quickexit PP((int f, int n));
-extern int quit PP((int f, int n));
-extern int ctlxlp PP((int f, int n));
-extern int ctlxrp PP((int f, int n));
-extern int ctlxe PP((int f, int n));
-extern int ctrlg PP((int f, int n));
+extern int quicksave PP((int f, int n));	/* save all modified files	*/
+extern int quickexit PP((int f, int n));	/* low keystroke style exit.    */
+extern int quit PP((int f, int n));		/* Quit                         */
+extern int ctlxlp PP((int f, int n));		/* Begin macro                  */
+extern int ctlxrp PP((int f, int n));		/* End macro                    */
+extern int ctlxe PP((int f, int n));		/* Execute macro                */
+extern int ctrlg PP((int f, int n));		/* Abort out of things          */
 extern int rdonly PP((void));
 extern int resterr PP((void));
-extern int nullproc PP((int f, int n));
+extern int nullproc PP((int f, int n));		/* does nothing... */
 extern char *bytecopy PP((char *dst, CONSTA char *src, int maxlen));
+
+	/* from menu.c */
+
+#if	MENUS
+extern int menu PP((int f, int n));		/* enter menu area */
+#endif
 
 	/* from random.c */
 
 extern int modelist PP((CONSTA char *mstring));
-extern int PASCAL NEAR showmodes PP((int f, int n));
 extern int PASCAL NEAR getlinenum PP((BUFFER *bp, LINE *sline));
-extern int forwdel PP((int f, int n));
-extern int backdel PP((int f, int n));
-extern int getccol PP((int bflg));
+extern int forwdel PP((int f, int n));		/* Forward delete               */
+extern int backdel PP((int f, int n));		/* Backward delete              */
+extern int getccol PP((int bflg));		/* Get current column           */
 extern int setccol PP((int pos));
 extern int getcline PP((void));
 extern int insbrace PP((int n, int c));
 extern int inspound PP((void));
 extern int fmatch PP((int ch));
-extern int killtext PP((int f, int n));
+extern int killtext PP((int f, int n));		/* Kill forward                 */
+extern int setfillcol PP((int f, int n));	/* Set fill column.             */
+extern int showcpos PP((int f, int n));		/* Show the cursor position     */
+extern int PASCAL NEAR showfiles PP((int f, int n)); /* Show files in a directory	*/
+extern int PASCAL NEAR showmodes PP((int f, int n)); /* Show files list of modes	*/
+extern int twiddle PP((int f, int n));		/* Twiddle characters           */
+extern int tab PP((int f, int n));		/* Insert tab                   */
+extern int newline PP((int f, int n));		/* Insert CR-LF                 */
+extern int indent PP((int f, int n));		/* Insert CR-LF, then indent    */
+extern int openline PP((int f, int n));		/* Open up a blank line         */
+extern int deblank PP((int f, int n));		/* Delete blank lines           */
+extern int quote PP((int f, int n));		/* Insert literal               */
+extern int me_setmode PP((int f, int n));	/* set an editor mode		*/
+extern int delmode PP((int f, int n));		/* delete a mode		*/
+extern int setgmode PP((int f, int n));		/* set a global mode		*/
+extern int delgmode PP((int f, int n));		/* delete a global mode		*/
+extern int writemsg PP((int f, int n));		/* write text on message line	*/
+extern int me_clrmes PP((int f, int n));	/* clear the message line	*/
+extern int istring PP((int f, int n));		/* insert string in text	*/
+#if	CFENCE
+extern int getfence PP((int f, int n));		/* move cursor to a matching fence */
+#endif
+#if	AEDIT
+extern int trim PP((int f, int n));		/* trim whitespace from end of line */
+extern int detab PP((int f, int n));		/* detab rest of line */
+extern int entab PP((int f, int n));		/* entab rest of line */
+#endif
+#if DISPSEVEN | DECEDT
+extern int me_compose PP((int f, int n));	/* Compose char			*/
+extern int me_unquotep PP((int f, int n));	/* Unquote char			*/
+extern int me_unprefix PP((int f, int n));	/* Unprefix char		*/
+extern int me_add_acute PP((int f, int n));	/* Add acute accent		*/
+extern int me_add_bar PP((int f, int n));	/* Add bar accent		*/
+extern int me_add_cedilla PP((int f, int n));	/* Add bar cedilla		*/
+extern int me_add_circ PP((int f, int n));	/* Add circumflex accent	*/
+extern int me_add_grave PP((int f, int n));	/* Add grave accent		*/
+extern int me_add_slash PP((int f, int n));	/* Add slash accent		*/
+extern int me_add_tilde PP((int f, int n));	/* Add tilde accent		*/
+extern int me_add_umlaut PP((int f, int n));	/* Add umlaut accent		*/
+extern int me_add_ring PP((int f, int n));	/* Add ring accent		*/
+#endif
 
 	/* from region.c */
 
-extern int killregion PP((int f, int n));
+extern int killregion PP((int f, int n));	/* Kill region.                 */
+extern int copyregion PP((int f, int n)); 	/* Copy region to kill buffer.  */
 extern int getregion PP((REGION *rp));
+extern int upperregion PP((int f, int n));	/* Upper case region.          */
+extern int lowerregion PP((int f, int n));	/* Lower case region.          */
+extern int narrow PP((int f, int n));		/* narrow to region */
+extern int widen PP((int f, int n));		/* widen from narrowed region */
 
 	/* from search.c */
 
 extern VOID setjtable PP((void));
 extern VOID mcclear PP((void));
-extern int scanner PP((char *patrn, int direct, int beg_or_end));
+extern int scanner PP((char *patrn, int direct, int beg_or_end));	/* Handy search routine */
 extern VOID rvstrcpy PP((char *rvstr, char *str));
 extern int expandp PP((char *srcstr, char *deststr, int maxlength));
-extern int forwsearch PP((int f, int n));
-extern int backsearch PP((int f, int n));
-extern int forwhunt PP((int f, int n));
-extern int backhunt PP((int f, int n));
-extern int me_eq PP((int bc, int pc));
+extern int forwsearch PP((int f, int n));	/* Search forward               */
+extern int backsearch PP((int f, int n));	/* Search backwards             */
+extern int forwhunt PP((int f, int n));		/* hunt forward for next match	*/
+extern int backhunt PP((int f, int n));		/* hunt backwards for next match*/
+extern int me_eq PP((int bc, int pc));		/* Compare chars, match case	*/
+extern int sreplace PP((int f, int n));		/* search and replace		*/
+extern int qreplace PP((int f, int n));		/* search and replace w/query	*/
+
+	/* from spawn.c */
+
+extern int spawncli PP((int f, int n));		/* Run CLI in a subjob.         */
+extern int spawncmd PP((int f, int n));		/* Run a command in a subjob.   */
+extern int pipecmd PP((int f, int n));		/* pipe command into buffer	*/
+extern int me_filter PP((int f, int n));	/* filter buffer through dos	*/
+extern int filtnew PP((int f, int n));		/* filter buffer into new buffer*/
 
 	/* from termio.c */
 
@@ -433,6 +532,11 @@ extern int ttopen PP((void));
 extern int ttgetc PP((void));
 extern int ttflush PP((void));
 extern int ttclose PP((void));
+#if     AMIGA | (ST520 & MEGAMAX)
+extern int ttputc PP((char c));
+#else
+extern int ttputc PP((int c));
+#endif
 
 #if	VMSVT | TERMCAP
 extern VOID ttsetwid PP((int n));
@@ -444,29 +548,58 @@ extern int typahead PP((void));
 #if	TERMCAP
 extern VOID getwinsize PP((short *ncols, short *nrows));
 #endif
+#if	BSD | V7 | USG | VMS
+extern int bktoshell PP((int f, int n));	/* suspend emacs to parent shell*/
+#endif
+
+#if	FLABEL
+extern int fnclabel PP((int f, int n));	/* set function key label	*/
+#endif
 
 	/* from window.c */
 
 extern int getwpos PP((void));
 extern int PASCAL NEAR getcwnum PP((void));
 extern int PASCAL NEAR gettwnum PP((void));
-extern int newsize PP((int f, int n));
-extern int newwidth PP((int f, int n));
-extern int resize PP((int f, int n));
-extern int scdnwind PP((int f, int n));
-extern int scupwind PP((int f, int n));
-extern int splitwind PP((int f, int n));
+extern int newsize PP((int f, int n));		/* change the current screen size */
+extern int newwidth PP((int f, int n));		/* change the current screen width */
+extern int resize PP((int f, int n));		/* resize current window	*/
+extern int splitwind PP((int f, int n));	/* Split current window         */
 extern int onlywind PP((int f, int n));
-extern int mvdnwind PP((int f, int n));
-extern int mvupwind PP((int f, int n));
-extern int shrinkwind PP((int f, int n));
-extern int nextwind PP((int f, int n));
+extern int mvdnwind PP((int f, int n));		/* Move window down             */
+extern int mvupwind PP((int f, int n));		/* Move window up               */
+extern int enlargewind PP((int f, int n));	/* Enlarge display window.     */
+extern int shrinkwind PP((int f, int n));	/* Shrink window.               */
+extern int nextwind PP((int f, int n));		/* Move to the next window      */
+extern int prevwind PP((int f, int n));		/* Move to the previous window  */
+extern int delwind PP((int f, int n));		/* delete the current window	*/
+extern int me_refresh PP((int f, int n));	/* Refresh the screen           */
+extern int scrupnxt PP((int f, int n));		/* scroll next window back	*/
+extern int scrdwnxt PP((int f, int n));		/* scroll next window down	*/
+extern int savewnd PP((int f, int n));		/* save current window		*/
+extern int restwnd PP((int f, int n));		/* restore current window	*/
+extern int wpopup PP((BUFFER *popbufp));	/* Pop up window creation	*/
+#if	AEDIT
+extern int scrlforw PP((int f, int n));		/* scroll forward */
+extern int scrlback PP((int f, int n));		/* scroll backward */
+#endif
 
 	/* from word.c */
 
 extern int inword PP((void));
-extern int forwword PP((int f, int n));
-extern int backword PP((int f, int n));
+extern int forwword PP((int f, int n));		/* Advance by words             */
+extern int backword PP((int f, int n));		/* Backup by words              */
+extern int upperword PP((int f, int n));	/* Upper case word.             */
+extern int lowerword PP((int f, int n));	/* Lower case word.             */
+extern int capword PP((int f, int n));		/* Initial capitalize word.     */
+extern int delfword PP((int f, int n));		/* Delete forward word.         */
+extern int delbword PP((int f, int n));		/* Delete backward word.        */
+extern int wrapword PP((int f, int n));		/* wordwrap function		*/
+#if	WORDPRO
+extern int fillpara PP((int f, int n));		/* fill current paragraph	*/
+extern int killpara PP((int f, int n));		/* kill the current paragraph	*/
+extern int wordcount PP((int f, int n));	/* count words in region	*/
+#endif
 
 #endif
 
@@ -492,8 +625,6 @@ extern char *strncpy();
 #endif
 #endif
 #endif
-
-extern int	wpopup();	/* Pop up window creation	*/
 
 #ifdef	maindef
 

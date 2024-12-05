@@ -95,7 +95,7 @@ int *color;
 {
 	int i, len;
 
-	len = strlen(name);
+	len = (int) strlen(name);
 
 	for(i = 0; i < NCOLORS; i++) {
 		if (strcompare(name, cname[i], len) == 0) {
@@ -175,9 +175,6 @@ char *fname;		/* name of function to evaluate */
 	char arg2[NSTRING];		/* value of second argument */
 	char arg3[NSTRING];		/* value of third argument */
 	static char FAR result[2 * NSTRING];	/* string result */
-#if	ENVFUNC
-	char *getenv();
-#endif
 
 	arg1[0] = arg2[0] = arg3[0] = '\0';
 
@@ -220,15 +217,15 @@ char *fname;		/* name of function to evaluate */
 		case UFNEG:	return(me_itoa(-asc_int(arg1)));
 		case UFCAT:	bytecopy(result, arg1, NSTRING-1);
 				bytecopy(&result[strlen(result)], arg2,
-					NSTRING-1-strlen(result));
+					NSTRING-1-(int)strlen(result));
 				return(result);
 		case UFLEFT:	return(bytecopy(result, arg1, asc_int(arg2)));
 		case UFRIGHT:	arg = asc_int(arg2);
-				if (arg > (int)strlen(arg1)) arg = strlen(arg1);
+				if (arg > (int)strlen(arg1)) arg = (int) strlen(arg1);
 				return(strcpy(result,
 					&arg1[strlen(arg1)-arg]));
 		case UFMID:	arg = asc_int(arg2);
-				if (arg > (int)strlen(arg1)) arg = strlen(arg1);
+				if (arg > (int)strlen(arg1)) arg = (int) strlen(arg1);
 				return(bytecopy(result, &arg1[arg-1],
 					asc_int(arg3)));
 		case UFNOT:	return(ltos(stol(arg1) == FALSE));
@@ -243,7 +240,7 @@ char *fname;		/* name of function to evaluate */
 					NSTRING-1));
 		case UFAND:	return(ltos(stol(arg1) && stol(arg2)));
 		case UFOR:	return(ltos(stol(arg1) || stol(arg2)));
-		case UFLENGTH:	return(me_itoa(strlen(arg1)));
+		case UFLENGTH:	return(me_itoa((int)strlen(arg1)));
 		case UFUPPER:	return(mkupper(arg1));
 		case UFLOWER:	return(mklower(arg1));
 		case UFTRUTH:	return(ltos(asc_int(arg1) == 42));
@@ -272,6 +269,7 @@ char *fname;		/* name of function to evaluate */
 		case UFBNOT:	return(int_asc(~asc_int(arg1)));
 		case UFISNUM:	return(ltos(is_num(arg1)));
 		case UFEXIST:	return(ltos(fexist(arg1)));
+		default:	break;
 	}
 
 	exit(-11);	/* never should get here */
@@ -310,7 +308,7 @@ char *buf;	/* buffer to place list of characters */
 
 	/* if we are defaulting to a standard word char list... */
 	if (wlflag == FALSE)
-		return("");
+		return((char *)"");
 
 	/* build the string of characters in the return buffer */
 	sp = buf;
@@ -474,6 +472,7 @@ CONSTA char *vname;		/* name of environment variable to retrieve */
 #else
 		case EVDISPSEVEN: return(ltos(0));
 #endif
+		default: break;
 	}
 	return("");	/* again, we should never get here */
 }
@@ -641,6 +640,9 @@ fvar:	vtype = -1;
 				bytecopy(var, fixnull(getval(var,buf)), size);
 				goto fvar;
 			}
+			break;
+		default:
+			break;
 	}
 
 	/* return the results */
@@ -855,7 +857,10 @@ CONSTA char *value;	/* value to set to */
 				if (c != dispseven) upwind();
 #endif
 				break;
+		default: break;
 		}
+		break;
+	default:
 		break;
 	}
 	return(status);
@@ -1057,6 +1062,7 @@ char buf[NSTRING];	/* string buffer for some returns */
 		case TKLIT:	return(tok);
 		case TKSTR:	return(tok+1);
 		case TKCMD:	return(tok);
+		default:	break;
 	}
 	return "";
 }
@@ -1066,6 +1072,7 @@ static int gtlbl(tok)	/* find the line number of the given label */
 char *tok;	/* label name to find */
 
 {
+	UNUSED_ARG(tok);
 	return(1);
 }
 
@@ -1233,6 +1240,8 @@ int n;		/* numeric arg (can overide prompted value) */
 	char var[NVSIZE+1];	/* name of variable to fetch */
 	char buf[NSTRING];	/* buffer for getval */
 
+	UNUSED_ARGS_FN;
+
 	/* first get the variable to display.. */
 	if (clexec == FALSE) {
 		status = getvarname("Variable to display: ", var);
@@ -1277,6 +1286,7 @@ int n;		/* numeric arg (can overide prompted value) */
 int desvars(f, n)
 int f, n;
 {
+	UNUSED_ARGS_FN;
 	return(varlist(""));
 }
 
@@ -1288,7 +1298,7 @@ CONSTA char *mstring;
 	char outseq[NSTRING+NVSIZE+20];	/* output buffer for keystroke sequence */
 	int mlen, len;
 
-	mlen = strlen(mstring);
+	mlen = (int) strlen(mstring);
 
 	/* and get a buffer for it */
 	varbuf = bfind("Variable list", TRUE, 0);
@@ -1308,7 +1318,7 @@ CONSTA char *mstring;
 		strcat(outseq, envars[uindex]);
 
 		if (mlen > 0) {
-			len = strlen(outseq);
+			len = (int) strlen(outseq);
 			if (len > mlen) len = mlen;
 			if (strncmp(mstring, outseq, len) != 0)
 				continue;
@@ -1341,7 +1351,7 @@ CONSTA char *mstring;
 		strcat(outseq, uv[uindex].u_name);
 
 		if (mlen > 0) {
-			len = strlen(outseq);
+			len = (int) strlen(outseq);
 			if (len > mlen) len = mlen;
 			if (strncmp(mstring, outseq, len) != 0)
 				continue;
@@ -1378,6 +1388,8 @@ int f, n;
 	register BUFFER *fncbuf; /* buffer to put binding list into */
 	register int uindex;	/* index into funcs table */
 	char outseq[80];	/* output buffer for keystroke sequence */
+
+	UNUSED_ARGS_FN;
 
 	/* get a buffer for it */
 	fncbuf = bfind("Function list", TRUE, 0);

@@ -824,6 +824,8 @@ NOSHARE int termflag;		/* f: bit 0: (1) keep terminal in normal mode */
 				/* c: bit 3: (8) disable color */
 				/* n: bit 4: (16) use tcap nulls */
 
+extern CONST char *pathname[];	/* startup file path/name array */
+
 static VOID edinit PP((CONSTA char *bname));
 
 #if	CALLABLE
@@ -953,7 +955,6 @@ char    *argv[];
 	int cryptflg;			/* encrypting on the way in? */
 	char ekey[NPAT];		/* startup encryption key */
 #endif
-	extern CONST char *pathname[];	/* startup file path/name array */
 
 	/* expand wildcards */
 	expandargs(&argc, &argv);
@@ -1326,6 +1327,7 @@ int f, n;
 int unarg(f, n)		/* dummy function for binding to universal-argument */
 int f, n;
 {
+	UNUSED_ARGS_FN;
 	return(TRUE);
 }
 
@@ -1525,6 +1527,8 @@ int f, n;
 {
         register int    s;
 
+        UNUSED_ARG(n);
+
         if (f != FALSE                          /* Argument forces it.  */
         || anycb() == FALSE                     /* All buffers clean.   */
 						/* User says it's OK.   */
@@ -1558,6 +1562,7 @@ int f, n;
 int ctlxlp(f, n)
 int f, n;
 {
+	UNUSED_ARGS_FN;
         if (kbdmode != STOP) {
                 mlwrite("%%Macro already active");
                 return(FALSE);
@@ -1576,6 +1581,8 @@ int f, n;
 int ctlxrp(f, n)
 int f, n;
 {
+        UNUSED_ARGS_FN;
+
         if (kbdmode == STOP) {
                 mlwrite("%%Macro not active");
                 return(FALSE);
@@ -1595,6 +1602,7 @@ int f, n;
 int ctlxe(f, n)
 int f, n;
 {
+        UNUSED_ARG(f);
         if (kbdmode != STOP) {
                 mlwrite("%%Macro already active");
                 return(FALSE);
@@ -1615,6 +1623,7 @@ int f, n;
 int ctrlg(f, n)
 int f, n;
 {
+	UNUSED_ARGS_FN;
         TTbeep();
 	kbdmode = STOP;
 	mlwrite("[Aborted]");
@@ -1644,6 +1653,7 @@ int nullproc(f, n)	/* user function that does NOTHING */
 int f, n;
 
 {
+	UNUSED_ARGS_FN;
 	return(TRUE);
 }
 

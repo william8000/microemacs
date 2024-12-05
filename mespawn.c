@@ -77,8 +77,10 @@ int f, n;
 
 #if     V7 | USG | BSD
         register char *cp;
-        char    *getenv();
+        int i;
 #endif
+
+	UNUSED_ARGS_FN;
 
 	/* don't allow this command if restricted */
 	if (restflag)
@@ -139,13 +141,14 @@ int f, n;
         spawning = TRUE;
         TTclose();                              /* stty to old settings */
         if ((cp = getenv("SHELL")) != NULL && *cp != '\0')
-                system(cp);
+                i = system(cp);
         else
 #if	BSD
-                system("exec /bin/csh");
+                i = system("exec /bin/csh");
 #else
-                system("exec /bin/sh");
+                i = system("exec /bin/sh");
 #endif
+        UNUSED_ARG(i);
         sgarbf = TRUE;
 #if defined(__MINGW32__)
         /* sleep not present */
@@ -176,6 +179,10 @@ int f, n;
         register int    s;
         char            line[NLINE];
 
+#if     V7 | USG | BSD
+        int i;
+#endif
+
 #if	ST520 & MEGAMAX
 	int i,j,k;
 	char *sptr,*tptr;
@@ -184,6 +191,8 @@ int f, n;
 #if     AMIGA
         long newcli;
 #endif
+
+	UNUSED_ARGS_FN;
 
 	/* don't allow this command if restricted */
 	if (restflag)
@@ -317,7 +326,8 @@ int f, n;
         TTflush();
         spawning = TRUE;
         TTclose();                              /* stty to old modes    */
-        system(line);
+        i = system(line);
+        UNUSED_ARG(i);
         TTopen();
         spawning = FALSE;
 	/* if we are interactive, pause here */
@@ -344,6 +354,9 @@ int f, n;
 	register BUFFER *bp;	/* pointer to buffer to zot */
         char	line[NLINE];	/* command line send to shell */
 
+#if     V7 | USG | BSD
+        int i;
+#endif
 #if	AMIGA
 	static char filnam[] = "ram:command";
         long newcli;
@@ -364,10 +377,11 @@ int f, n;
 
 #if	MSDOS
 	char *tmp;
-	char *getenv();
 	FILE *fp;
 	FILE *fopen();
 #endif
+
+	UNUSED_ARGS_FN;
 
 	/* don't allow this command if restricted */
 	if (restflag)
@@ -449,7 +463,8 @@ int f, n;
 	if (n == 1)	TTclose();		/* stty to old modes    */
 	strcat(line,">");
 	strcat(line,filnam);
-        system(line);
+        i = system(line);
+        UNUSED_ARG(i);
         if (n == 1) {
 		TTopen();
 		TTflush();
@@ -509,6 +524,9 @@ CONSTA char *prompt;
         char line[NLINE];	/* command line send to shell */
 	char tmpnam[NFILEN];	/* place to store real file name */
 
+#if     V7 | USG | BSD
+	int i;
+#endif
 #if	AMIGA
 	static char filnam1[] = "ram:fltinp";
 	static char filnam2[] = "ram:fltout";
@@ -526,6 +544,8 @@ CONSTA char *prompt;
 #endif
 #endif
 #endif
+
+	UNUSED_ARGS_FN;
 
 	/* don't allow this command if restricted */
 	if (restflag)
@@ -590,7 +610,8 @@ CONSTA char *prompt;
         spawning = TRUE;
         if (n == 1)	TTclose();		/* stty to old modes    */
 	strcat(line," <fltinp >fltout");
-        system(line);
+        i = system(line);
+        UNUSED_ARG(i);
 	if (n == 1) {
 		TTopen();
 		TTflush();
@@ -664,7 +685,7 @@ done:
  * filter a buffer through an external DOS program
  * Bound to ^X #
  */
-int filter(f, n)
+int me_filter(f, n)
 int f, n;
 {
 	return( filtcom(f, n, TRUE, "#") );
@@ -777,7 +798,6 @@ int system(cmd)
 char *cmd;	/*  Incoming command line to execute  */
 
 {
-	char *getenv();
 	static char *swchar = "/C";	/*  Execution switch  */
 	union REGS inregs;	/*  parameters for dos call  */
 	union REGS outregs;	/*  Return results from dos call  */

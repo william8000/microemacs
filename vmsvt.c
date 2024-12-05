@@ -28,9 +28,8 @@
 /* #define TT$_UNKNOWN	0x00 */		/* Unknown terminal		*/
 
 /** Forward references **/
-int vmsopen(), vmsclose(), vmskopen(), vmskclose(), ttgetc(), ttputc();
-int ttflush(), vmsmove(), vmseeol(), vmseeop(), vmsbeep(), vmsrev();
-int vmscres();
+int vmsopen(), vmsclose(), vmskopen(), vmskclose(), vmscres();
+VOID vmsmove(), vmseeol(), vmseeop(), vmsbeep(), vmsrev();
 NOSHARE extern int eolexist, revexist, termflag;
 NOSHARE extern char sres[];
 
@@ -132,7 +131,7 @@ int i;
  *
  *  Nothing returned
  ***/
-vmsmove(row, col)
+VOID vmsmove(row, col)
 int row;				/* Row position			*/
 int col;				/* Column position		*/
 {
@@ -191,7 +190,7 @@ int col;				/* Column position		*/
  *
  *  Nothing returned
  ***/
-vmsrev(status)
+VOID vmsrev(status)
 int status;				/* TRUE if setting reverse	*/
 {
 #if	COLOR
@@ -238,7 +237,7 @@ register int n;
  *
  *  Nothing returned
  ***/
-vmsfcol(color)
+VOID vmsfcol(color)
 int color;
 {
 	if (!usedcolor || color == cfcolor)	return;
@@ -254,7 +253,7 @@ int color;
  *
  *  Nothing returned
  ***/
-vmsbcol(color)
+VOID vmsbcol(color)
 int color;
 {
 	if (!usedcolor || color == cbcolor)	return;
@@ -271,7 +270,7 @@ int color;
  *
  *  Nothing returned
  ***/
-vmseeol()
+VOID vmseeol()
 {
 #if	COLOR
 	vmsfcol(gfcolor);
@@ -286,7 +285,7 @@ vmseeol()
  *
  *  Nothing returned
  ***/
-vmseeop()
+VOID vmseeop()
 {
 #if	COLOR
 	vmsfcol(gfcolor);
@@ -302,7 +301,7 @@ vmseeop()
  *
  *  Nothing returned
  ***/
-vmsbeep()
+VOID vmsbeep()
 {
 	fastputc('\007');
 }
@@ -656,7 +655,7 @@ int (*fileio)(), (*workio)(), (*xlate)();
  *
  *  Nothing returned
  ***/
-hellovms()
+VOID hellovms()
 {
 }
 

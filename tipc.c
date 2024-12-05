@@ -34,24 +34,19 @@
 #define WHITE   7+CHAR_ENABLE           /* TI attribute for White       */
 
 
-extern  int     ttopen();               /* Forward references.          */
-extern  int     ttgetc();
-extern  int     ttputc();
-extern  int     ttflush();
-extern  int     ttclose();
-extern  int     timove();
-extern  int     tieeol();
-extern  int     tieeop();
-extern  int     tibeep();
+extern  VOID    timove();               /* Forward references.          */
+extern  VOID    tieeol();
+extern  VOID    tieeop();
+extern  VOID    tibeep();
 extern  int     tiopen();
-extern  int     tirev();
+extern  VOID    tirev();
 extern	int	ticres();
 extern  int     ticlose();
 extern  int     tiputc();
 
 #if     COLOR
-extern  int     tifcol();
-extern  int     tibcol();
+extern  VOID    tifcol();
+extern  VOID    tibcol();
 
 int     cfcolor = -1;           /* current forground color */
 int     cbcolor = -1;           /* current background color */
@@ -99,7 +94,7 @@ int attr;
         int86( 0x49, &rg, &rg );
 }
 
-tifcol(color)           /* set the current output color */
+VOID tifcol(color)           /* set the current output color */
 
 int color;      /* color to set */
 
@@ -108,7 +103,7 @@ int color;      /* color to set */
         setatt ( cfcolor );
 }
 
-tibcol(color)           /* set the current background color */
+VOID tibcol(color)           /* set the current background color */
 
 int color;      /* color to set */
 
@@ -117,7 +112,7 @@ int color;      /* color to set */
 }
 #endif
 
-timove(row, col)
+VOID timove(row, col)
 {
         rg.h.ah = 2;            /* set cursor position function code */
         rg.h.dh = col;
@@ -125,7 +120,7 @@ timove(row, col)
         int86(0x49, &rg, &rg);
 }
 
-tieeol()        /* erase to the end of the line */
+VOID tieeol()        /* erase to the end of the line */
 
 {
         int ccol;       /* current column cursor lives */
@@ -156,14 +151,14 @@ int ch;
         int86(0x49, &rg, &rg);
 }
 
-tieeop()                        /* Actually a clear screen */
+VOID tieeop()                        /* Actually a clear screen */
 {
 
         rg.h.ah = 0x13;         /* Clear Text Screen and Home Cursor */
         int86(0x49, &rg, &rg);
 }
 
-tirev(state)            /* change reverse video state */
+VOID tirev(state)            /* change reverse video state */
 
 int state;      /* TRUE = reverse, FALSE = normal */
 
@@ -183,7 +178,7 @@ spal()		/* change palette string */
 	/*	Does nothing here	*/
 }
 
-tibeep()
+VOID tibeep()
 {
         bdos(6, BEL, 0);
 }
@@ -205,7 +200,7 @@ ticlose()
         ttclose();
 }
 #else
-tihello()
+VOID tihello()
 {
 }
 #endif

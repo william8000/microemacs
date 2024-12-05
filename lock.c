@@ -158,7 +158,7 @@ char *errstr;		/* lock error string to print out */
 }
 #endif
 #else
-lckhello()	/* dummy function */
+VOID lckhello()	/* dummy function */
 {
 }
 #endif

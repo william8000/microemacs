@@ -157,7 +157,8 @@ NOSHARE extern int termflag;
 
 #if	VMS
 
-bktoshell()		/* suspend MicroEMACS and wait to wake up */
+bktoshell(f, n)		/* suspend MicroEMACS and wait to wake up */
+int f, n;
 {
 	int err, code, mypid, ownerpid;
 
@@ -197,7 +198,7 @@ bktoshell()		/* suspend MicroEMACS and wait to wake up */
 #if USG || DARWIN
 #define	BKHANDLER(sig,name,is_fatal) \
 	static VOID name(signum) int signum; \
-	{ signal(sig, name); filebkall(FALSE, 1); \
+	{ UNUSED_ARG(signum); signal(sig, name); filebkall(FALSE, 1); \
 	if (is_fatal) { vttidy(); exit(1); } }
 #else
 #define	BKHANDLER(sig,name,is_fatal) \
@@ -244,8 +245,10 @@ BKHANDLER(SIGUSR2, sigusr2handler, FALSE)
 
 #ifdef	SIGTSTP
 
-int bktoshell()		/* suspend MicroEMACS and wait to wake up */
+int bktoshell(f, n)		/* suspend MicroEMACS and wait to wake up */
+int f, n;
 {
+	UNUSED_ARGS_FN;
 	vttidy();
 	kill(getpid(), SIGTSTP);
 	return(TRUE);
@@ -258,6 +261,7 @@ int sig;
 static rtfrmshell()
 #endif
 {
+	UNUSED_ARG(sig);
 	TTopen();
 	curwp->w_flag = WFHARD;
 	sgarbf = TRUE;
@@ -268,8 +272,10 @@ static rtfrmshell()
 
 #else
 
-bktoshell()		/* no suspend, just make a new shell */
+bktoshell(f, n)		/* no suspend, just make a new shell */
+int f, n;
 {
+	UNUSED_ARGS_FN;
 	return( spawncli(FALSE, 1) );
 }
 
@@ -506,6 +512,8 @@ int ttopen()
 	   of the cursor					*/
 	ttrow = 999;
 	ttcol = 999;
+
+	return TRUE;
 }
 
 /*
@@ -580,6 +588,8 @@ int ttclose()
 	ioctl(0, TIOCSETC, &otchars);	/* Place old character into K */
 #endif	/* !USETERMIOS */
 #endif	/* V7 | BSD */
+
+	return TRUE;
 }
 
 /*
@@ -631,7 +641,7 @@ int ttputc(c)
 
 
 #if     (V7 | USG | BSD | DECUSC) || (defined(_MSC_VER) && defined(_WIN32))
-        putc(c, stdout);
+        return putc(c, stdout);
 #endif
 
 }
@@ -683,6 +693,8 @@ int ttflush()
 #if     V7 | USG | BSD | DECUSC
         fflush(stdout);
 #endif
+
+        return TRUE;
 }
 
 /*

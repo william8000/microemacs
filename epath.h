@@ -99,6 +99,6 @@ CONST char *pathname[] =
 };
 #endif
 
-#define	NPNAMES	(sizeof(pathname)/sizeof(char *))
+#define	NPNAMES	((int)(sizeof(pathname)/sizeof(char *)))
 
 #endif

@@ -97,7 +97,7 @@ static CONST char FAR *envars[] = {
 	"dosync"                /* sync the filesystem when saving */
 };
 
-#define	NEVARS	sizeof(envars) / sizeof(char *)
+#define	NEVARS	((int)(sizeof(envars) / sizeof(char *)))
 
 /* 	and its preprocesor definitions		*/
 
@@ -224,7 +224,7 @@ static UFUNC FAR funcs[] = {
 	{ "isn", MONAMIC }	/* is the arg a number? */
 };
 
-#define	NFUNCS	sizeof(funcs) / sizeof(UFUNC)
+#define	NFUNCS	((int)(sizeof(funcs) / sizeof(UFUNC)))
 
 /* 	and its preprocesor definitions		*/
 

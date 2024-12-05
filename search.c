@@ -109,22 +109,22 @@
 #define	UCAST	(unsigned char)
 #endif
 
-STATIC int    amatch();
-STATIC int    readpattern();
-STATIC int    replaces();
-STATIC int    nextch();
-STATIC int    mcstr();
-STATIC int    mceq();
-STATIC int    cclmake();
-STATIC int    biteq();
+STATIC int    amatch PP((register MC *mcptr, int direct, LINE **pcwline, int *pcwoff));
+STATIC int    readpattern PP((CONSTA char *prompt, char *apat, int srch));
+STATIC int    replaces PP((int kind, int f, int n));
+STATIC int    nextch PP((LINE **pcurline, int *pcuroff, int dir));
+STATIC int    mcstr PP((void));
+STATIC int    mceq PP((int bc, MC *mt));
+STATIC int    cclmake PP((char **ppatptr, MC *mcptr));
+STATIC int    biteq PP((int bc, BITMAP cclmap));
 STATIC int	boundry PP((LINE *curline, int curoff, int dir));
 STATIC VOID	savematch PP((void));
 STATIC int	fbound PP((int jump, LINE **pcurline, int *pcuroff, int dir));
 STATIC int	delins PP((int dlength, char *instr, int usemeta));
 
 #if	MAGIC
-STATIC void     setbit();
-STATIC BITMAP   clearbits();
+STATIC void     setbit PP((int bc, BITMAP cclmap));
+STATIC BITMAP   clearbits PP((void));
 STATIC int mcscanner PP((MC *mcpatrn, int direct, int beg_or_end));
 STATIC VOID rmcclear PP((void));
 STATIC int rmcstr PP((void));
@@ -780,7 +780,7 @@ VOID setjtable()
 	apat = pat;
 
 	rvstrcpy(tap, apat);
-	patlenadd = (mlenold = mtchlen = strlen(apat)) - 1;
+	patlenadd = (mlenold = mtchlen = (int) strlen(apat)) - 1;
 
 	for (i = 0; i < HICHAR; i++)
 	{
@@ -867,7 +867,7 @@ register int	pc;
  *	string. 
  */
 STATIC int	readpattern(prompt, apat, srch)
-char	*prompt;
+CONSTA char	*prompt;
 char	apat[];
 int	srch;
 {
@@ -952,7 +952,7 @@ register char	*rvstr, *str;
 {
 	register int i;
 
-	str += (i = strlen(str));
+	str += (i = (int) strlen(str));
 
 	while (i-- > 0)
 		*rvstr++ = *--str;
@@ -1026,7 +1026,7 @@ int	n;	/* # of repetitions wanted */
 
 	/* Find the length of the replacement string.
 	 */
-	rlength = strlen(&rpat[0]);
+	rlength = (int) strlen(&rpat[0]);
 
 	/* Set up flags so we can make sure not to do a recursive
 	 * replace on the last line.
@@ -1159,6 +1159,7 @@ qprompt:
 					curwp->w_dotp = origline;
 					curwp->w_doto = origoff;
 					curwp->w_flag |= WFMOVE;
+					/* fall through */
 
 				case BELL:	/* abort! and stay */
 					mlwrite("Aborted!");
@@ -1166,6 +1167,7 @@ qprompt:
 
 				default:	/* bitch and beep */
 					TTbeep();
+					/* fall through */
 
 				case '?':	/* help me */
 					mlwrite(
@@ -1497,6 +1499,7 @@ STATIC int mcstr()
 					pchr = *++patptr;
 					magical = TRUE;
 				}
+				/* fall through */
 			default:
 litcase:			mcptr->mc_type = LITCHAR;
 				mcptr->u.lchar = pchr;
@@ -1806,6 +1809,7 @@ MC	*mcptr;
 			 */
 			case MC_ESC:
 				pchr = *++patptr;
+				/* fall through */
 			default:
 				setbit(pchr, bmap);
 				break;

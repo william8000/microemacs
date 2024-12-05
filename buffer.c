@@ -172,6 +172,8 @@ int f, n;
 {
 	register BUFFER *bp;
 
+	UNUSED_ARGS_FN;
+
 	/* make a completion for a buffer name */
 	bp = getdefb();
 	bp = getcbuf("Kill buffer", bp ? bp->b_bname: "main", TRUE);
@@ -190,6 +192,8 @@ int f, n;	/* default and numeric arguments */
 
 {
 	register BUFFER *bp;	/* ptr to buffer to dump */
+
+	UNUSED_ARGS_FN;
 
 	/* get the buffer name to pop */
 	bp = getdefb();
@@ -239,6 +243,8 @@ int f, n;		/* default Flag & Numeric arg */
 	register BUFFER *bp;	/* pointer to scan through all buffers */
 	char bufn[NBUFN];	/* buffer to hold buffer name */
 
+	UNUSED_ARGS_FN;
+
 	/* prompt for and get the new buffer name */
 ask:	if (mlreply("Change buffer name to: ", bufn, NBUFN) != TRUE)
 		return(FALSE);
@@ -274,6 +280,8 @@ int listbuffers(f, n)
 int f, n;
 {
         register int    s;
+
+	UNUSED_ARGS_FN;
 
         if ((s=makelist("", f)) != TRUE)
                 return (s);
@@ -353,12 +361,12 @@ int iflag;	/* list hidden buffer flag */
 	if (addline(blistp, line) == FALSE)
 		return(FALSE);
 
-	namelen = strlen(name);
+	namelen = (int) strlen(name);
 
 	/* output the list of buffers */
         while (bp != NULL) {
 		if (namelen > 0) {
-			len = strlen(bp->b_bname);
+			len = (int) strlen(bp->b_bname);
 			if (len > namelen) len = namelen;
 			if (strncmp(name, bp->b_bname, len)) {
 				bp = bp->b_bufp;
@@ -477,7 +485,7 @@ CONSTA char    *text;
         register int    ntext;
 
 	/* allocate the memory to hold the line */
-        ntext = strlen(text);
+        ntext = (int) strlen(text);
         if ((lp=lalloc(ntext)) == NULL)
                 return (FALSE);
 
@@ -636,6 +644,7 @@ unmark(f, n)	/* unmark the current buffers change flag */
 int f, n;	/* unused command arguments */
 
 {
+	UNUSED_ARGS_FN;
 	curbp->b_flag &= ~BFCHG;
 	upmode();
 	return(TRUE);

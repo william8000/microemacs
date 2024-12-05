@@ -21,23 +21,23 @@
 
 extern  int     ttopen();               /* Forward references.          */
 extern  int     ttgetc();
-extern  int     ttputc();
+extern  VOID    ttputc();
 extern  int     ttflush();
 extern  int     ttclose();
 extern	int	dg10kopen();
 extern	int	dg10kclose();
-extern  int     dg10move();
-extern  int     dg10eeol();
-extern  int     dg10eeop();
-extern  int     dg10beep();
+extern  VOID    dg10move();
+extern  VOID    dg10eeol();
+extern  VOID    dg10eeop();
+extern  VOID    dg10beep();
 extern  int     dg10open();
-extern	int	dg10rev();
+extern	VOID	dg10rev();
 extern	int	dg10close();
 extern	int	dg10cres();
 
 #if	COLOR
-extern	int	dg10fcol();
-extern	int	dg10bcol();
+extern	VOID	dg10fcol();
+extern	VOID	dg10bcol();
 
 int	cfcolor = -1;		/* current forground color */
 int	cbcolor = -1;		/* current background color */
@@ -77,7 +77,7 @@ TERM    term    = {
 };
 
 #if	COLOR
-dg10fcol(color)		/* set the current output color */
+VOID dg10fcol(color)		/* set the current output color */
 
 int color;	/* color to set */
 
@@ -90,7 +90,7 @@ int color;	/* color to set */
 	cfcolor = color;
 }
 
-dg10bcol(color)		/* set the current background color */
+VOID dg10bcol(color)		/* set the current background color */
 
 int color;	/* color to set */
 
@@ -104,19 +104,19 @@ int color;	/* color to set */
 }
 #endif
 
-dg10move(row, col)
+VOID dg10move(row, col)
 {
 	ttputc(16);
         ttputc(col);
 	ttputc(row);
 }
 
-dg10eeol()
+VOID dg10eeol()
 {
         ttputc(11);
 }
 
-dg10eeop()
+VOID dg10eeop()
 {
 #if	COLOR
 	dg10fcol(gfcolor);
@@ -127,7 +127,7 @@ dg10eeop()
         ttputc(0106);
 }
 
-dg10rev(state)		/* change reverse video state */
+VOID dg10rev(state)		/* change reverse video state */
 
 int state;	/* TRUE = reverse, FALSE = normal */
 
@@ -155,7 +155,7 @@ spal()		/* change palette string */
 	/*	Does nothing here	*/
 }
 
-dg10beep()
+VOID dg10beep()
 {
         ttputc(BEL);
         ttflush();
@@ -199,7 +199,7 @@ int f,n;	/* default flag, numeric argument [unused] */
 }
 #endif
 #else
-dg10hello()
+VOID dg10hello()
 {
 }
 #endif

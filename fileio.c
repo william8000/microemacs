@@ -121,7 +121,6 @@ CONSTA char *inname;
 	char paren;
 	char sym[NFILEN];
 	CONST char *value;
-	char *getenv();
 	static char FAR name[NFILEN];
 
 	maxlen = NFILEN - 1;
@@ -151,18 +150,18 @@ CONSTA char *inname;
 					 isletter(name[i]) ||
 					 (name[i] >= '0' && name[i] <= '9') ||
 					 name[i] == '_')) {
-					if (j < sizeof(sym))
+					if (j < (int) sizeof(sym))
 						sym[j++] = name[i];
 					i++;
 				}
 				if (paren != 0 && name[i] == paren)
 					i++;
-				if (j < sizeof(sym))
+				if (j < (int) sizeof(sym))
 					sym[j] = '\0';
 				value = getenv(sym);
 				if (value == NULL)
 					value = "";
-				len = strlen(value);
+				len = (int) strlen(value);
 				if (i + len >= maxlen)
 					len = maxlen - i - 1;
 				addlen = len - (i - save);
@@ -856,7 +855,7 @@ int is_arg;
 		strcpy(argbuf, path);
 		arglen = index;
 	}
-	index = strlen(path) - 1;
+	index = (int) (strlen(path) - 1);
 	while (index >= 0 && path[index] != '/' &&
 			path[index] != '\\' && path[index] != ':')
 		--index;
@@ -888,7 +887,7 @@ int is_arg;
 	nameptr = &rbuf[index+2];
 	namelen = NFILEN - 4 - index;
 #if SYMEXPAND
-	pathlen = strlen(path);
+	pathlen = (int) strlen(path);
 	path[pathlen] = '/';
 	if (pathlen > index+1) namelen = NFILEN - 3 - pathlen;
 #endif
@@ -961,7 +960,7 @@ nxtdir:	dp = readdir(dirptr);
 		goto nxtdir;
 #endif
 	if ((fstatus.st_mode & S_IFMT) == S_IFDIR) {
-		index = strlen(nameptr);
+		index = (int) strlen(nameptr);
 		nameptr[index] = '/';
 		nameptr[index+1] = '\0';
 	} else if ((fstatus.st_mode & S_IFMT) != S_IFREG) {
@@ -1404,6 +1403,8 @@ VOID PASCAL NEAR expandargs(pargc, pargv)
 int *pargc;
 char ***pargv;
 {
+    UNUSED_ARG(pargc);
+    UNUSED_ARG(pargv);
     /* nothing */
 }
 #endif

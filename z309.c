@@ -37,17 +37,12 @@ int *scptr[NROW];			/* pointer to screen lines	*/
 int sline[NCOL];			/* screen line image		*/
 extern union REGS rg;			/* cpu register for use of DOS calls */
 
-extern  int     ttopen();               /* Forward references.          */
-extern  int     ttgetc();
-extern  int     ttputc();
-extern  int     ttflush();
-extern  int     ttclose();
-extern  int     z309move();
-extern  int     z309eeol();
-extern  int     z309eeop();
-extern  int     z309beep();
+extern  VOID    z309move();               /* Forward references.          */
+extern  VOID    z309eeol();
+extern  VOID    z309eeop();
+extern  VOID    z309beep();
 extern  int     z309open();
-extern	int	z309rev();
+extern	VOID	z309rev();
 extern	int	z309cres();
 extern	int	z309close();
 extern	int	z309putc();
@@ -55,8 +50,8 @@ extern	int	z309kopen();
 extern	int	z309kclose();
 
 #if	COLOR
-extern	int	z309fcol();
-extern	int	z309bcol();
+extern	VOID	z309fcol();
+extern	VOID	z309bcol();
 
 int	cfcolor = -1;		/* current forground color */
 int	cbcolor = -1;		/* current background color */
@@ -98,7 +93,7 @@ TERM    term    = {
 extern union REGS rg;
 
 #if	COLOR
-z309fcol(color)		/* set the current output color */
+VOID z309fcol(color)		/* set the current output color */
 
 int color;	/* color to set */
 
@@ -106,7 +101,7 @@ int color;	/* color to set */
 	cfcolor = ctrans[color];
 }
 
-z309bcol(color)		/* set the current background color */
+VOID z309bcol(color)		/* set the current background color */
 
 int color;	/* color to set */
 
@@ -114,7 +109,8 @@ int color;	/* color to set */
         cbcolor = ctrans[color];
 }
 #endif
-z309move(row, col)
+
+VOID z309move(row, col)
 {
 	rg.h.ah = 2;		/* set cursor position function code */
 	rg.h.dl = col;
@@ -123,7 +119,7 @@ z309move(row, col)
 	int86(0x10, &rg, &rg);
 }
 
-z309eeol()	/* erase to the end of the line */
+VOID z309eeol()	/* erase to the end of the line */
 
 {
 	int attr;	/* attribute byte mask to place in RAM */
@@ -188,7 +184,7 @@ int ch;
 	int86(0x10, &rg, &rg);
 }
 
-z309eeop()
+VOID z309eeop()
 {
 	int attr;		/* attribute to fill screen with */
 
@@ -208,7 +204,7 @@ z309eeop()
 	int86(0x10, &rg, &rg);
 }
 
-z309rev(state)		/* change reverse video state */
+VOID z309rev(state)		/* change reverse video state */
 
 int state;	/* TRUE = reverse, FALSE = normal */
 
@@ -231,7 +227,7 @@ char *res;	/* resolution to change to */
 		return(FALSE);
 }
 
-z309beep()
+VOID z309beep()
 {
 #if	MWC86
 	putcnb(BEL);
@@ -357,7 +353,7 @@ int f,n;	/* default flag, numeric argument [unused] */
 }
 #endif
 #else
-z309hello()
+VOID z309hello()
 {
 }
 #endif

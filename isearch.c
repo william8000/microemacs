@@ -45,9 +45,6 @@
 
 /* IS_QUIT is no longer used, the variable metac is used instead */
 
-extern int scanner();			/* Handy search routine */
-extern int me_eq();			/* Compare chars, match case */
-
 static int promptpattern PP((CONSTA char *prompt));
 static int scanmore PP((int dir));
 static int echochar PP((int c, int col));
@@ -162,6 +159,8 @@ int f, n;
     LINE		*curline;	/* Current line on entry	      */
     int			curoff;		/* Current offset on entry	      */
     int			init_direction;	/* The initial search direction	      */
+
+    UNUSED_ARGS_FN;
 
     /* Initialize starting conditions */
 
@@ -430,7 +429,7 @@ CONSTA char *prompt;
     if (!clexec) {
 	mlwrite(tpat);
     }
-    return(strlen(tpat));
+    return( (int) strlen(tpat) );
 }
 
 /* routine to echo i-search characters */

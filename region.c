@@ -23,6 +23,8 @@ int f, n;
         register int    s;
         REGION          region;
 
+	UNUSED_ARGS_FN;
+
 	if (curbp->b_mode&MDVIEW)	/* don't allow this command if	*/
 		return(rdonly());	/* we are in read only mode	*/
         if ((s=getregion(&region)) != TRUE)
@@ -48,6 +50,8 @@ int f, n;
         register int    loffs;
         register int    s;
         REGION          region;
+
+	UNUSED_ARGS_FN;
 
         if ((s=getregion(&region)) != TRUE)
                 return (s);
@@ -83,6 +87,8 @@ int f, n;
 	BUFFER *bp;		/* buffer being narrowed */
 	WINDOW *wp;		/* windows to fix up pointers in as well */
 	REGION creg;		/* region boundry structure */
+
+	UNUSED_ARGS_FN;
 
 	/* find the proper buffer and make sure we aren't already narrow */
 	bp = curwp->w_bufp;		/* find the right buffer */
@@ -156,6 +162,8 @@ int f, n;
 	BUFFER *bp;	/* buffer being narrowed */
 	WINDOW *wp;	/* windows to fix up pointers in as well */
 
+	UNUSED_ARGS_FN;
+
 	/* find the proper buffer and make sure we are narrow */
 	bp = curwp->w_bufp;		/* find the right buffer */
 	if ((bp->b_flag&BFNAROW) == 0) {
@@ -217,6 +225,8 @@ int f, n;
         register int    s;
         REGION          region;
 
+	UNUSED_ARGS_FN;
+
 	if (curbp->b_mode&MDVIEW)	/* don't allow this command if	*/
 		return(rdonly());	/* we are in read only mode	*/
         if ((s=getregion(&region)) != TRUE)
@@ -254,6 +264,8 @@ int f, n;
         register int    c;
         register int    s;
         REGION          region;
+
+	UNUSED_ARGS_FN;
 
 	if (curbp->b_mode&MDVIEW)	/* don't allow this command if	*/
 		return(rdonly());	/* we are in read only mode	*/
@@ -373,6 +385,7 @@ int f, n;
 int apcopyregion(f, n)
 int f, n;
 {
+	UNUSED_ARGS_FN;
 	lastflag |= CFKILL;
 	return(copyregion(f, n));
 }
@@ -391,6 +404,8 @@ int f, n;
         register int    c;
         register int    s;
         REGION          region;
+
+	UNUSED_ARGS_FN;
 
 	if (curbp->b_mode&MDVIEW)	/* don't allow this command if	*/
 		return(rdonly());	/* we are in read only mode	*/
@@ -438,6 +453,8 @@ CONSTA char *mode;
         REGION          region;
 	char		*fn;
 
+	UNUSED_ARGS_FN;
+
 	if (restflag)		/* don't allow this command if restricted */
 		return(resterr());
 
@@ -467,7 +484,7 @@ CONSTA char *mode;
         loffs = region.r_offset;
         while (region.r_size > 0L) {
 		len = llength(linep) - loffs;
-		if (len > region.r_size) len = region.r_size;
+		if (((long)len) > region.r_size) len = (int) region.r_size;
 		region.r_size -= (len + 1);
                 if ((s=ffputline(&linep->l_text[loffs], len)) != FIOSUC)
                         break;

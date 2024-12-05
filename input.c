@@ -266,6 +266,8 @@ int *status;		/* return status */
 				case CMP_MODE:
 					modelist(buf);
 					break;
+				default:
+					break;
 			}
 			popflag = popsave;
 			update(FALSE);
@@ -294,6 +296,8 @@ int *status;		/* return status */
 					break;
 				case CMP_MODE:
 					comp_mode(buf, &cpos, &len);
+					break;
+				default:
 					break;
 			}
 
@@ -334,12 +338,12 @@ int *status;		/* return status */
 			if (c == 0x19 && quotef == FALSE) {
 				/* ^Y -- insert contents of kill buffer */
 				str = getkill();
-				len = strlen(str);
+				len = (int) strlen(str);
 			} else if ((c == '\022' || c == '\023') &&
 					quotef == FALSE) {
 				/* ^R or ^S -- insert search string */
 				str = pat;
-				len = strlen(str);
+				len = (int) strlen(str);
 			}
 			else { str = chbuf; *chbuf = (char) c; len = 1; }
 			quotef = FALSE;

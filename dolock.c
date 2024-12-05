@@ -214,7 +214,7 @@ char *undolock(fname)
  *******************/
 
 #else
-dolhello()
+void dolhello()
 {
 }
 #endif

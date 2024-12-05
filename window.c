@@ -31,9 +31,10 @@ int f, n;
  * Refresh the screen. With no argument, it just does the refresh. With an
  * argument it recenters "." in the current window. Bound to "C-L".
  */
-int refresh(f, n)
+int me_refresh(f, n)
 int f, n;
     {
+    UNUSED_ARG(n);
     if (f == FALSE)
         sgarbf = TRUE;
     else
@@ -153,6 +154,8 @@ int f, n;
     register LINE *lp;
     register int i;
 
+    UNUSED_ARG(f);
+
     lp = curwp->w_linep;
 
     if (n < 0)
@@ -203,6 +206,8 @@ int f, n;
         register LINE   *lp;
         register int    i;
 
+	UNUSED_ARGS_FN;
+
         while (wheadp != curwp) {
                 wp = wheadp;
                 wheadp = wp->w_wndp;
@@ -252,6 +257,8 @@ int f, n;	/* arguments are ignored for this command */
 	register WINDOW *lwp;	/* ptr window before curwp */
 	register int target;	/* target line to search for */
         LINE   *lp;
+
+	UNUSED_ARGS_FN;
 
 	/* if there is only one window, don't delete it */
 	if (wheadp->w_wndp == NULL) {
@@ -611,6 +618,7 @@ int
 savewnd(f, n)		/* save ptr to current window */
 int f, n;
 {
+	UNUSED_ARGS_FN;
 	swindow = curwp;
 	return(TRUE);
 }
@@ -620,6 +628,8 @@ restwnd(f, n)		/* restore the saved screen */
 int f, n;
 {
 	register WINDOW *wp;
+
+	UNUSED_ARGS_FN;
 
 	/* find the window */
 	wp = wheadp;
@@ -695,9 +705,10 @@ int n;	/* numeric argument */
 				}
 	
 				/* update curwp and lastwp if needed */
-				if (wp == curwp)
+				if (wp == curwp) {
 					curwp = wheadp;
 					curbp = curwp->w_bufp;
+				}
 				if (lastwp != NULL)
 					lastwp->w_wndp = NULL;
 
@@ -840,6 +851,8 @@ int f, n;
     register LINE *lp;
     int row, top, bot, scroll;
 
+    UNUSED_ARG(f);
+
     /* find where we are */
 
     lp = curwp->w_linep;
@@ -921,6 +934,8 @@ int f, n;
 {
     register WINDOW *wp;
     int saveoff;
+
+    UNUSED_ARG(f);
 
     saveoff = curwp->w_fcol;
     curwp->w_fcol += n;

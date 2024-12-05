@@ -22,23 +22,20 @@
 #define ESC     0x1B                    /* ESC character.               */
 
 extern  int     openhp();               /* Forward references.          */
-extern  int     ttgetc();
-extern  int     ttputc();
-extern  int     ttflush();
 extern	int	hpflush();
 extern  int     closehp();
 extern	int	hp15kopen();
 extern	int	hp15kclose();
-extern  int     hp15move();
-extern  int     hp15eeol();
-extern  int     hp15eeop();
-extern  int     hp15beep();
+extern  VOID    hp15move();
+extern  VOID    hp15eeol();
+extern  VOID    hp15eeop();
+extern  VOID    hp15beep();
 extern	int	gethpkey();
-extern	int	hp15rev();
+extern	VOID	hp15rev();
 extern	int	hp15cres();
 #if	COLOR
-extern	int	hp15fcol();
-extern	int	hp15bcol();
+extern	VOID	hp15fcol();
+extern	VOID	hp15bcol();
 #endif
 
 /* weird to ascii translation table */
@@ -107,7 +104,7 @@ TERM    term    = {
 #endif
 };
 
-hp15move(row, col)
+VOID hp15move(row, col)
 {
         ttputc(ESC);
         ttputc('&');
@@ -124,19 +121,19 @@ hpflush()
 
 }
 
-hp15eeol()
+VOID hp15eeol()
 {
         ttputc(ESC);
         ttputc('K');
 }
 
-hp15eeop()
+VOID hp15eeop()
 {
         ttputc(ESC);
         ttputc('J');
 }
 
-hp15rev(status)		/* change the reverse video status */
+VOID hp15rev(status)		/* change the reverse video status */
 
 int status;	/* TRUE = on, FALSE = off */
 
@@ -159,7 +156,7 @@ spal()		/* change pallette register */
 	/*   not here */
 }
 
-hp15beep()
+VOID hp15beep()
 {
         ttputc(BEL);
         ttflush();
@@ -177,11 +174,11 @@ register int    n;
 }
 
 #if	COLOR
-hp15fcol()	/* we really can't do colors here, so just ignore it */
+VOID hp15fcol()	/* we really can't do colors here, so just ignore it */
 {
 }
 
-hp15bcol()	/* we really can't do colors here, so just ignore it */
+VOID hp15bcol()	/* we really can't do colors here, so just ignore it */
 {
 }
 #endif
@@ -457,7 +454,7 @@ force:	cmd[4] = ptru.cstr[0];
 #endif
 #else
 
-h15hello()
+VOID h15hello()
 
 {
 }

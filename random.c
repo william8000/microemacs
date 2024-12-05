@@ -20,6 +20,7 @@ static int getpindent PP((void));
 int setfillcol(f, n)
 int f, n;
 {
+	UNUSED_ARG(f);
         fillcol = n;
 	mlwrite("[Fill column is %d]",n);
         return(TRUE);
@@ -47,6 +48,8 @@ int f, n;
         int col;
 	int savepos;			/* temp save for current offset */
 	int ecol;			/* column pos/end of current line */
+
+	UNUSED_ARGS_FN;
 
 	/* starting at the beginning of the buffer */
         lp = lforw(curbp->b_linep);
@@ -94,7 +97,7 @@ int f, n;
 #if ST520 | MSDOS | BSD29 | CPM | WMCS | DECUSC | MWC86 | LATTICE | AZTEC | TURBO | C86
 		ratio = (100L*predchars) / numchars;	/* avoid linking in real number code */
 #else
-		ratio = (int) ((10000.0 * predchars) / numchars + 0.5);
+		ratio = (int) ((10000.0 * (double) predchars) / (double) numchars + 0.5);
 		ratio_decimal2 = ratio % 10;
 		ratio = ratio / 10;
 		ratio_decimal1 = ratio % 10;
@@ -214,6 +217,8 @@ int f, n;
         register int    doto;
 	int cl, cr;
 
+	UNUSED_ARGS_FN;
+
 	if (curbp->b_mode&MDVIEW)	/* don't allow this command if	*/
 		return(rdonly());	/* we are in read only mode	*/
         dotp = curwp->w_dotp;
@@ -241,6 +246,8 @@ int f, n;
 {
         register int    s;
         register int    c;
+
+	UNUSED_ARG(f);
 
 	if (curbp->b_mode&MDVIEW)	/* don't allow this command if	*/
 		return(rdonly());	/* we are in read only mode	*/
@@ -318,6 +325,8 @@ int f, n;
 {
 	int c0, c1, c_result, ln_s, c_abort;
 
+	UNUSED_ARG(f);
+
 	if (curbp->b_mode&MDVIEW)	/* don't allow this command if	*/
 		return(rdonly());	/* we are in read only mode	*/
 
@@ -354,6 +363,8 @@ int f, n;
 	int ch, num;
 	int doto, len;
 	int is_quoted;
+
+	UNUSED_ARG(f);
 
 	if (curbp->b_mode&MDVIEW)	/* don't allow this command if	*/
 		return(rdonly());	/* we are in read only mode	*/
@@ -409,6 +420,8 @@ int f, n;
 	int ch;
 	int doto, len;
 
+	UNUSED_ARG(f);
+
 	if (curbp->b_mode&MDVIEW)	/* don't allow this command if	*/
 		return(rdonly());	/* we are in read only mode	*/
 
@@ -457,54 +470,63 @@ int mark;
 int me_add_acute(f, n)
 int f, n;
 {
+	UNUSED_ARGS_FN;
 	return add_dia_mark('\'');
 }
 
 int me_add_bar(f, n)
 int f, n;
 {
+	UNUSED_ARGS_FN;
 	return add_dia_mark('_');
 }
 
 int me_add_cedilla(f, n)
 int f, n;
 {
+	UNUSED_ARGS_FN;
 	return add_dia_mark(',');
 }
 
 int me_add_circ(f, n)
 int f, n;
 {
+	UNUSED_ARGS_FN;
 	return add_dia_mark('^');
 }
 
 int me_add_grave(f, n)
 int f, n;
 {
+	UNUSED_ARGS_FN;
 	return add_dia_mark('`');
 }
 
 int me_add_slash(f, n)
 int f, n;
 {
+	UNUSED_ARGS_FN;
 	return add_dia_mark('/');
 }
 
 int me_add_tilde(f, n)
 int f, n;
 {
+	UNUSED_ARGS_FN;
 	return add_dia_mark('~');
 }
 
 int me_add_umlaut(f, n)
 int f, n;
 {
+	UNUSED_ARGS_FN;
 	return add_dia_mark('"');
 }
 
 int me_add_ring(f, n)
 int f, n;
 {
+	UNUSED_ARGS_FN;
 	return add_dia_mark('*');
 }
 #endif
@@ -519,6 +541,8 @@ int f, n;
 int tab(f, n)
 int f, n;
 {
+	UNUSED_ARG(f);
+
         if (n < 0)
                 return (FALSE);
         if (n == 0 || n > 1) {
@@ -723,6 +747,8 @@ int f, n;
         register int    i;
         register int    s;
 
+	UNUSED_ARG(f);
+
 	if (curbp->b_mode&MDVIEW)	/* don't allow this command if	*/
 		return(rdonly());	/* we are in read only mode	*/
         if (n < 0)
@@ -746,6 +772,8 @@ int newline(f, n)
 int f, n;
 {
 	register int    s;
+
+	UNUSED_ARG(f);
 
 	if (curbp->b_mode&MDVIEW)	/* don't allow this command if	*/
 		return(rdonly());	/* we are in read only mode	*/
@@ -1064,6 +1092,8 @@ int f, n;
         register LINE   *lp2;
         long nld;
 
+	UNUSED_ARGS_FN;
+
 	if (curbp->b_mode&MDVIEW)	/* don't allow this command if	*/
 		return(rdonly());	/* we are in read only mode	*/
         lp1 = curwp->w_dotp;
@@ -1094,6 +1124,8 @@ int f, n;
         register int    nicol;
         register int    c;
         register int    i;
+
+	UNUSED_ARG(f);
 
 	if (curbp->b_mode&MDVIEW)	/* don't allow this command if	*/
 		return(rdonly());	/* we are in read only mode	*/
@@ -1230,6 +1262,7 @@ me_setmode(f, n) /* prompt and set an editor mode */
 int f, n;	/* default and argument */
 
 {
+	UNUSED_ARGS_FN;
 	return(adjustmode(TRUE, FALSE));
 }
 
@@ -1239,6 +1272,7 @@ delmode(f, n)	/* prompt and delete an editor mode */
 int f, n;	/* default and argument */
 
 {
+	UNUSED_ARGS_FN;
 	return(adjustmode(FALSE, FALSE));
 }
 
@@ -1248,6 +1282,7 @@ setgmode(f, n)	/* prompt and set a global editor mode */
 int f, n;	/* default and argument */
 
 {
+	UNUSED_ARGS_FN;
 	return(adjustmode(TRUE, TRUE));
 }
 
@@ -1257,8 +1292,13 @@ delgmode(f, n)	/* prompt and delete a global editor mode */
 int f, n;	/* default and argument */
 
 {
+	UNUSED_ARGS_FN;
 	return(adjustmode(FALSE, TRUE));
 }
+
+#if	TERMCAP | VMSVT
+NOSHARE extern int usedcolor, isansi, termflag;
+#endif
 
 static int
 adjustmode(kind, global)	/* change the editor mode status */
@@ -1271,9 +1311,6 @@ int global;	/* true = global flag,	false = current buffer flag */
 	/* register status; */		/* error return on input */
 #if	COLOR
 	register int uflag;		/* was modename uppercase?	*/
-#if	TERMCAP | VMSVT
-	NOSHARE extern int usedcolor, isansi, termflag;
-#endif
 #endif
 	char prompt[50];	/* string to prompt user with */
 	char cbuf[NPAT];		/* buffer to recieve mode name into */
@@ -1397,13 +1434,13 @@ CONSTA char *mstring;
 	/* let us know this is in progress */
 	mlwrite("[Building Mode List]");
 
-	mlen = strlen(mstring);
+	mlen = (int) strlen(mstring);
 
 	/* build the mode list */
 	for (i = 0; i < NCOLORS + NUMMODES; i++) {
 		sp = (i < NCOLORS?
 			cname[i]: modename[i-NCOLORS]);
-		len = strlen(sp);
+		len = (int) strlen(sp);
 		if (len > mlen) len = mlen;
 
 		/* is this a match? */
@@ -1425,6 +1462,7 @@ CONSTA char *mstring;
 int PASCAL NEAR showmodes(f, n)
 int f,n;	/* prefix flag and argument */
 {
+	UNUSED_ARGS_FN;
 	return(modelist(""));
 }
 
@@ -1437,6 +1475,7 @@ me_clrmes(f, n)
 int f, n;	/* arguments ignored */
 
 {
+	UNUSED_ARGS_FN;
 	mlforce("");
 	return(TRUE);
 }
@@ -1451,6 +1490,8 @@ int f, n;	/* arguments ignored */
 {
 	register int status;
 	char buf[NPAT];		/* buffer to recieve message into */
+
+	UNUSED_ARGS_FN;
 
 	if ((status = mlreply("Message to write: ", buf, NPAT - 1)) != TRUE)
 		return(status);
@@ -1478,6 +1519,8 @@ int f, n;	/* not used */
 	register int ch;	/* fence type to match against */
 	register int ofence;	/* open fence */
 	register int c;		/* current character in scan */
+
+	UNUSED_ARGS_FN;
 
 	/* save the original cursor position */
 	oldlp = curwp->w_dotp;
@@ -1619,6 +1662,8 @@ int f, n;	/* ignored arguments */
 	register int status;	/* status return code */
 	char tstring[NPAT+1];	/* string to add */
 
+	UNUSED_ARGS_FN;
+
 	/* ask for string to insert */
 	status = mltreply("String to insert<META>: ", tstring, NPAT, metac);
 	if (status != TRUE)
@@ -1649,6 +1694,8 @@ int f, n;
 	int i, left, right;
 	int qch;
 
+	UNUSED_ARGS_FN;
+
 	left = right = (-1);
 	qch = '\0';
 	if (llength(curwp->w_dotp) > 0) {
@@ -1675,6 +1722,7 @@ int f, n;
 int setovrwrt(f, n)
 int f, n;
 {
+	UNUSED_ARGS_FN;
 	if (curwp->w_bufp->b_mode & MDOVER)
 		curwp->w_bufp->b_mode &= ~MDOVER;
 	else

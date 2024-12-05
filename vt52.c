@@ -24,24 +24,19 @@
 #define ESC     0x1B                    /* ESC character.               */
 #define BEL     0x07                    /* ascii bell character         */
 
-extern  int     ttopen();               /* Forward references.          */
-extern  int     ttgetc();
-extern  int     ttputc();
-extern  int     ttflush();
-extern  int     ttclose();
-extern  int     vt52move();
-extern  int     vt52eeol();
-extern  int     vt52eeop();
-extern  int     vt52beep();
+extern  VOID    vt52move();               /* Forward references.          */
+extern  VOID    vt52eeol();
+extern  VOID    vt52eeop();
+extern  VOID    vt52beep();
 extern  int     vt52open();
-extern	int	vt52rev();
+extern	VOID	vt52rev();
 extern	int	vt52cres();
 extern	int	vt52kopen();
 extern	int	vt52kclose();
 
 #if	COLOR
-extern	int	vt52fcol();
-extern	int	vt52bcol();
+extern	VOID	vt52fcol();
+extern	VOID	vt52bcol();
 #endif
 
 /*
@@ -76,7 +71,7 @@ TERM    term    = {
 #endif
 };
 
-vt52move(row, col)
+VOID vt52move(row, col)
 {
         ttputc(ESC);
         ttputc('Y');
@@ -84,19 +79,19 @@ vt52move(row, col)
         ttputc(col+BIAS);
 }
 
-vt52eeol()
+VOID vt52eeol()
 {
         ttputc(ESC);
         ttputc('K');
 }
 
-vt52eeop()
+VOID vt52eeop()
 {
         ttputc(ESC);
         ttputc('J');
 }
 
-vt52rev(status)	/* set the reverse video state */
+VOID vt52rev(status)	/* set the reverse video state */
 
 int status;	/* TRUE = reverse video, FALSE = normal video */
 
@@ -117,16 +112,16 @@ spal()		/* change palette string */
 }
 
 #if	COLOR
-vt52fcol()	/* set the forground color [NOT IMPLIMENTED] */
+VOID vt52fcol()	/* set the foreground color [NOT IMPLIMENTED] */
 {
 }
 
-vt52bcol()	/* set the background color [NOT IMPLIMENTED] */
+VOID vt52bcol()	/* set the background color [NOT IMPLIMENTED] */
 {
 }
 #endif
 
-vt52beep()
+VOID vt52beep()
 {
 #ifdef  BEL
         ttputc(BEL);
@@ -175,7 +170,7 @@ int f,n;	/* default flag, numeric argument [unused] */
 #endif
 #else
 
-vt52hello()
+VOID vt52hello()
 
 {
 }

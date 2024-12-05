@@ -9,8 +9,6 @@
 #include	"edef.h"
 #include	"epath.h"
 
-extern int meta(), cex(), unarg(), ctrlg(); /* dummy prefix binding functions */
-
 static unsigned int stock PP((char *keyname));
 static int chunbind PP((int c));
 static unsigned int getckey PP((int mflag));
@@ -27,7 +25,9 @@ int me_help(f, n) /* give me some help!!!!
 int f, n;
 {
 	register BUFFER *bp;	/* buffer pointer to help */
-	char *fname;	/* ptr to file returned by flook() */
+	CONSTA char *fname;	/* ptr to file returned by flook() */
+
+	UNUSED_ARGS_FN;
 
 	fname = NULL;
 
@@ -35,7 +35,7 @@ int f, n;
 	bp = bfind("emacs.hlp", FALSE, BFINVS);
 
 	if (bp == NULL) {
-		fname = (char *) flook(pathname[1], FALSE);
+		fname = flook(pathname[1], FALSE);
 		if (fname == NULL) {
 			mlwrite("[Help file is not online]");
 			return(FALSE);
@@ -75,6 +75,8 @@ int f, n;
 	int (*getbind(int c))(int f, int n);
 #endif
 #endif
+
+	UNUSED_ARGS_FN;
 
 	/* prompt the user to type us a key to describe */
 	mlwrite(": describe-key ");
@@ -124,6 +126,8 @@ int f, n;	/* command arguments [IGNORED] */
 #endif
 
 
+	UNUSED_ARGS_FN;
+
 	/* get the function name to bind it to */
 	kfunc = getname(": bind-to-key ");
 	if (kfunc == NULL) {
@@ -162,7 +166,7 @@ int f, n;	/* command arguments [IGNORED] */
 	ktp = &keytab[0];
 	found = FALSE;
 	while (ktp->k_fp != NULL) {
-		if (c == (int) ktp->k_code) {
+		if (((int)c) == (int) ktp->k_code) {
 			found = TRUE;
 			break;
 		}
@@ -170,10 +174,10 @@ int f, n;	/* command arguments [IGNORED] */
 	}
 
 	if (found) {	/* it exists, just change it then */
-		if (c == metac) metac = 0;
-		if (c == ctlxc) ctlxc = 0;
-		if (c == reptc) reptc = 0;
-		if (c == abortc) abortc = 0;
+		if (((int)c) == metac) metac = 0;
+		if (((int)c) == ctlxc) ctlxc = 0;
+		if (((int)c) == reptc) reptc = 0;
+		if (((int)c) == abortc) abortc = 0;
 
 		ktp->k_fp = kfunc;
 		if (c > 0 && c < NFBIND) fkeytab[c] = kfunc;
@@ -216,6 +220,8 @@ int f, n;	/* command arguments [IGNORED] */
 {
 	register int c;		/* command key to unbind */
 	char outseq[80];	/* output buffer for keystroke sequence */
+
+	UNUSED_ARGS_FN;
 
 	/* prompt the user to type in a key to unbind */
 	mlwrite(": unbind-key ");
@@ -296,6 +302,7 @@ int f, n;
 
 #if	APROP
 {
+	UNUSED_ARGS_FN;
 	return(buildlist(1, ""));
 }
 
@@ -305,6 +312,8 @@ int f, n;
 {
 	char mstring[NSTRING];	/* string to match cmd names to */
 	int status;		/* status return */
+
+	UNUSED_ARGS_FN;
 
 	status = mlreply("Apropos string: ", mstring, NSTRING - 1);
 	if (status != TRUE)
@@ -340,7 +349,7 @@ CONSTA char *mstring;	/* match string if a partial list */
 	/* let us know this is in progress */
 	mlwrite("[Building binding list]");
 
-	mlen = strlen(mstring);
+	mlen = (int) strlen(mstring);
 
 	/* build the contents of this window, inserting it line by line */
 	nptr = &names[0];
@@ -348,7 +357,7 @@ CONSTA char *mstring;	/* match string if a partial list */
 
 		/* add in the command name */
 		strcpy(outseq, nptr->n_name);
-		cpos = len = strlen(outseq);
+		cpos = len = (int) strlen(outseq);
 		
 #if	APROP
 		/* if we are executing an apropos command..... */
@@ -498,7 +507,6 @@ int hflag;	/* Look in the HOME environment variable first? */
 	register char *sp;	/* pointer into path spec */
 	register int i;		/* index */
 	static char FAR fspec[NSTRING];	/* full path spec to search */
-	char *getenv();
 
 	if (fname == NULL || *fname == '\0' || strcmp(fname, "-") == 0) {
 		return(NULL);

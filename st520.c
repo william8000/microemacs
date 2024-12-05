@@ -34,12 +34,7 @@ compiles into nothing if not a 520ST style device.
 #define ESC     0x1B                    /* ESC character.               */
 #define BEL     0x07                    /* ascii bell character         */
 
-extern  int     ttopen();               /* Forward references.          */
-extern  int     ttgetc();
-extern  int     ttputc();
-extern  int     ttflush();
-extern  int     ttclose();
-extern  int     st520move();
+extern  int     st520move();               /* Forward references.          */
 extern  int     st520eeol();
 extern  int     st520eeop();
 extern  int     st520beep();
@@ -597,27 +592,22 @@ char resname[][8] = {		/* screen resolution names */
 short spalette[16];			/* original color palette settings */
 short palette[16];			/* current palette settings */
 
-extern  int     ttopen();               /* Forward references.          */
-extern  int     ttgetc();
-extern  int     ttputc();
-extern  int     ttflush();
-extern  int     ttclose();
-extern  int     stmove();
-extern  int     steeol();
-extern  int     steeop();
-extern  int     stbeep();
+extern  VOID    stmove();               /* Forward references.          */
+extern  VOID    steeol();
+extern  VOID    steeop();
+extern  VOID    stbeep();
 extern  int     stopen();
 extern	int	stclose();
 extern	int	stgetc();
 extern	int	stputc();
-extern	int	strev();
+extern	VOID	strev();
 extern	int	strez();
 extern	int	stkopen();
 extern	int	stkclose();
 
 #if	COLOR
-extern	int	stfcol();
-extern	int	stbcol();
+extern	VOID	stfcol();
+extern	VOID	stbcol();
 #endif
 
 /*
@@ -652,7 +642,7 @@ TERM    term    = {
 #endif
 };
 
-stmove(row, col)
+VOID stmove(row, col)
 {
         stputc(ESC);
         stputc('Y');
@@ -660,13 +650,13 @@ stmove(row, col)
         stputc(col+BIAS);
 }
 
-steeol()
+VOID steeol()
 {
         stputc(ESC);
         stputc('K');
 }
 
-steeop()
+VOID steeop()
 {
 #if	COLOR
 	stfcol(gfcolor);
@@ -676,7 +666,7 @@ steeop()
         stputc('J');
 }
 
-strev(status)	/* set the reverse video state */
+VOID strev(status)	/* set the reverse video state */
 
 int status;	/* TRUE = reverse video, FALSE = normal video */
 
@@ -701,7 +691,7 @@ int clr;	/* emacs color number to translate */
 		return(mctable[clr]);
 }
 
-stfcol(color)	/* set the forground color */
+VOID stfcol(color)	/* set the forground color */
 
 int color;	/* color to set forground to */
 
@@ -713,7 +703,7 @@ int color;	/* color to set forground to */
 	}
 }
 
-stbcol(color)	/* set the background color */
+VOID stbcol(color)	/* set the background color */
 
 int color;	/* color to set background to */
 
@@ -727,7 +717,7 @@ int color;	/* color to set background to */
 }
 #endif
 
-stbeep()
+VOID stbeep()
 {
         stputc(BEL);
         ttflush();
@@ -1024,7 +1014,7 @@ int f,n;	/* default flag, numeric argument [unused] */
 }
 #endif
 #else
-sthello()
+VOID sthello()
 {
 }
 #endif

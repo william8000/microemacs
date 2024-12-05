@@ -359,7 +359,7 @@ VOID vtinit()
 #endif
 
 #if DISPSEVEN | DECEDT
-    for (i = 0; i < 256; i++) me_char_len[ i ] = strlen(me_char_name[ i ]);
+    for (i = 0; i < 256; i++) me_char_len[ i ] = (int) strlen(me_char_name[ i ]);
 #endif
 
     TTopen();		/* open the screen */
@@ -630,6 +630,7 @@ static VOID vteeol()
 int upscreen(f, n)
 int f, n;
 {
+	UNUSED_ARGS_FN;
 	update(TRUE);
 	return(TRUE);
 }
@@ -1647,7 +1648,7 @@ VIDEO *vp2;		/* physical screen image */
 			cp5 = cp3;		/* fewer characters. */
 	}
 
-	movecursor(row, cp1 - &vp1->v_text[0]);
+	movecursor(row, (int)(cp1 - &vp1->v_text[0]));
 
 #if	REVSTA
 	TTrev(rev);

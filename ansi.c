@@ -31,12 +31,7 @@
 #define BEL     0x07                    /* BEL character.               */
 #define ESC     0x1B                    /* ESC character.               */
 
-extern  int     ttopen();               /* Forward references.          */
-extern  int     ttgetc();
-extern  int     ttputc();
-extern  int     ttflush();
-extern  int     ttclose();
-extern  int     ansimove();
+extern  int     ansimove();               /* Forward references.          */
 extern  int     ansiel();
 extern  int     ansiep();
 extern  int     ansibeep();
@@ -288,6 +283,8 @@ int f,n;	/* default flag, numeric argument [unused] */
 }
 #endif
 #else
+VOID ansihello PP((void));
+
 VOID ansihello PP((void))
 {
 }

@@ -112,7 +112,7 @@ int	flag;
 	wp = wheadp;
 	while (wp != NULL) {
 		if (wp->w_bufp == curbp)
-			wp->w_flag |= flag;
+			wp->w_flag |= (shrt) flag;
 		wp = wp->w_wndp;
 	}
 }
@@ -338,8 +338,8 @@ int ldelete(long n, int kflag)
 		if (dotp == curbp->b_linep)	/* Hit end of buffer.	*/
 			return (FALSE);
 		chunk = dotp->l_used-doto;	/* Size of chunk.	*/
-		if (chunk > n)
-			chunk = n;
+		if (((long)chunk) > n)
+			chunk = (int) n;
 		if (chunk == 0) {		/* End of line, merge.	*/
 			lchange(WFHARD);
 			if (ldelnewline() == FALSE
@@ -597,6 +597,8 @@ int f, n;
 	int curoff;
 	LINE *curline;
 	KILL *kp;		/* pointer into kill buffer */
+
+	UNUSED_ARG(f);
 
 	if (curbp->b_mode&MDVIEW)	/* don't allow this command if	*/
 		return(rdonly());	/* we are in read only mode	*/

@@ -48,6 +48,8 @@ int f, n;	/* default Flag and Numeric argument */
 	register int status;		/* status return */
 	char cmdstr[NSTRING];		/* string holding command to execute */
 
+	UNUSED_ARGS_FN;
+
 	/* get the line wanted */
 	if ((status = mlreply(": ", cmdstr, NSTRING)) != TRUE)
 		return(status);
@@ -337,6 +339,8 @@ int f, n;	/* default flag and numeric arg */
         register int status;		/* status return */
         char bufn[NBUFN];		/* name of buffer to execute */
 
+	UNUSED_ARG(f);
+
 	/* find out what buffer the user wants to execute */
         if ((status = mlreply("Execute procedure: ", &bufn[1], NBUFN-2)) != TRUE)
                 return(status);
@@ -371,6 +375,8 @@ int f, n;	/* default flag and numeric arg */
 #ifdef NO_PROTOTYPE
         BUFFER *getdefb();
 #endif
+
+	UNUSED_ARG(f);
 
 	/* make a completion for a buffer name */
 	bp = getdefb();
@@ -625,7 +631,7 @@ nxtscan:	/* on to the next line */
 		/* if macro store is on, just salt this away */
 		if (mstore) {
 			/* allocate the space for the line */
-			linlen = strlen(eline);
+			linlen = (int) strlen(eline);
 			if ((mp=lalloc(linlen)) == NULL) {
 				mlwrite("Out of memory while storing macro");
 				return (FALSE);
@@ -678,6 +684,7 @@ nxtscan:	/* on to the next line */
 						goto onward;
 				}
 				/* drop down and act just like !BREAK */
+				/* fall through */
 
 			case DBREAK:	/* BREAK directive */
 				if (dirnum == DBREAK && execlevel)
@@ -720,7 +727,7 @@ nxtscan:	/* on to the next line */
 
 					/* grab label to jump to */
 					eline = token(eline, golabel, NPAT);
-					linlen = strlen(golabel);
+					linlen = (int) strlen(golabel);
 					glp = hlp->l_fp;
 					while (glp != hlp) {
 						if (*glp->l_text == '*' &&
@@ -769,6 +776,10 @@ nxtscan:	/* on to the next line */
 
 			case DFORCE:	/* FORCE directive */
 				force = TRUE;
+				break;
+
+			default:	/* should never happen */
+				break;
 
 			}
 		}
@@ -881,6 +892,8 @@ int f, n;	/* default flag and numeric arg to pass on to file */
 	char fname[NSTRING];	/* name of file to execute */
 	CONSTA char *fspec;	/* full file spec */
 
+	UNUSED_ARG(f);
+
 	fspec = gtfilename("File to execute", FALSE);
 	if (!fspec)
 		return(FALSE);
@@ -959,6 +972,8 @@ int bufnum;	/* number of buffer to execute */
         register BUFFER *bp;		/* ptr to buffer to execute */
         register int status;		/* status return */
 	char bufname[12];
+
+	UNUSED_ARG(f);
 
 	/* make the buffer name */
 	strcpy(bufname, "[Macro xx]");

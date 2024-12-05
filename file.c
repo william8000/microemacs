@@ -26,6 +26,8 @@ int f, n;
 {
         char *fname;
 
+	UNUSED_ARGS_FN;
+
 	if (restflag)		/* don't allow this command if restricted */
 		return(resterr());
 	if ((fname = gtfilename("Read file", FALSE)) == NULL)
@@ -47,6 +49,8 @@ int f, n;
 	char *fname;	/* file name */
 	int curoff;
 	LINE *curline;
+
+	UNUSED_ARGS_FN;
 
 	if (restflag)		/* don't allow this command if restricted */
 		return(resterr());
@@ -90,6 +94,8 @@ int filefind(f, n)
 int f, n;
 {
         char *fname;		/* file user wishes to find */
+
+	UNUSED_ARGS_FN;
 
 	if (restflag)		/* don't allow this command if restricted */
 		return(resterr());
@@ -185,6 +191,8 @@ int f, n;
 {
 	char fname[NFILEN];
 
+	UNUSED_ARGS_FN;
+
 	if (restflag)		/* don't allow this command if restricted */
 		return(resterr());
 	if ((curbp->b_flag&BFCHG) == 0)         /* Return, no changes.  */
@@ -203,6 +211,8 @@ int f, n;
 {
         char *fname;		/* file user wishes to find */
         register int s;		/* status return */
+
+	UNUSED_ARGS_FN;
 
 	if (restflag)		/* don't allow this command if restricted */
 		return(resterr());
@@ -254,7 +264,7 @@ int resetkey()	/* reset the encryption key if needed */
 
 int getfile(fname, lockfl)
 
-char *fname;		/* file name to find */
+CONSTA char *fname;	/* file name to find */
 int lockfl;		/* check the file for locks? */
 
 {
@@ -269,7 +279,7 @@ int lockfl;		/* check the file for locks? */
 		return FALSE;
 	}
 #if	MSDOS | VMS
-	mklower(fname);		/* msdos isn't case sensitive */
+	mklower((char *) fname);	/* msdos isn't case sensitive */
 #endif
         for (bp=bheadp; bp!=NULL; bp=bp->b_bufp) {
                 if ((bp->b_flag&BFINVS)==0 && strcmp(bp->b_fname, fname)==0) {
@@ -342,6 +352,8 @@ int	recover;	/* recover an autosaved file */
 #if	FILOCK
 	if (lockfl && lockchk(fname) == ABORT)
 		return(ABORT);
+#else
+	UNUSED_ARG(lockfl);
 #endif
         bp = curbp;                             /* Cheap.               */
         if ((s=bclear(bp)) != TRUE)             /* Might be old.        */
@@ -498,14 +510,14 @@ char *name;	/* name to check on */
 	int name_len, num_len, num;
 	char *num_str;
 
-	name_len = strlen(name);
+	name_len = (int) strlen(name);
 	num = 0;
 
 	/* check to see if it is in the buffer list */
 	while (bfind(name, 0, FALSE) != NULL) {
 		num++;
 		num_str = int_asc(num);
-		num_len = strlen(num_str);
+		num_len = (int) strlen(num_str);
 		if (name_len + num_len >= NBUFN)
 			name_len = NBUFN - 1 - num_len;
 		if (name_len < 0)
@@ -529,6 +541,8 @@ int f, n;
         register int    s;
         char            *fname;
 
+	UNUSED_ARGS_FN;
+
 	if (restflag)		/* don't allow this command if restricted */
 		return(resterr());
 
@@ -547,6 +561,8 @@ int f, n;	/* emacs arguments */
 {
 	register int s;
 	char *fname;
+
+	UNUSED_ARGS_FN;
 
 	if (restflag)		/* don't allow this command if restricted */
 		return(resterr());
@@ -584,7 +600,7 @@ char *mstring;			/* string to match cmd names to */
 	/* let us know this is in progress */
 	mlwrite("[Building File List]");
 
-	mlen = strlen(mstring);
+	mlen = (int) strlen(mstring);
 
 	exact = ! (VMS | MSDOS);
 
@@ -592,7 +608,7 @@ char *mstring;			/* string to match cmd names to */
 	sp = getffile(mstring, mlen, exact, FALSE);
 
 	while (sp) {
-		len = strlen(sp);
+		len = (int) strlen(sp);
 		if (len > mlen) len = mlen;
 
 		/* is this a match? */
@@ -627,6 +643,8 @@ int f,n;	/* prefix flag and argument */
 	char mstring[NSTRING];	/* string to match cmd names to */
 	int status;		/* status return */
 
+	UNUSED_ARGS_FN;
+
 	/* ask what directory mask to search */
 	status = mlreply("Directory to show: ", mstring, NSTRING - 1);
 	if (status == ABORT)
@@ -646,6 +664,8 @@ int filesave(f, n)
 int f, n;
 {
         register int    s;
+
+	UNUSED_ARGS_FN;
 
 	if (curbp->b_mode&MDVIEW)	/* don't allow this command if	*/
 		return(rdonly());	/* we are in read only mode	*/
@@ -743,6 +763,8 @@ int f, n;
 {
         register int    s;
         char            fname[NFILEN];
+
+	UNUSED_ARGS_FN;
 
 	if (restflag)		/* don't allow this command if restricted */
 		return(resterr());
@@ -865,9 +887,11 @@ int f, n;
 	char *s;
 	int len;
 
+	UNUSED_ARGS_FN;
+
 	s = curbp->b_fname;
 	if (s && strlen(s) > (unsigned) 1) {
-		len = strlen(s) - 1;
+		len = (int) (strlen(s) - 1);
 		while (len >= 0 &&
 			s[len] != '.' &&
 			s[len] != '/') len--;
@@ -926,6 +950,8 @@ int f, n;
         register int    s;
         char fname[NFILEN];
 
+	UNUSED_ARGS_FN;
+
 	if (restflag)		/* don't allow this command if restricted */
 		return(resterr());
 	if (curbp->b_mode&MDVIEW)	/* don't allow this command if	*/
@@ -951,6 +977,8 @@ int fileback(f, n)
 int f, n;
 {
 	char tempname[NFILEN + 4];
+
+	UNUSED_ARGS_FN;
 
 	if (restflag)		/* don't allow this command if restricted */
 		return(resterr());

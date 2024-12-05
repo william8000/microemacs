@@ -17,6 +17,7 @@
 int gobol(f, n)
 int f, n;
 {
+	UNUSED_ARGS_FN;
         curwp->w_doto  = 0;
         return (TRUE);
 }
@@ -53,6 +54,7 @@ int f, n;
 int goeol(f, n)
 int f, n;
 {
+	UNUSED_ARGS_FN;
         curwp->w_doto  = llength(curwp->w_dotp);
         return (TRUE);
 }
@@ -115,6 +117,7 @@ int f, n;
 int gobob(f, n)
 int f, n;
 {
+	UNUSED_ARGS_FN;
         curwp->w_dotp  = lforw(curbp->b_linep);
         curwp->w_doto  = 0;
         curwp->w_flag |= WFHARD;
@@ -129,6 +132,7 @@ int f, n;
 int goeob(f, n)
 int f, n;
 {
+	UNUSED_ARGS_FN;
         curwp->w_dotp  = curbp->b_linep;
         curwp->w_doto  = 0;
         curwp->w_flag |= WFHARD;
@@ -406,6 +410,7 @@ int f, n;
 int setmark(f, n)
 int f, n;
 {
+	UNUSED_ARGS_FN;
         curwp->w_markp = curwp->w_dotp;
         curwp->w_marko = curwp->w_doto;
         mlwrite("[Mark set]");
@@ -419,6 +424,7 @@ int f, n;
 int remmark(f, n)
 int f, n;
 {
+	UNUSED_ARGS_FN;
 	curwp->w_markp = NULL;
 	curwp->w_marko = 0;
 	mlwrite("[Mark removed]");
@@ -436,6 +442,8 @@ int f, n;
 {
         register LINE   *odotp;
         register int    odoto;
+
+	UNUSED_ARGS_FN;
 
         if (curwp->w_markp == NULL) {
                 mlwrite("No mark in this window");
@@ -459,6 +467,7 @@ NOSHARE int advset = TRUE;
 int advadv(f, n)
 int f, n;
 {
+UNUSED_ARGS_FN;
 advset = TRUE;
 return(TRUE);
 }
@@ -467,6 +476,7 @@ return(TRUE);
 int advback(f, n)
 int f, n;
 {
+UNUSED_ARGS_FN;
 advset = FALSE;
 return(TRUE);
 }
@@ -596,6 +606,7 @@ int yankchar(f, n)
 int f, n;
 {
 	int s;
+	UNUSED_ARG(f);
 	if (curbp->b_mode&MDVIEW)	/* don't allow this command if	*/
 		return(rdonly());	/* we are in read only mode	*/
 	if (ykchar == -1 || n <= 0) s = FALSE;
@@ -619,6 +630,8 @@ int f, n;
 	register int    c;
 	int i, len;
 	char oct[10];
+
+	UNUSED_ARG(f);
 
 	if (curbp->b_mode&MDVIEW)	/* don't allow this command if	*/
 		return(rdonly());	/* we are in read only mode	*/
@@ -645,6 +658,7 @@ int f, n;
 int nullcmd(f, n)
 int f, n;
 {
+UNUSED_ARGS_FN;
 return(TRUE);
 }
 #endif

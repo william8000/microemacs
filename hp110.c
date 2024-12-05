@@ -18,25 +18,20 @@
 #define BEL     0x07                    /* BEL character.               */
 #define ESC     0x1B                    /* ESC character.               */
 
-extern  int     ttopen();               /* Forward references.          */
-extern  int     ttgetc();
-extern  int     ttputc();
-extern  int     ttflush();
-extern  int     ttclose();
-extern  int     h110move();
-extern  int     h110eeol();
-extern  int     h110eeop();
-extern  int     h110beep();
+extern  VOID    h110move();               /* Forward references.          */
+extern  VOID    h110eeol();
+extern  VOID    h110eeop();
+extern  VOID    h110beep();
 extern  int     h110open();
-extern	int	h110rev();
+extern	VOID	h110rev();
 extern	int	h110cres();
 extern	int	h110close();
 extern	int	h110kopen();
 extern	int	h110kclose();
 
 #if	COLOR
-extern	int	h110fcol();
-extern	int	h110bcol();
+extern	VOID	h110fcol();
+extern	VOID	h110bcol();
 
 int	cfcolor = -1;		/* current forground color */
 int	cbcolor = -1;		/* current background color */
@@ -74,7 +69,7 @@ TERM    term    = {
 };
 
 #if	COLOR
-h110fcol(color)		/* set the current output color */
+VOID h110fcol(color)		/* set the current output color */
 
 int color;	/* color to set */
 
@@ -88,7 +83,7 @@ int color;	/* color to set */
 	cfcolor = color;
 }
 
-h110bcol(color)		/* set the current background color */
+VOID h110bcol(color)		/* set the current background color */
 
 int color;	/* color to set */
 
@@ -103,7 +98,7 @@ int color;	/* color to set */
 }
 #endif
 
-h110move(row, col)
+VOID h110move(row, col)
 {
         ttputc(ESC);
         ttputc('[');
@@ -113,7 +108,7 @@ h110move(row, col)
         ttputc('H');
 }
 
-h110eeol()
+VOID h110eeol()
 {
         ttputc(ESC);
         ttputc('[');
@@ -121,7 +116,7 @@ h110eeol()
         ttputc('K');
 }
 
-h110eeop()
+VOID h110eeop()
 {
 #if	COLOR
 	h110fcol(gfcolor);
@@ -133,7 +128,7 @@ h110eeop()
         ttputc('J');
 }
 
-h110rev(state)		/* change reverse video state */
+VOID h110rev(state)		/* change reverse video state */
 
 int state;	/* TRUE = reverse, FALSE = normal */
 
@@ -170,7 +165,7 @@ spal()		/* change pallette register */
 	/*   not here */
 }
 
-h110beep()
+VOID h110beep()
 {
         ttputc(BEL);
         ttflush();
@@ -230,7 +225,7 @@ int f,n;	/* default flag, numeric argument [unused] */
 }
 #endif
 #else
-h110hello()
+VOID h110hello()
 {
 }
 #endif

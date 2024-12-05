@@ -18,6 +18,8 @@ int n;		/* numeric argument */
 	int odisinp;		/* original vlaue of disinp */
 	char key[NPAT];		/* new encryption string */
 
+	UNUSED_ARGS_FN;
+
 	/* turn command input echo off */
 	odisinp = disinp;
 	disinp = FALSE;
@@ -30,7 +32,7 @@ int n;		/* numeric argument */
 
 	/* and encrypt it */
 	me_crypt((char *)NULL, (unsigned) 0);
-	me_crypt(key, strlen(key));
+	me_crypt(key, (int) strlen(key));
 
 	/* and save it off */
 	strcpy(curbp->b_key, key);
@@ -130,7 +132,7 @@ int n;		/* numeric argument */
  *	responsiblity of the user.  
  *
  **********/
-static int mod95();
+static int mod95 PP((int val));
 
 VOID me_crypt(bptr, len)
 register char *bptr;	/* buffer of characters to be encrypted */

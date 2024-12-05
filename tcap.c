@@ -26,28 +26,26 @@
 #define BEL     0x07
 #define ESC     0x1B
 
-extern int	ttopen PP((void));
-extern int      ttgetc PP((void));
-extern int      ttputc PP((int c));
-extern int      ttflush PP((void));
-
+#ifndef __NCURSES_H
 extern int	tgetnum();
 extern int      tput();
 extern char     *tgoto();
+extern char     *tgetstr();
+#endif
 
 static int	tcapclose PP((void));
 static int	tcapkopen PP((void));
 static int	tcapkclose PP((void));
-static int	tcapmove PP((int row, int col));
-static int	tcapeol PP((void));
-static int	tcapeop PP((void));
-static int	tcapbeep PP((void));
-static int	tcaprev PP((int state));
+static VOID	tcapmove PP((int row, int col));
+static VOID	tcapeol PP((void));
+static VOID	tcapeop PP((void));
+static VOID	tcapbeep PP((void));
+static VOID	tcaprev PP((int state));
 static int	tcapcres PP((char *res));
 static int	tcapopen PP((void));
 #if	COLOR
-static	int	tcapfcol PP((int color));
-static	int	tcapbcol PP((int color));
+static	VOID	tcapfcol PP((int color));
+static	VOID	tcapbcol PP((int color));
 
 static VOID tcapparm PP((int n));
 
@@ -108,7 +106,6 @@ char *code, **space;
 {
 	char *v, *s;
 	int got_dollar, copy_len;
-	char *tgetstr();
 
 	if (*space >= &tcapbuf[TCAPSLEN-20])
 	{
@@ -152,7 +149,6 @@ char *code, **space;
 static int tcapopen()
 
 {
-        char *getenv();
         char *t, *p;
         char tcbuf[1024];
         char *tv_stype;
@@ -309,6 +305,7 @@ static int tcapopen()
 		fastputc('l');
 	}
 #endif
+	return TRUE;
 }
 
 static int tcapclose()
@@ -322,21 +319,23 @@ static int tcapclose()
 		tcapbcol(0);
 	}
 #endif
-	ttclose();
+	return ttclose();
 }
 
 static int tcapkopen()
 
 {
 	strcpy(sres, "NORMAL");
+	return TRUE;
 }
 
 static int tcapkclose()
 
 {
+	return TRUE;
 }
 
-static int tcapmove(row, col)
+static VOID tcapmove(row, col)
 register int row, col;
 {
 	if (isvt100 && col == 0)
@@ -361,7 +360,7 @@ register int row, col;
 	phrow = row;
 }
 
-static int tcapeol()
+static VOID tcapeol()
 {
 #if	COLOR
 	tcapfcol(gfcolor);
@@ -370,7 +369,7 @@ static int tcapeol()
         putpad(CE);
 }
 
-static int tcapeop()
+static VOID tcapeop()
 {
 #if	COLOR
 	tcapfcol(gfcolor);
@@ -380,7 +379,7 @@ static int tcapeop()
 	phrow = 1000;
 }
 
-static int tcaprev(state)	/* change reverse video status */
+static VOID tcaprev(state)	/* change reverse video status */
 
 int state;		/* FALSE = normal video, TRUE = reverse video */
 
@@ -391,11 +390,11 @@ int state;		/* FALSE = normal video, TRUE = reverse video */
 
 #if	COLOR
 	/* forground and background already set */
-	if (usedcolor) return 0;
+	if (usedcolor) return;
 #endif
-	if (state == tcaprv)	return 0;
+	if (state == tcaprv)	return;
 	tcaprv = state;
-	if (!revexist)	return 0;
+	if (!revexist)	return;
 	if (state) {
 		if (SO != NULL)
 			putpad(SO);
@@ -419,6 +418,7 @@ static int tcapcres(res)	/* change screen resolution */
 char *res;
 
 {
+	UNUSED_ARG(res);
 	return(TRUE);
 }
 
@@ -426,6 +426,8 @@ int spal(dummy)	/* change palette string */
 char *dummy;
 {
 	/* Does nothing here */
+	UNUSED_ARG(dummy);
+	return TRUE;
 }
 
 #if	COLOR
@@ -443,10 +445,10 @@ int n;
 	fastputc('0' + n%10);
 }
 
-static int tcapfcol(color)	/* set the current output color */
+static VOID tcapfcol(color)	/* set the current output color */
 int color;
 {
-	if (!usedcolor || color == cfcolor)	return 0;
+	if (!usedcolor || color == cfcolor)	return;
 	fastputc(ESC);
 	fastputc('[');
 	tcapparm(color + 30);
@@ -454,10 +456,10 @@ int color;
 	cfcolor = color;
 }
 
-static int tcapbcol(color)	/* set the current background color */
+static VOID tcapbcol(color)	/* set the current background color */
 int color;
 {
-	if (!usedcolor || color == cbcolor)	return 0;
+	if (!usedcolor || color == cbcolor)	return;
 	fastputc(ESC);
 	fastputc('[');
 	tcapparm(color + 40);
@@ -466,7 +468,7 @@ int color;
 }
 #endif
 
-static int tcapbeep()
+static VOID tcapbeep()
 {
 	fastputc(BEL);
 }
