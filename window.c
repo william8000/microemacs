@@ -775,7 +775,7 @@ int n;	/* numeric argument */
 
 #if	CALLABLE
 /* free all windows */
-frallwindows()
+VOID frallwindows()
 {
 	register WINDOW *wp;
 

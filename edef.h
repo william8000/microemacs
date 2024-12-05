@@ -149,6 +149,9 @@ extern int unmark PP((int f, int n));		/* unmark current buffer	*/
 extern int comp_test PP((char *name, int namelen, int *cpos, int *matchlen,
 		CONSTA char *testname, int exact));
 #endif
+#if	CALLABLE
+extern VOID frallbuffers PP((void));	/* free all buffers */
+#endif
 
 	/* from crypt.c */
 
@@ -432,6 +435,15 @@ extern int rdonly PP((void));
 extern int resterr PP((void));
 extern int nullproc PP((int f, int n));		/* does nothing... */
 extern char *bytecopy PP((char *dst, CONSTA char *src, int maxlen));
+#if	CALLABLE
+extern int emacsmain PP((int argc, char *argv[]));
+extern int emacscmd PP((char *line, int n));
+extern int emacsone PP((char *name));
+extern int emacspgm PP((int argc, char *argv[]));
+#endif
+#if	WINMOD
+extern int wmodinit PP((int argc, char *argv[]));
+#endif
 
 	/* from menu.c */
 
@@ -538,7 +550,7 @@ extern int ttputc PP((char c));
 extern int ttputc PP((int c));
 #endif
 
-#if	VMSVT | TERMCAP
+#if	VMSVT | TERMCAP | WINMOD
 extern VOID ttsetwid PP((int n));
 extern VOID ttscroll PP((int rowa, int rowb, int lines));
 #endif
@@ -582,6 +594,9 @@ extern int wpopup PP((BUFFER *popbufp));	/* Pop up window creation	*/
 #if	AEDIT
 extern int scrlforw PP((int f, int n));		/* scroll forward */
 extern int scrlback PP((int f, int n));		/* scroll backward */
+#endif
+#if	CALLABLE
+extern VOID frallwindows PP((void));
 #endif
 
 	/* from word.c */

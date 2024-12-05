@@ -23,7 +23,7 @@ wemacs.a:	$(OFILES)
 wemacs:		$(OFILES) emacs.o
 		$(CC) $(CFLAGS) emacs.o $(OFILES) \
 			$(DEF_OBJ) \
-			$(SPICE_LIBS) $(DEF_LIB) $(X_LIB) -o wemacs
+			$(SPICE_LIBS) $(CTREE_LIB)/libnctsglib.a $(XML_LIB) $(X_LIB) $(SPICE_LIBS2) $(DEF_LIB) -o wemacs
 
 $(OFILES):	$(HFILES)
 

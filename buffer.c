@@ -651,7 +651,7 @@ int f, n;	/* unused command arguments */
 }
 
 #if	CALLABLE
-frallbuffers()	/* free all buffers */
+VOID frallbuffers()	/* free all buffers */
 {
 	while (bheadp != NULL) {
 		bheadp->b_flag &= ~BFCHG;	/* clear changed mark */

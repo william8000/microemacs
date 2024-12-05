@@ -847,6 +847,7 @@ static VOID freeall()
 
 /* edit according to simulated command line */
 int emacsmain(argc, argv)
+int argc;
 char *argv[];
 {
 	int status;
