@@ -31,20 +31,21 @@
 #define BEL     0x07                    /* BEL character.               */
 #define ESC     0x1B                    /* ESC character.               */
 
-extern  int     ansimove();               /* Forward references.          */
-extern  int     ansiel();
-extern  int     ansiep();
-extern  int     ansibeep();
-extern  int     ansiopen();
-extern	int	ansirev();
-extern	int	ansiclose();
-extern	int	ansikopen();
-extern	int	ansikclose();
-extern	int	ansicres();
+static  VOID    ansimove PP((int row, int col));	/* Forward references.          */
+static  VOID    ansiel PP((void));
+static  VOID    ansiep PP((void));
+static  VOID    ansibeep PP((void));
+static  int     ansiopen PP((void));
+static	VOID	ansirev PP((int state));
+static	int	ansiclose PP((void));
+static	int	ansikopen PP((void));
+static	int	ansikclose PP((void));
+static	int	ansicres PP((CONSTA char *res));
+static  VOID	ansiparm PP((int n));
 
 #if	COLOR
-extern	int	ansifcol();
-extern	int	ansibcol();
+static	VOID	ansifcol PP((int color));
+static	VOID	ansibcol PP((int color));
 
 int	cfcolor = -1;		/* current forground color */
 int	cbcolor = -1;		/* current background color */
@@ -91,7 +92,7 @@ NOSHARE TERM    term    = {
 };
 
 #if	COLOR
-ansifcol(color)		/* set the current output color */
+static VOID ansifcol(color)		/* set the current output color */
 
 int color;	/* color to set */
 
@@ -109,7 +110,7 @@ int color;	/* color to set */
 	cfcolor = color;
 }
 
-ansibcol(color)		/* set the current background color */
+static VOID ansibcol(color)		/* set the current background color */
 
 int color;	/* color to set */
 
@@ -128,7 +129,8 @@ int color;	/* color to set */
 }
 #endif
 
-ansimove(row, col)
+static VOID ansimove(row, col)
+int row, col;
 {
         ttputc(ESC);
         ttputc('[');
@@ -138,14 +140,14 @@ ansimove(row, col)
         ttputc('H');
 }
 
-ansiel()
+static VOID ansiel()
 {
         ttputc(ESC);
         ttputc('[');
         ttputc('K');
 }
 
-ansiep()
+static VOID ansiep()
 {
 #if	COLOR
 	ansifcol(gfcolor);
@@ -156,7 +158,7 @@ ansiep()
         ttputc('J');
 }
 
-ansirev(state)		/* change reverse video state */
+static VOID ansirev(state)		/* change reverse video state */
 
 int state;	/* TRUE = reverse, FALSE = normal */
 
@@ -181,25 +183,28 @@ int state;	/* TRUE = reverse, FALSE = normal */
 #endif
 }
 
-ansicres()	/* change screen resolution */
-
+static int ansicres(res)	/* change screen resolution */
+CONSTA char *res;
 {
+	UNUSED_ARG(res);
 	return(TRUE);
 }
 
-spal(dummy)		/* change pallette settings */
-
+int spal(dummy)		/* change pallette settings */
+char *dummy;
 {
 	/* none for now */
+	UNUSED_ARG(dummy);
+	return TRUE;
 }
 
-ansibeep()
+static VOID ansibeep()
 {
         ttputc(BEL);
         ttflush();
 }
 
-ansiparm(n)
+static VOID ansiparm(n)
 register int    n;
 {
         register int q,r;
@@ -215,9 +220,8 @@ register int    n;
         ttputc((n%10) + '0');
 }
 
-ansiopen()
+static int ansiopen()
 {
-	char *getenv();
 	register char *cp;
 	int n;
 
@@ -249,31 +253,33 @@ ansiopen()
 
 	strcpy(sres, "NORMAL");
 	revexist = TRUE;
-        ttopen();
+        return ttopen();
 }
 
-ansiclose()
+static int ansiclose()
 
 {
 #if	COLOR
 	ansifcol(7);
 	ansibcol(0);
 #endif
-	ttclose();
+	return ttclose();
 }
 
-ansikopen()	/* open the keyboard (a noop here) */
+static int ansikopen()	/* open the keyboard (a noop here) */
 
 {
+	return TRUE;
 }
 
-ansikclose()	/* close the keyboard (a noop here) */
+static int ansikclose()	/* close the keyboard (a noop here) */
 
 {
+	return TRUE;
 }
 
 #if	FLABEL
-fnclabel(f, n)		/* label a function key */
+int fnclabel(f, n)	/* label a function key */
 
 int f,n;	/* default flag, numeric argument [unused] */
 

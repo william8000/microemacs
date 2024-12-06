@@ -21,12 +21,12 @@ fi
 
 cc2 -c $FULL_OPT wedum.c
 
-#if [ ! -z "$TOOL_OBJ_LN" -a ! -f $TOOL_OBJ_ROOT/emacs/estruct.h ]
+#if [ ! -z "$TOOL_OBJ_LN" ] && [ ! -f "$TOOL_OBJ_ROOT/emacs/estruct.h" ]
 #then
 	echo "Linking from $TOOL_ROOT to $TOOL_OBJ_ROOT"
 	for name in *.[hc]
 	do
-		$TOOL_OBJ_LN $TOOL_ROOT/emacs/$name $TOOL_OBJ_ROOT/emacs/$name
+		$TOOL_OBJ_LN "$TOOL_ROOT/emacs/$name" "$TOOL_OBJ_ROOT/emacs/$name"
 	done
 #fi
 

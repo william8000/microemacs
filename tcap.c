@@ -522,6 +522,8 @@ int f,n;	/* default flag, numeric argument [unused] */
 #endif
 #else
 
+int tcaphello PP((void));
+
 int tcaphello()
 {
 	return 0;

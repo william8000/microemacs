@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # build.emacs -- make a stand-alone emacs binary
 #
@@ -19,6 +19,7 @@ do_pipe=
 do_static=
 do_dry_run=
 do_64=
+do_install=no
 is_gcc=no
 is_bgcc=no
 set_bgcc=no
@@ -31,7 +32,7 @@ if [ -z "$MAKE" ]
 then
 	if [ -x "/usr/local/bin/gmake" ]
 	then MAKE="/usr/local/bin/gmake"
-	else MAKE=make
+	else MAKE='make'
 	fi
 fi
 
@@ -92,6 +93,9 @@ do
 	-n|-dry-run)	do_dry_run=yes ;;
 	-32|-m32)	do_64=32 ;;
 	-64|-m64)	do_64=64 ;;
+	-ansi)		DEF_WARN="$DEF_WARN -DUSEANSI=1" ;;
+	-winmod)	DEF_WARN="$DEF_WARN -DUSEWINMOD=1" ;;
+	-install)	do_install=yes ;;
 	-quiet)		do_quiet=yes ;;
 	-curses)	curses=curses ;;
 	-ncurses)	curses=ncurses ;;
@@ -117,6 +121,7 @@ then
 	save_is_bgcc="$is_bgcc"
 	save_is_gcc="$is_gcc"
 
+	# shellcheck disable=SC1091
 	. setgcc.sh -bgcc
 
 	do_opt="$save_do_opt"
@@ -134,7 +139,7 @@ if [ "$do_profile" = yes ] ; then do_strip=no ; fi
 # 64 bit uses more ram
 #if [ -z "$do_64" ]
 #then
-#	if [ "`uname -m`" = x86_64 ] ; then do_64=64 ; fi
+#	if [ "$(uname -m)" = x86_64 ] ; then do_64=64 ; fi
 #fi
 
 if [ "$do_64" = 64 ] ; then DEF_WARN="$DEF_WARN -m64" ; fi
@@ -156,13 +161,13 @@ then
 	MEEXTRAFLAGS="$MEEXTRAFLAGS -static"
 fi
 
-if [ -n "$SPICE_INC" -a ! -d "$SPICE_INC" ]
+if [ -n "$SPICE_INC" ] && [ ! -d "$SPICE_INC" ]
 then
 	echo "$0: SPICE_INC $SPICE_INC directory not found"
 	SPICE_INC=
 fi
 
-if [ -z "$SPICE_INC" -a ! -d "$SPICE_INC" ]
+if [ -z "$SPICE_INC" ] && [ ! -d "$SPICE_INC" ]
 then
 	# Building without SCS spice environment
 	MEEXTRAFLAGS="$MEEXTRAFLAGS -D__PORT_H__"
@@ -171,11 +176,11 @@ else
 	MEEXTRAFLAGS="$MEEXTRAFLAGS -I$SPICE_INC"
 fi
 
-case `uname -r` in
+case "$(uname -r)" in
   3.2)	# options for SCO Unix 3.2v4
 	if [ "$is_gcc" = no ]
 	then
-		case `uname -s` in
+		case "$(uname -s)" in
 		SCO_SV)
 			;;
 		*)
@@ -188,7 +193,7 @@ case `uname -r` in
 	;;
 esac
 
-case `uname -s` in
+case "$(uname -s)" in
 UNIX_SV) # options for SCO UnixWare 2.1.2
 	MEEXTRAFLAGS="$MEEXTRAFLAGS -D_SYSTYPE_SVR4=1"
 	if [ "$do_opt" = yes ]
@@ -197,28 +202,28 @@ UNIX_SV) # options for SCO UnixWare 2.1.2
 FreeBSD|Linux)
 	do_pipe=yes
 	if [ "$do_opt" = yes ]
-	then MEEXTRAFLAGS="$MEEXTRAFLAGS -O3 -fomit-frame-pointer -ffast-math" ; fi
+	then MEEXTRAFLAGS="$MEEXTRAFLAGS -O3 -fomit-frame-pointer -ffast-math -fno-unsafe-math-optimizations" ; fi
 	do_mcs=no
 	;;
 Darwin)
 	do_strip=no
 	do_pipe=yes
 	if [ "$do_opt" = yes ]
-	then MEEXTRAFLAGS="$MEEXTRAFLAGS -O3 -fomit-frame-pointer -ffast-math" ; fi
+	then MEEXTRAFLAGS="$MEEXTRAFLAGS -O3 -fomit-frame-pointer -ffast-math -fno-unsafe-math-optimizations" ; fi
 	;;
 HP-UX)
-	case `uname -m` in
-	ia64) if [ -z "$LIB_PREFIX" -a -f /usr/lib/hpux64/libc.so ] ; then LIB_PREFIX="/usr/lib/hpux64/lib" ; fi
+	case "$(uname -m)" in
+	ia64) if [ -z "$LIB_PREFIX" ] && [ -f /usr/lib/hpux64/libc.so ] ; then LIB_PREFIX="/usr/lib/hpux64/lib" ; fi
 	esac
 	;;
 esac
 
 if [ -z "$LIB_PREFIX" ]
 then
-	if [ "$do_64" = 64 -a -f "/lib64/libc.so" ]
+	if [ "$do_64" = 64 ] && [ -f "/lib64/libc.so" ]
 	then
 		LIB_PREFIX="/lib64/lib"
-	elif [ -f "/lib/libc.a" -o -f "/lib/libc_s" ]
+	elif [ -f "/lib/libc.a" ] || [ -f "/lib/libc_s" ]
 	then
 		LIB_PREFIX="/lib/lib"
 	elif [ -d "/cygnus/cygwin-b20/H-i586-cygwin32/lib" ]
@@ -243,9 +248,9 @@ MEEXTRALIB=
 
 if [ -z "$curses" ]
 then
-	if [ -f ${LIB_PREFIX}ncurses.a -o -f /usr${LIB_PREFIX}ncurses.a -o \
-		-f ${LIB_PREFIX}ncurses.so -o -f /usr${LIB_PREFIX}ncurses.so -o \
-		-f ${LIB_PREFIX}ncurses.dylib -o -f /usr${LIB_PREFIX}ncurses.dylib ]
+	if [ -f "${LIB_PREFIX}ncurses.a" ]		|| [ -f "/usr${LIB_PREFIX}ncurses.a" ] || \
+		[ -f "${LIB_PREFIX}ncurses.so" ]	|| [ -f "/usr${LIB_PREFIX}ncurses.so" ] || \
+		[ -f "${LIB_PREFIX}ncurses.dylib" ]	|| [ -f "/usr${LIB_PREFIX}ncurses.dylib" ]
 	then
 		# Use the ncurses library
 		curses=ncurses
@@ -254,7 +259,7 @@ fi
 
 if [ -z "$curses" ]
 then
-	if [ -f ${LIB_PREFIX}termcap.a -o -f /usr${LIB_PREFIX}termcap.a ]
+	if [ -f "${LIB_PREFIX}termcap.a" ] || [ -f "/usr${LIB_PREFIX}termcap.a" ]
 	then
 		# Use the termcap library
 		curses=termcap
@@ -273,10 +278,10 @@ fi
 
 if [ -z "$curses" ]
 then
-	if [ -f ${LIB_PREFIX}curses.a -o -f /usr${LIB_PREFIX}curses.a -o \
-		-f ${LIB_PREFIX}curses.so -o -f /usr${LIB_PREFIX}curses.so -o \
-		-f ${LIB_PREFIX}curses.dylib -o -f /usr${LIB_PREFIX}curses.dylib -o \
-		-f /usr/ccs${LIB_PREFIX}curses.a ]
+	if [ -f "${LIB_PREFIX}curses.a" ]		|| [ -f "/usr${LIB_PREFIX}curses.a" ] || \
+		[ -f "${LIB_PREFIX}curses.so" ]		|| [ -f "/usr${LIB_PREFIX}curses.so" ] || \
+		[ -f "${LIB_PREFIX}curses.dylib" ]	|| [ -f "/usr${LIB_PREFIX}curses.dylib" ] || \
+		[ -f "/usr/ccs${LIB_PREFIX}curses.a" ]
 	then
 		# Use the curses library
 		curses=curses
@@ -292,30 +297,30 @@ if [ "$is_bgcc" = yes ]
 then
 	# Use bounds checking helper library (not needed for Linux)
 	# MEEXTRALIB="$MEEXTRALIB -lcheck"
-	x=x
+	:
 else
-	if [ -f ${LIB_PREFIX}malloc.a -o -f /usr${LIB_PREFIX}malloc.a ]
+	if [ -f "${LIB_PREFIX}malloc.a" ] || [ -f "/usr${LIB_PREFIX}malloc.a" ]
 	then
 		# Use fast malloc library
 		MEEXTRALIB="$MEEXTRALIB -lmalloc"
 	fi
 
-	if [ $do_debug = no -a $do_strip = yes -a -f ${LIB_PREFIX}c_s.a ]
+	if [ $do_debug = no ] && [ $do_strip = yes ] && [ -f "${LIB_PREFIX}c_s.a" ]
 	then
 		# Use shared version of c runline library
 		MEEXTRALIB="$MEEXTRALIB -lc_s"
 	fi
 fi
 
-if [ -f ${LIB_PREFIX}x.a ]
+if [ -f "${LIB_PREFIX}x.a" ]
 then
 	# SCO needs -lx for nap call
 	MEEXTRALIB="$MEEXTRALIB -lc -lx"
 fi
 
-#if [ -f /usr/ucblib/libucb.a ]
+#if [ -f "/usr/ucblib/libucb.a" ]
 #then
-#	if [ "`uname`" = SunOS ]
+#	if [ "$(uname)" = SunOS ]
 #	then
 #		# Solaris needs ucb for usleep
 #		# Do this last so we do not get more ucb than we want
@@ -325,7 +330,7 @@ fi
 
 MEEXTRALIB="$MEEXTRALIB $DEF_LIB"
 
-if [ "$is_bgcc" = yes -a -n "$MEEXTRALIB" ]
+if [ "$is_bgcc" = yes ] && [ -n "$MEEXTRALIB" ]
 then
 	new_lib=
 	for name in $MEEXTRALIB
@@ -348,7 +353,7 @@ if [ "$do_dry_run" = yes ] ; then make_opts="$make_opts -n" ; fi
 
 if [ "$do_jobs" != no ]
 then
-	num="`grep processor /proc/cpuinfo | tail -1 | awk '{ print $3 }'`"
+	num="$(grep processor /proc/cpuinfo | tail -1 | awk '{ print $3 }')"
 	case "$num" in
 	0) ;;
 	1|2) make_opts="$make_opts -j2" ;;
@@ -383,6 +388,7 @@ then
 	echo
 fi
 
+# shellcheck disable=SC2086
 $MAKE $make_opts -f mymakefile
 
 EMACS=emacs
@@ -395,9 +401,9 @@ then
 	ls -l "$EMACS"
 fi
 
-if [ "$do_strip" = yes -a -x emacs -a "$is_bgcc" = no ]
+if [ "$do_strip" = yes ] && [ -x emacs ] && [ "$is_bgcc" = no ]
 then
-	if [ -x /usr/bin/strip -o -x /usr/ccs/bin/strip ]
+	if [ -x /usr/bin/strip ] || [ -x /usr/ccs/bin/strip ]
 	then
 		if [ "$do_quiet" != yes ]
 		then
@@ -414,7 +420,7 @@ then
 			ls -l "$EMACS"
 		fi
 	fi
-	if [ "$do_mcs" != no -a \( -x /usr/bin/mcs -o -x /usr/ccs/bin/mcs \) ]
+	if [ "$do_mcs" != no ] && { [ -x /usr/bin/mcs ] || [ -x /usr/ccs/bin/mcs ] ; }
 	then
 		if [ "$do_quiet" != yes ]
 		then
@@ -431,4 +437,9 @@ then
 			ls -l "$EMACS"
 		fi
 	fi
+fi
+
+if [ "$do_install" = yes ] && [ -f emacs ]
+then
+	$MAKE -f mymakefile install
 fi

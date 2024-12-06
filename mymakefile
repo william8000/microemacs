@@ -16,12 +16,26 @@ VMSFILES=	vmscc.com vmslink.com vmslinkshr.com vmsmake.com spawnemacs.com emacsp
 
 MISCFILES=	build.emacs mymakefile read.me read.me2 emacs.key emacsrc.* $(VMSFILES)
 
+.PHONY: all install distclean clean tar
+
+all:		emacs
+
 emacs:		$(OFILES)
 		$(CC) $(CFLAGS) $(OFILES) -o emacs $(MEEXTRALIB)
 
 main.o:		ebind.h
 
 $(OFILES):	$(HFILES)
+
+BIN=/usr/local/bin
+EMACSEXE=uemacs
+BINEMACSEXE=$(BIN)/$(EMACSEXE)
+
+install:	emacs
+		if [ -f "$(BINEMACSEXE)" ] ; then sudo mv -f "$(BINEMACSEXE)" "$(BINEMACSEXE)-" ; fi
+		sudo cp -p emacs "$(BINEMACSEXE)"
+		sudo chmod 555 "$(BINEMACSEXE)"
+		sudo chown root:root "$(BINEMACSEXE)"
 
 distclean:	clean
 		rm -f emacs emacs.tgz emacs.tar.bz2 emacs.zip

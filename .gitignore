@@ -8,6 +8,7 @@
 *.xen
 emacs
 emacs-*
+wemacs
 *.exe
 *.exe.*
 *.tar

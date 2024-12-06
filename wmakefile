@@ -16,7 +16,7 @@ CFILES=		wmod.c main.c basic.c bind.c buffer.c display.c \
 HFILES=		estruct.h edef.h efunc.h epath.h ebind.h evar.h
 
 wemacs.a:	$(OFILES)
-		-rm wemacs.a
+		-rm -f wemacs.a
 		ar qv wemacs.a $(OFILES)
 		if [ ! -z "$(RANLIB)" ]; then $(RANLIB) wemacs.a; fi
 

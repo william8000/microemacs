@@ -730,10 +730,14 @@ static int reframe(wp)
 WINDOW *wp;
 
 {
-	register LINE *lp, *slp, *blp;
+	register LINE *lp, *blp;
 	register int i;
-	int top, bot, j, k, scrolled;
+	int scrolled;
+#if	SCROLL
+	register LINE *slp;
+	int top, bot, j, k;
 	VIDEO *vp;
+#endif
 
 	scrolled = 0;
 

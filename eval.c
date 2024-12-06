@@ -241,8 +241,8 @@ char *fname;		/* name of function to evaluate */
 		case UFAND:	return(ltos(stol(arg1) && stol(arg2)));
 		case UFOR:	return(ltos(stol(arg1) || stol(arg2)));
 		case UFLENGTH:	return(me_itoa((int)strlen(arg1)));
-		case UFUPPER:	return(mkupper(arg1));
-		case UFLOWER:	return(mklower(arg1));
+		case UFUPPER:	return(bytecopy(result, mkupper(arg1), NSTRING-1));
+		case UFLOWER:	return(bytecopy(result, mklower(arg1), NSTRING-1));
 		case UFTRUTH:	return(ltos(asc_int(arg1) == 42));
 		case UFASCII:	return(me_itoa((int)arg1[0]));
 		case UFCHR:	result[0] = (char) asc_int(arg1);
@@ -306,15 +306,16 @@ char *buf;	/* buffer to place list of characters */
 	register int index;
 	register char *sp;
 
-	/* if we are defaulting to a standard word char list... */
-	if (wlflag == FALSE)
-		return((char *)"");
-
-	/* build the string of characters in the return buffer */
 	sp = buf;
-	for (index = 0; index < 256; index++)
-		if (wordlist[index])
-			*sp++ = (char) index;
+
+	/* if we are not defaulting to a standard word char list... */
+	if (wlflag) {
+		/* build the string of characters in the return buffer */
+		for (index = 0; index < 256; index++)
+			if (wordlist[index])
+				*sp++ = (char) index;
+	}
+
 	*sp = 0;
 	return(buf);
 }
@@ -707,7 +708,7 @@ CONSTA char *value;	/* value to set to */
 		case EVCFNAME:	bytecopy(curbp->b_fname, value, NFILEN-1);
 				upmode();
 				break;
-		case EVSRES:	status = TTrez((char *) value);
+		case EVSRES:	status = TTrez(value);
 				break;
 		case EVDEBUG:	macbug = stol(value);
 				break;
