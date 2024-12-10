@@ -2,7 +2,11 @@
 
 #include "wedum.h"
 
-static const char wemacsdum_what[] = "@(#)! --- WEmacs stubs";
+static const char wemacsdum_what[]
+#if (defined(__GCC__) || defined(__GNUC__))
+		__attribute__((used))
+#endif
+		= "@(#)! --- WEmacs stubs";
 
 int emacscmd( char *line, int len )
 {
