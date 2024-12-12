@@ -36,6 +36,13 @@ then
 	fi
 fi
 
+if [ -f mymakefile ]
+then
+	MAKEFILE=mymakefile
+else
+	MAKEFILE=uemacs.mak
+fi
+
 set_bgcc_flags(){
 	is_gcc=yes ; is_bgcc=yes ; do_strip=no ; do_debug=yes ; do_opt=no
 }
@@ -376,7 +383,7 @@ fi
 
 if [ $do_clean = yes ]
 then
-	$MAKE -f mymakefile clean
+	$MAKE -f "$MAKEFILE" clean
 fi
 
 if [ "$do_quiet" != yes ]
@@ -390,7 +397,7 @@ then
 fi
 
 # shellcheck disable=SC2086
-$MAKE $make_opts -f mymakefile
+$MAKE $make_opts -f "$MAKEFILE"
 
 EMACS=emacs
 case "$OSTYPE" in
@@ -442,5 +449,5 @@ fi
 
 if [ "$do_install" = yes ] && [ -f emacs ]
 then
-	$MAKE -f mymakefile install
+	$MAKE -f "$MAKEFILE" install
 fi
