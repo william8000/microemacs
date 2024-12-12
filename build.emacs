@@ -51,6 +51,12 @@ then
 	fi
 fi
 
+if [ -n "$DEF_CC" ]
+then
+	CC="$DEF_CC"
+	export CC
+fi
+
 case "$DEF_CC" in
 bgcc*)	set_bgcc_flags
 	CC=bgcc
@@ -95,7 +101,7 @@ do
 	-ncurses)	curses=ncurses ;;
 	-cursest)	curses="curses -ltermcap" ;;
 	-termcap)	curses="termcap" ;;
-	-clang)		DEF_CC='clang' ; DEF_WARN="$DEF_WARN -Wno-deprecated-non-prototype" ;;
+	-clang)		CC='clang' ; export CC ; DEF_WARN="$DEF_WARN -Wno-deprecated-non-prototype" ;;
 	-bgcc)		if [ "$is_bgcc" != yes ]
 			then
 				set_bgcc=yes
@@ -359,12 +365,6 @@ then
 fi
 
 export MEEXTRAFLAGS MEEXTRALIB
-
-if [ -n "$DEF_CC" ]
-then
-	CC="$DEF_CC"
-	export CC
-fi
 
 if [ "$do_quiet" != yes ]
 then
