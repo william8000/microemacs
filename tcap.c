@@ -33,6 +33,8 @@ extern char     *tgoto();
 extern char     *tgetstr();
 #endif
 
+static char *mytgetstr PP((const char *code, char **space));
+
 static int	tcapclose PP((void));
 static int	tcapkopen PP((void));
 static int	tcapkclose PP((void));
@@ -102,7 +104,8 @@ NOSHARE TERM term = {
 
 /* zap null counts on request */
 static char *mytgetstr(code, space)
-char *code, **space;
+const char *code;
+char **space;
 {
 	char *v, *s;
 	int got_dollar, copy_len;
