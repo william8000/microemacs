@@ -24,19 +24,19 @@
 #define ESC     0x1B                    /* ESC character.               */
 #define BEL     0x07                    /* ascii bell character         */
 
-extern  VOID    vt52move();               /* Forward references.          */
-extern  VOID    vt52eeol();
-extern  VOID    vt52eeop();
-extern  VOID    vt52beep();
-extern  int     vt52open();
-extern	VOID	vt52rev();
-extern	int	vt52cres();
-extern	int	vt52kopen();
-extern	int	vt52kclose();
+extern  VOID    vt52move PP((int row, int col));	/* Forward references.          */
+extern  VOID    vt52eeol PP((void));
+extern  VOID    vt52eeop PP((void));
+extern  VOID    vt52beep PP((void));
+extern  int     vt52open PP((void));
+extern	VOID	vt52rev PP((int status));
+extern	int	vt52cres PP((CONSTA char *res));
+extern	int	vt52kopen PP((void));
+extern	int	vt52kclose PP((void));
 
 #if	COLOR
-extern	VOID	vt52fcol();
-extern	VOID	vt52bcol();
+extern	VOID	vt52fcol PP((int color));
+extern	VOID	vt52bcol PP((int color));
 #endif
 
 /*
@@ -72,6 +72,7 @@ TERM    term    = {
 };
 
 VOID vt52move(row, col)
+int row, col;
 {
         ttputc(ESC);
         ttputc('Y');
@@ -97,27 +98,36 @@ int status;	/* TRUE = reverse video, FALSE = normal video */
 
 {
 	/* can't do this here, so we won't */
+	UNUSED_ARG(status);
 }
 
-vt52cres()	/* change screen resolution - (not here though) */
+int vt52cres(res)	/* change screen resolution - (not here though) */
+CONSTA char *res;
 
 {
+	UNUSED_ARG(res);
 	return(TRUE);
 }
 
-spal()		/* change palette string */
-
+int spal(pal)		/* change palette string */
+char *pal;
 {
 	/*	Does nothing here	*/
+	UNUSED_ARG(pal);
+	return TRUE;
 }
 
 #if	COLOR
-VOID vt52fcol()	/* set the foreground color [NOT IMPLIMENTED] */
+VOID vt52fcol(color)	/* set the foreground color [NOT IMPLIMENTED] */
+int color;
 {
+	UNUSED_ARG(color);
 }
 
-VOID vt52bcol()	/* set the background color [NOT IMPLIMENTED] */
+VOID vt52bcol(color)	/* set the background color [NOT IMPLIMENTED] */
+int color;
 {
+	UNUSED_ARG(color);
 }
 #endif
 
@@ -129,7 +139,7 @@ VOID vt52beep()
 #endif
 }
 
-vt52open()
+int vt52open()
 {
 #if     V7 | BSD
         register char *cp;
@@ -145,21 +155,24 @@ vt52open()
         }
 #endif
         ttopen();
+        return TRUE;
 }
 
-vt52kopen()
+int vt52kopen()
 
 {
+	return TRUE;
 }
 
-vt52kclose()
+int vt52kclose()
 
 {
+	return TRUE;
 }
 
 
 #if	FLABEL
-fnclabel(f, n)		/* label a function key */
+int fnclabel(f, n)	/* label a function key */
 
 int f,n;	/* default flag, numeric argument [unused] */
 
@@ -169,6 +182,8 @@ int f,n;	/* default flag, numeric argument [unused] */
 }
 #endif
 #else
+
+VOID vt52hello PP((void));
 
 VOID vt52hello()
 

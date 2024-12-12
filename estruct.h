@@ -185,6 +185,9 @@
 #   elif defined(USEANSI)
 #	undef ANSI
 #	define	ANSI 1
+#   elif defined(USEVT52)
+#	undef EM_VT52
+#	define	EM_VT52 1
 #   else
 #       if MSDOS
 #           if (ZORTECH && defined(DOS16RM)) || (defined(_MSC_VER) && defined(_WIN32))
