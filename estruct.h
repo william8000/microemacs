@@ -121,6 +121,14 @@
 #define	VMS 1
 #endif
 
+#ifndef SYSTEM_AUX
+#define SYSTEM_AUX 0
+#endif
+
+#ifndef SYSTEM_BSD
+#define SYSTEM_BSD 0
+#endif
+
 #if defined(M_XENIX) || defined(_AIX) || defined(m88k) || defined(sun) || defined(__linux__) || defined(__USLC__) || defined(_SYSTYPE_SVR4) || SYSTEM_SYSV || defined(__CYGWIN32__) || defined(__hpux) || defined(__INTERIX) || defined(__MINGW32__)
 #undef USG
 #define	USG 1

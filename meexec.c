@@ -76,7 +76,7 @@ char *cline;	/* command line to execute */
 {
 	register int f;		/* default argument flag */
 	register int n;		/* numeric repeat value */
-	int (*fnc)();		/* function to execute */
+	int (*fnc) PP((int f, int n)); /* function to execute */
 	int status;		/* return status of function */
 	int oldcle;		/* old contents of clexec flag */
 	char *oldestr;		/* original exec string */

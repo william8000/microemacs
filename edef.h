@@ -979,4 +979,9 @@ NOSHARE extern int FAR me_char_len[256];	/* character name length */
 extern CONST char FAR *me_char_name[256];	/* character name data */
 #endif
 
+NOSHARE extern int spawning;
+NOSHARE extern int usedcolor;
+NOSHARE extern int isansi;
+NOSHARE extern int termflag;
+
 #endif

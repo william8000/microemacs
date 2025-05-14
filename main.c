@@ -1381,7 +1381,7 @@ int execute(c, f, n)
 int c, f, n;
 {
         register int status;
-	int (*execfunc)();		/* ptr to function to execute */
+	int (*execfunc) PP((int f, int n));	/* ptr to function to execute */
 #ifdef NO_PROTOTYPE
 	int (*getbind())();
 #endif
