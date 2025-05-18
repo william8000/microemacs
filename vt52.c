@@ -143,7 +143,6 @@ int vt52open()
 {
 #if     V7 | BSD
         register char *cp;
-        char *getenv();
 
         if ((cp = getenv("TERM")) == NULL) {
                 puts("Shell variable TERM not defined!");

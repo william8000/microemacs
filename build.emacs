@@ -101,7 +101,7 @@ do
 	-32|-m32)	do_64=32 ;;
 	-64|-m64)	do_64=64 ;;
 	-ansi)		DEF_WARN="$DEF_WARN -DUSEANSI=1" ;;
-	-vt52)		DEF_WARN="$DEF_WARN -DUSEVT52=1" ;;
+	-vt52)		DEF_WARN="$DEF_WARN -DUSEVT52=1" EXTRAOFILES=vt52.o EXTRACFILES=vt52.c ; export EXTRAOFILES EXTRACFILES ;;
 	-winmod)	DEF_WARN="$DEF_WARN -DUSEWINMOD=1" ;;
 	-install)	do_install=yes ;;
 	-quiet)		do_quiet=yes ;;

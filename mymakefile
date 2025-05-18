@@ -3,12 +3,12 @@ CFLAGS=		$(MEEXTRAFLAGS)
 OFILES=		main.o ansi.o basic.o bind.o buffer.o display.o \
 		file.o fileio.o meline.o random.o region.o \
 		search.o mespawn.o tcap.o termio.o window.o word.o \
-		meexec.o eval.o isearch.o input.o crypt.o memenu.o
+		meexec.o eval.o isearch.o input.o crypt.o memenu.o $(EXTRAOFILES)
 
 CFILES=		main.c ansi.c basic.c bind.c buffer.c display.c \
 		file.c fileio.c meline.c random.c region.c \
 		search.c mespawn.c tcap.c termio.c window.c word.c \
-		meexec.c eval.c isearch.c input.c crypt.c memenu.c
+		meexec.c eval.c isearch.c input.c crypt.c memenu.c $(EXTRACFILES)
 
 HFILES=		estruct.h edef.h efunc.h epath.h evar.h
 
