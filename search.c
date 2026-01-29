@@ -1457,7 +1457,6 @@ STATIC int mcstr()
 				 * it's a literal instead.
 				 */
 				if (*(patptr + 1) != '\0')
-				if (*(patptr + 1) != '\0')
 					goto litcase;
 
 				mcptr->mc_type = EOL;

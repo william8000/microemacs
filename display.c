@@ -1751,16 +1751,16 @@ static VOID modeline(wp)
 
     /* display the modes */
 
-	firstm = TRUE;
-	for (i = 0; i < NUMMODES; i++)	/* add in the mode flags */
-		if (wp->w_bufp->b_mode & (1 << i)) {
-			if (firstm != TRUE)
-				{++n; vtputc(' ');}
-			firstm = FALSE;
-			n += vtputs(modename[i]);
-		}
-	vtputc(')');
-	vtputc(' ');
+    firstm = TRUE;
+    for (i = 0; i < NUMMODES; i++)	/* add in the mode flags */
+	if (wp->w_bufp->b_mode & (1 << i)) {
+		if (firstm != TRUE)
+			{++n; vtputc(' ');}
+		firstm = FALSE;
+		n += vtputs(modename[i]);
+	}
+    vtputc(')');
+    vtputc(' ');
 
 #if 0
     vtputc(lchar);
@@ -1868,8 +1868,8 @@ VOID mlerase()
 	return;
 
 #if	COLOR
-     TTforg(7);
-     TTbacg(0);
+    TTforg(7);
+    TTbacg(0);
 #endif
     if (eolexist == TRUE)
 	    TTeeol();
@@ -1943,8 +1943,8 @@ VOID mlwrite(fmt, arg)
     }
 
 #if	COLOR
-	TTforg(7);
-	TTbacg(0);
+    TTforg(7);
+    TTbacg(0);
 #endif
 
     /* if we can not erase to end-of-line, do it manually */

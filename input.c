@@ -679,7 +679,8 @@ int get1key()
 
 	/* get a keystroke */
 	if (cpending) {
-		c = charpending; cpending = FALSE;
+		c = charpending;
+		cpending = FALSE;
 		if ((c&0xFF00) != 0) return(c);
 	} else {
 		c = tgetc();

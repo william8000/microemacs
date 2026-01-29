@@ -572,7 +572,7 @@ nxtscan:	/* on to the next line */
 			/* change all '%' to ':' so mlwrite won't expect arguments */
 			sp = outline;
 			while (*sp)
-			if (*sp++ == '%') {
+			    if (*sp++ == '%') {
 				/* advance to the end */
 				ep = --sp;
 				while (*ep++)
@@ -585,7 +585,7 @@ nxtscan:	/* on to the next line */
 
 				/* and advance sp past the new % */
 				sp += 2;					
-			}
+			    }
 	
 			/* write out the debug line */
 			mlforce(outline);
