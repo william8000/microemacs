@@ -427,7 +427,7 @@ CONSTA char *prompt;
 
     /* check to see if we are executing a command line */
     if (!clexec) {
-	mlwrite(tpat);
+	mlwrite("%s", tpat);
     }
     return( (int) strlen(tpat) );
 }

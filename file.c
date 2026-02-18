@@ -432,7 +432,7 @@ out:
 	  strcat(mesg, "; autosave file is newer, consider M-X recover-file");
 #endif
 	strcat(mesg, "]");
-	mlwrite(mesg);
+	mlwrite("%s", mesg);
 
 	TTkopen();	/* open the keyboard again */
         for (wp=wheadp; wp!=NULL; wp=wp->w_wndp) {
@@ -587,7 +587,7 @@ char *mstring;			/* string to match cmd names to */
 	char outseq[NSTRING];	/* output buffer for file names */
 	char *sp;		/* output ptr for file names */
 	int matchflag;
-	int mlen, len;
+	int mlen, splen, len;
 	int exact;
 
 	/* get a buffer for the file list */
@@ -608,7 +608,7 @@ char *mstring;			/* string to match cmd names to */
 	sp = getffile(mstring, mlen, exact, FALSE);
 
 	while (sp) {
-		len = (int) strlen(sp);
+		len = splen = (int) strlen(sp);
 		if (len > mlen) len = mlen;
 
 		/* is this a match? */
@@ -622,7 +622,10 @@ char *mstring;			/* string to match cmd names to */
 
 		if (matchflag) {
 			/* add a name to the buffer */
-			strcpy(outseq, sp);
+			if (splen > NSTRING-1) splen = NSTRING-1;
+			if (splen < 0) splen = 0;
+			if (splen > 0) memcpy(outseq, sp, splen);
+			outseq[splen] = '\0';
 			if (addline(dirbuf, outseq) != TRUE)
 				return(FALSE);
 		}
@@ -860,7 +863,7 @@ CONSTA char    *fname;
         if (nline > 1)
 		strcat(mesg, "s");
 	strcat(mesg, "]");
-	mlwrite(mesg);
+	mlwrite("%s", mesg);
 
 out:
 	/* advance to the next line and mark the window for changes */

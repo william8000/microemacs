@@ -49,6 +49,20 @@ extern LINE	*lalloc();	/* Allocate a line		*/
 
 #else
 
+#if defined(__has_attribute)
+#  if __has_attribute(format)
+#    define PRINTF_LIKE(fmt, args) \
+       __attribute__((format(printf, fmt, args)))
+#  else
+#    define PRINTF_LIKE(fmt, args)
+#  endif
+#elif defined(__GNUC__)
+#  define PRINTF_LIKE(fmt, args) \
+     __attribute__((format(printf, fmt, args)))
+#else
+#  define PRINTF_LIKE(fmt, args)
+#endif
+
 	/* from basic.c */
 
 extern int backchar PP((int f, int n));	/* Move backward by characters  */
@@ -314,7 +328,7 @@ extern VOID mlerase PP((void));
 #if defined(_AIX) || defined(__BORLANDC__) || (defined(vms) && defined(vax11c))
 extern VOID mlwrite();
 #else
-extern VOID mlwrite PP((CONSTA char *fmt, ...));
+extern VOID mlwrite PP((CONSTA char *fmt, ...)) PRINTF_LIKE(1, 2);
 #endif
 extern VOID mlforce PP((CONSTA char *s));
 extern VOID mlputs PP((CONSTA char *s));

@@ -564,6 +564,9 @@ BUFFER *popbufp;
 		wp = wp->w_wndp;
 
 	if (popbufp->b_nwnd == 0) {		/* Not on screen yet.	*/
+		if (wp == NULL) {		/* Something went wrong. */
+			return FALSE;
+		}
 		bp = wp->w_bufp;
 		if (--bp->b_nwnd == 0) {
 			bp->b_dotp  = wp->w_dotp;

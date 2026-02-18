@@ -43,8 +43,6 @@ int f, n;
         register int	predlines;	/* # lines preceding point */
         register int    curchar;	/* character under cursor */
         int ratio;
-        int ratio_decimal1;
-        int ratio_decimal2;
         int col;
 	int savepos;			/* temp save for current offset */
 	int ecol;			/* column pos/end of current line */
@@ -91,24 +89,18 @@ int f, n;
 	curwp->w_doto = savepos;
 
         ratio = 0;              /* Ratio before dot. */
-        ratio_decimal1 = 0;
-        ratio_decimal2 = 0;
         if (numchars != 0) {
 #if ST520 | MSDOS | BSD29 | CPM | WMCS | DECUSC | MWC86 | LATTICE | AZTEC | TURBO | C86
-		ratio = (100L*predchars) / numchars;	/* avoid linking in real number code */
+		ratio = 100*((100L*predchars) / numchars);	/* avoid linking in real number code */
 #else
 		ratio = (int) ((10000.0 * (double) predchars) / (double) numchars + 0.5);
-		ratio_decimal2 = ratio % 10;
-		ratio = ratio / 10;
-		ratio_decimal1 = ratio % 10;
-		ratio = ratio / 10;
 #endif
 	}
 
 	/* summarize and report the info */
-	mlwrite("Line %d/%d Col %d/%d Char %D/%D (%d.%d%d%%) char = 0x%x (%d)",
+	mlwrite("Line %d/%d Col %d/%d Char %ld/%ld (%d.%02d%%) char = 0x%x (%d)",
 		predlines+1, numlines+1, col, ecol,
-		predchars, numchars, ratio, ratio_decimal1, ratio_decimal2,
+		predchars, numchars, ratio/100, ratio%100,
 		curchar, curchar);
         return (TRUE);
 }

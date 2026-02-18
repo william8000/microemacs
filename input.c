@@ -31,7 +31,7 @@ CONSTA char *prompt;
 	/* build and prompt the user */
 	strcpy(buf, prompt);
 	strcat(buf, " [y/n]? ");
-	mlwrite(buf);
+	mlwrite("%s", buf);
 
 	for (;;) {
 		/* get the responce */

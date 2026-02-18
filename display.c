@@ -325,8 +325,8 @@ static VOID updscroll PP((WINDOW *wp));
 static VOID updpos PP((void));
 static int updupd PP((int force));
 static int reframe PP((WINDOW *wp));
-static VOID mlputli PP((long l, int r));
-static VOID mlputi PP((int i, int r));
+static VOID mlputli PP((long l, int r, int len));
+static VOID mlputi PP((int i, int r, int len));
 static VOID vteeol PP((void));
 static VOID vtmove PP((int row, int col));
 static VOID vtputc PP((int c));
@@ -1972,40 +1972,52 @@ VOID mlwrite(fmt, arg)
             }
         else
             {
+            int len = 0;
             c = *fmt++;
+            if (c == '0') {
+                c = *fmt++;
+            }
+            if (c >= '0' && c <= '9') {
+                len = c - '0';
+                c = *fmt++;
+            }
+            if (c == 'l') {
+                c = *fmt++;
+                if (c == 'd') c = 'D';
+            }
             switch (c) {
                 case 'd':
 #if HASVA
-                    mlputi(va_arg(arg, int), 10);
+                    mlputi(va_arg(arg, int), 10, len);
 #else
-                    mlputi(*(int *)ap, 10);
+                    mlputi(*(int *)ap, 10, len);
                     ap += sizeof(int);
 #endif
                     break;
 
                 case 'o':
 #if HASVA
-                    mlputi(va_arg(arg, int), 8);
+                    mlputi(va_arg(arg, int), 8, len);
 #else
-                    mlputi(*(int *)ap,  8);
+                    mlputi(*(int *)ap,  8, len);
                     ap += sizeof(int);
 #endif
                     break;
 
                 case 'x':
 #if HASVA
-                    mlputi(va_arg(arg, int), 16);
+                    mlputi(va_arg(arg, int), 16, len);
 #else
-                    mlputi(*(int *)ap, 16);
+                    mlputi(*(int *)ap, 16, len);
                     ap += sizeof(int);
 #endif
                     break;
 
                 case 'D':
 #if HASVA
-                    mlputli(va_arg(arg, long), 10);
+                    mlputli(va_arg(arg, long), 10, len);
 #else
-                    mlputli(*(long *)ap, 10);
+                    mlputli(*(long *)ap, 10, len);
                     ap += sizeof(long);
 #endif
                     break;
@@ -2033,6 +2045,7 @@ VOID mlwrite(fmt, arg)
 		    }
 		    break;
 
+#if 0
 		case 'f':
 		    /* break it up */
 #if HASVA
@@ -2044,12 +2057,13 @@ VOID mlwrite(fmt, arg)
 		    f = i % 100;
 
 		    /* send out the integer portion */
-		    mlputi(i / 100, 10);
+		    mlputi(i / 100, 10, len);
 		    mlline[mllen++] = '.';
 		    mlline[mllen++] = (char) ((f / 10) + '0');
 		    mlline[mllen++] = (char) ((f % 10) + '0');
 
 		    break;
+#endif
 
                 default:
 		    mlline[mllen++] = (char) c;
@@ -2087,7 +2101,7 @@ VOID mlforce(s)
 
 	oldcmd = discmd;	/* save the discmd value */
 	discmd = TRUE;		/* and turn display on */
-	mlwrite(s);		/* write the string out */
+	mlwrite("%s", s);	/* write the string out */
 	discmd = oldcmd;	/* and restore the original setting */
 }
 
@@ -2113,11 +2127,12 @@ VOID mlputs(s)
  */
 
 #ifdef NO_PROTOTYPE
-static VOID mlputli(l, r)
+static VOID mlputli(l, r, len)
     long l;
     int r;
+    int len;
 #else
-static VOID mlputli(long l, int r)
+static VOID mlputli(long l, int r, int len)
 #endif
 {
     register long q;
@@ -2130,9 +2145,10 @@ static VOID mlputli(long l, int r)
         }
 
     q = l/r;
+    len--;
 
-    if (q != 0)
-        mlputli(q, r);
+    if (q != 0 || len > 0)
+        mlputli(q, r, len);
 
     digit = (int)(l%r);
     mlline[mllen++] = (char) ((digit < 10)? '0'+digit: 'A'+digit-10);
@@ -2141,10 +2157,10 @@ static VOID mlputli(long l, int r)
 /*
  * Write out an integer, in the specified radix using mlputli.
  */
-static VOID mlputi(i, r)
-int i, r;
+static VOID mlputi(i, r, len)
+int i, r, len;
 {
-	mlputli( (long) i, r);
+	mlputli( (long) i, r, len);
 }
 
 #if RAINBOW
