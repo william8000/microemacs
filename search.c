@@ -1577,7 +1577,7 @@ static int rmcstr()
 				if (mj != 0)
 				{
 					rmcptr->mc_type = LITCHAR;
-					if ((rmcptr->rstr = malloc(mj + 1)) ==
+					if ((rmcptr->rstr = malloc( (size_t) (mj + 1) )) ==
 						NULL)
 					{
 						mlwrite("%%Out of memory");
@@ -1600,7 +1600,7 @@ static int rmcstr()
 				 * of one, because we have to count the
 				 * current character.
 				 */
-				if ((rmcptr->rstr = malloc(mj + 2)) == NULL)
+				if ((rmcptr->rstr = malloc( (size_t) (mj + 2) )) == NULL)
 				{
 					mlwrite("%%Out of memory");
 					status = FALSE;
@@ -1631,7 +1631,7 @@ static int rmcstr()
 	if (rmagical && mj > 0)
 	{
 		rmcptr->mc_type = LITCHAR;
-		if ((rmcptr->rstr = malloc(mj + 1)) == NULL)
+		if ((rmcptr->rstr = malloc( (size_t) (mj + 1) )) == NULL)
 		{
 			mlwrite("%%Out of memory");
 			status = FALSE;

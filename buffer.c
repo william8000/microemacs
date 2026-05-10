@@ -368,7 +368,7 @@ int iflag;	/* list hidden buffer flag */
 		if (namelen > 0) {
 			len = (int) strlen(bp->b_bname);
 			if (len > namelen) len = namelen;
-			if (strncmp(name, bp->b_bname, len)) {
+			if (strncmp(name, bp->b_bname, (size_t) len)) {
 				bp = bp->b_bufp;
 				continue;
 			}

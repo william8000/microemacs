@@ -138,9 +138,9 @@ char **space;
 			}
 		}
 		if (got_dollar) {
-			s = (char *) malloc(copy_len + 1);
+			s = (char *) malloc( (size_t) (copy_len + 1) );
 			if (s) {
-				memcpy(s, v, copy_len);
+				memcpy(s, v, (size_t) copy_len);
 				s[ copy_len ] = '\0';
 				v = s;
 			}

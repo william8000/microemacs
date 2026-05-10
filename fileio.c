@@ -518,7 +518,7 @@ int	nbuf;
 		}
 
 		if (fline == NULL &&
-		    (fline=malloc(flen = nbuf+NSTRING)) == NULL)
+		    (fline=malloc( (size_t) (flen = nbuf+NSTRING) )) == NULL)
 				return(FIOMEM);
 
 		/* copy data */
@@ -550,7 +550,7 @@ int	nbuf;
 
 #if USG | BSD | MSDOS
 	if (nbuf > 0)
-		fwrite(obuf, 1, nbuf, ffp);
+		fwrite(obuf, 1, (size_t) nbuf, ffp);
 #else
 	for (i = 0; i < nbuf; ++i)
 		putc(obuf[i]&0xFF, ffp);
@@ -629,7 +629,7 @@ int ffgetline()
 
 	/* if we don't have an fline, allocate one */
 	if (fline == NULL)
-		if ((fline = malloc(flen = NSTRING)) == NULL)
+		if ((fline = malloc( (size_t) (flen = NSTRING) )) == NULL)
 			return(FIOMEM);
 
 	/* read the line in */
@@ -669,9 +669,9 @@ int ffgetline()
 		/* if it's longer, get more room */
                 if (i >= flen) {
 			tmplen = (sizeof(int) < 4? flen+NSTRING: flen+flen);
-			if ((tmpline = malloc(tmplen)) == NULL)
+			if ((tmpline = malloc((size_t)tmplen)) == NULL)
 				return(FIOMEM);
-			if (flen > 0) memcpy(tmpline, fline, flen);
+			if (flen > 0) memcpy(tmpline, fline, (size_t) flen);
 			i = flen;
 			flen = tmplen;
 			free(fline);
@@ -937,13 +937,13 @@ nxtdir:	dp = readdir(dirptr);
 	if (zapdot != 0 && rptr[0] != '\0' && rptr[1] != '\0') rptr += 2;
 
 	if (in_arg && arglen > 0) {
-		if (strncmp(rptr, argbuf, arglen) != 0)
+		if (strncmp(rptr, argbuf, (size_t) arglen) != 0)
 			goto nxtdir;
 	}
 
 	if (match_len > 0) {
 		if (exact) {
-			if (strncmp(rptr, match_name, match_len) != 0) {
+			if (strncmp(rptr, match_name, (size_t) match_len) != 0) {
 				goto nxtdir;
 			}
 		} else {

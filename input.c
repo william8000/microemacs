@@ -396,7 +396,7 @@ int namelen, *cpos, *matchlen, exact;
 	if (*cpos <= 0) {
 		matchflag = TRUE;
 	} else if (exact) {
-		matchflag = !strncmp(name, testname, *cpos);
+		matchflag = !strncmp(name, testname, (size_t) *cpos);
 	} else {
 		matchflag = !strcompare(name, testname, *cpos);
 	}

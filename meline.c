@@ -37,7 +37,7 @@ int	used;
 {
 	register LINE	*lp;
 
-	if ((lp = (LINE *) malloc(sizeof(LINE)+used)) == NULL) {
+	if ((lp = (LINE *) malloc(sizeof(LINE)+(size_t)used)) == NULL) {
 		mlwrite("[OUT OF MEMORY]");
 		return (NULL);
 	}

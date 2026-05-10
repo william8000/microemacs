@@ -368,7 +368,7 @@ CONSTA char *mstring;	/* match string if a partial list */
 #endif
 		if (type == 2 && mlen > 0) {
 			if (len > mlen) len = mlen;
-			if (strncmp(outseq, mstring, len))
+			if (strncmp(outseq, mstring, (size_t) len))
 				goto fail;
 		}
 

@@ -532,7 +532,7 @@ nxtscan:	/* on to the next line */
 	while (lp != hlp) {
 		/* allocate eline and copy macro line to it */
 		linlen = lp->l_used;
-		if ((einit = eline = malloc(linlen+1)) == NULL) {
+		if ((einit = eline = malloc( (size_t) (linlen+1)) ) == NULL) {
 			errormesg("%%Out of Memory during macro execution",
 					bp, lp);
 			freewhile(whlist);
@@ -732,7 +732,7 @@ nxtscan:	/* on to the next line */
 					while (glp != hlp) {
 						if (*glp->l_text == '*' &&
 						    (strncmp(&glp->l_text[1], golabel,
-						            linlen) == 0)) {
+						            (size_t) linlen) == 0)) {
 							lp = glp;
 							goto onward;
 						}

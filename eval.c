@@ -171,6 +171,7 @@ char *fname;		/* name of function to evaluate */
 {
 	register int fnum;		/* index to function to eval */
 	register int arg;		/* value of some arguments */
+	int i;				/* value of some arguments */
 	char arg1[NSTRING];		/* value of first argument */
 	char arg2[NSTRING];		/* value of second argument */
 	char arg3[NSTRING];		/* value of third argument */
@@ -212,8 +213,10 @@ char *fname;		/* name of function to evaluate */
 		case UFADD:	return(me_itoa(asc_int(arg1) + asc_int(arg2)));
 		case UFSUB:	return(me_itoa(asc_int(arg1) - asc_int(arg2)));
 		case UFTIMES:	return(me_itoa(asc_int(arg1) * asc_int(arg2)));
-		case UFDIV:	return(me_itoa(asc_int(arg1) / asc_int(arg2)));
-		case UFMOD:	return(me_itoa(asc_int(arg1) % asc_int(arg2)));
+		case UFDIV:	arg = asc_int(arg2);
+				return(me_itoa(arg? asc_int(arg1) / arg: 0));
+		case UFMOD:	arg = asc_int(arg2);
+				return(me_itoa(arg? asc_int(arg1) % arg: 0));
 		case UFNEG:	return(me_itoa(-asc_int(arg1)));
 		case UFCAT:	bytecopy(result, arg1, NSTRING-1);
 				bytecopy(&result[strlen(result)], arg2,
@@ -221,11 +224,17 @@ char *fname;		/* name of function to evaluate */
 				return(result);
 		case UFLEFT:	return(bytecopy(result, arg1, asc_int(arg2)));
 		case UFRIGHT:	arg = asc_int(arg2);
-				if (arg > (int)strlen(arg1)) arg = (int) strlen(arg1);
+				i = (int) strlen(arg1);
+				if (arg > i) arg = i;
+				if (arg < 0) arg = 0;
 				return(strcpy(result,
-					&arg1[strlen(arg1)-arg]));
+					&arg1[i-arg]));
 		case UFMID:	arg = asc_int(arg2);
 				if (arg > (int)strlen(arg1)) arg = (int) strlen(arg1);
+				if (arg < 1) arg = 1;
+				i = asc_int(arg3);
+				if (i > NSTRING - arg) i = NSTRING - arg;
+				if (i < 0) i = 0;
 				return(bytecopy(result, &arg1[arg-1],
 					asc_int(arg3)));
 		case UFNOT:	return(ltos(stol(arg1) == FALSE));
@@ -253,7 +262,8 @@ char *fname;		/* name of function to evaluate */
 		case UFGTKEY:	result[0] = (char) tgetc();
 				result[1] = '\0';
 				return(result);
-		case UFRND:	return(me_itoa((ernd() % abs(asc_int(arg1))) + 1));
+		case UFRND:	arg = asc_int(arg1);
+				return(me_itoa(arg? (ernd() % abs(arg)) + 1: 0));
 		case UFABS:	return(me_itoa(abs(asc_int(arg1))));
 		case UFSINDEX:	return(me_itoa(sindex(arg1, arg2)));
 		case UFENV:
@@ -1321,7 +1331,7 @@ CONSTA char *mstring;
 		if (mlen > 0) {
 			len = (int) strlen(outseq);
 			if (len > mlen) len = mlen;
-			if (strncmp(mstring, outseq, len) != 0)
+			if (strncmp(mstring, outseq, (size_t) len) != 0)
 				continue;
 		}
 
@@ -1354,7 +1364,7 @@ CONSTA char *mstring;
 		if (mlen > 0) {
 			len = (int) strlen(outseq);
 			if (len > mlen) len = mlen;
-			if (strncmp(mstring, outseq, len) != 0)
+			if (strncmp(mstring, outseq, (size_t) len) != 0)
 				continue;
 		}
 

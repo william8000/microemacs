@@ -405,7 +405,7 @@ int	recover;	/* recover an autosaved file */
                 curbp->b_linep->l_bp = lp1;
 #if USG
 		if (nbytes >= 4)
-			memcpy(lp1->l_text, fline, nbytes);
+			memcpy(lp1->l_text, fline, (size_t) nbytes);
 		else
 #endif
 			for (i=0; i<nbytes; ++i)
@@ -615,16 +615,16 @@ char *mstring;			/* string to match cmd names to */
 		if (len <= 0) {
 			matchflag = TRUE;
 		} else if (exact) {
-			matchflag = !strncmp(mstring, sp, len);
+			matchflag = !strncmp(mstring, sp, (size_t) len);
 		} else {
-			matchflag = !strcompare(mstring, sp, len);
+			matchflag = !strcompare(mstring, sp, (size_t) len);
 		}
 
 		if (matchflag) {
 			/* add a name to the buffer */
 			if (splen > NSTRING-1) splen = NSTRING-1;
 			if (splen < 0) splen = 0;
-			if (splen > 0) memcpy(outseq, sp, splen);
+			if (splen > 0) memcpy(outseq, sp, (size_t) splen);
 			outseq[splen] = '\0';
 			if (addline(dirbuf, outseq) != TRUE)
 				return(FALSE);
@@ -841,7 +841,7 @@ CONSTA char    *fname;
 		/* and advance and write out the current line */
 		curwp->w_dotp = lp1;
 		if (nbytes >= 4) {
-			memcpy(lp1->l_text, fline, nbytes);
+			memcpy(lp1->l_text, fline, (size_t) nbytes);
 		} else {
 			for (i=0; i<nbytes; ++i)
 				lputc(lp1, i, fline[i]);

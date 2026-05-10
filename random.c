@@ -7,6 +7,10 @@
 #include	"estruct.h"
 #include        "edef.h"
 
+#ifndef PORT_HAS_NAP
+#  define PORT_HAS_NAP 0
+#endif
+
 static int killtxt PP((int f, int n, int delflag));
 static int adjustmode PP((int kind, int global));
 static VOID setcindent PP((int target));
